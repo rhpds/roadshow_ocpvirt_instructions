@@ -1,0 +1,52 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+message: |
+  Created ${NAME} BuildConfig and ImageStream instance
+
+metadata:
+  annotations:
+    openshift.io/display-name: Bookbag Build
+    tags: gpte
+    template.openshift.io/bindable: "false"
+  name: bookbag-build
+
+parameters:
+  - name: NAME
+    required: true
+    value: bookbag
+  - name: BUILDER_IMAGE
+    required: true
+    value: quay.io/agonzalezrh/ocpvirt-workshop
+  - name: GIT_REPO
+    value: https://github.com/agonzalezrh/roadshow_ocpvirt_instructions
+
+objects:
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ${NAME}
+    spec:
+      lookupPolicy:
+        local: true
+
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      name: ${NAME}
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:latest
+      source:
+        git:
+          ref: main
+          uri: ${GIT_REPO}
+        type: Git
+      strategy:
+        sourceStrategy:
+          from:
+            kind: DockerImage
+            name: ${BUILDER_IMAGE}
+        type: Source
+      triggers: []

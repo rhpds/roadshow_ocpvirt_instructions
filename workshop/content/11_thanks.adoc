@@ -1,0 +1,5 @@
+== Thanks for attending to this session. 
+
+During this session you learn the basics of OpenShift Virtualization and how to create and administrate Virtual Machines.
+
+OpenShift Virtualization Roadshow  using the Migration Toolkit Virtualizatopn operator makes the task easy and allow to perform bulk migrations. 

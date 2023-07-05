@@ -1,0 +1,176 @@
+:scrollbar:
+:toc2:
+
+= Storage Management  Lab
+
+:numbered:
+
+== Introduction to Storage Management 
+
+OpenShift Container Platform supports multiple types of storage, both for on-premise and cloud providers. You can manage container storage for persistent and non-persistent data in an OpenShift Container Platform cluster.
+
+=== Glosarry of terms
+
+*Access modes*: Volume access modes describe volume capabilities. You can use access modes to match _persistent volume claim_ (*PVC*) and _persistent volume_ (*PV*). The following are the examples of access modes:
+
+. ReadWriteOnce (RWO)
+. ReadOnlyMany (ROX)
+. ReadWriteMany (RWX)
+. ReadWriteOncePod (RWOP)
+
+*Container Storage Interface (CSI)*: An API specification for the management of container storage across different container orchestration (CO) systems.
+
+*Dynamic Provisioning*: The framework allows you to create storage volumes on-demand, eliminating the need for cluster administrators to pre-provision persistent storage.
+
+*Ephemeral storage*: Pods and containers can require temporary or transient local storage for their operation. The lifetime of this ephemeral storage does not extend beyond the life of the individual pod, and this ephemeral storage cannot be shared across pods.
+
+*Local volumes*: A local volume represents a mounted local storage device such as a disk, partition or directory.
+
+*OpenShift Data Foundation*: A provider of agnostic persistent storage for *OpenShift Container Platform* supporting file, block, and object storage, either in-house or in hybrid clouds
+
+*Persistent storage*: Pods and containers can require permanent storage for their operation. *OpenShift Container Platform* uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. Developers can use _PVC_ to request _PV_ resources without having specific knowledge of the underlying storage infrastructure.
+
+*Persistent volumes (PV)*: *OpenShift Container Platform* uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. Developers can use _PVC_ to request PV resources without having specific knowledge of the underlying storage infrastructure.
+
+*Persistent volume claims (PVCs)*: You can use a _PVC_ to mount a _PersistentVolume_ into a Pod. You can access the storage without knowing the details of the cloud environment.
+
+*Reclaim policy*:A policy that tells the cluster what to do with the volume after it is released. A volume’s reclaim policy can be `Retain`, `Recycle`, or `Delete`.
+
+*Storage class*:A _storage class_ provides a way for administrators to describe the classes of storage they offer. Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators.
+
+
+== OpenShift Virtualization Operator Boot Sources
+
+A boot source contains a bootable operating system (OS) and all of the configuration settings for the OS, such as drivers. For some operating systems, a boot source is automatically provided. If it is not provided, then an administrator must prepare a custom boot source.
+
+Provided boot sources are updated automatically to the latest version of the operating system. For auto-updated boot sources, _persistent volume claims_ (PVCs) are created with the cluster’s default _storage class_.
+
+To use the boot sources feature, install the latest release of *OpenShift Virtualization*. The namespace `openshift-virtualization-os-images` enables the feature and is installed with the *OpenShift Virtualization Operator*.
+
+. Navigate to *Storage* -> *PersistentVolumeClaims*:
++
+image::images/Storage/00_Left_Menu.png[]
+
+. Press in the dropdown for the projects, enable `Show default projects` and select the project `openshift-virtualization-os-images`
++
+image::images/Storage/01_Select_Project.png[]
+
+. List the _Persistent Volume Claims_ automatially created by the Operator.
++
+image::images/Storage/02_List_PVCs.png[]
+
+. Select one of the list, for example `fedora-XX` one to obtain more information
++
+image::images/Storage/03_PVC_Info.png[]
+
+. When a VM is created, the _Boot Source_ image is cloned and a new _persistent volume claim_ is created.
+. Switch to the project `vmexamples` and review the list of the _PVCs_:
++
+image::images/Storage/04_List_PVCs_VMs.png[]
+
+. Select the `fedora02` to obtain information
++
+image::images/Storage/05_PVC_VM_Info.png[]
+
+. A _Persistent Volume Claim_ will claim to a specific _storage class_, or to the default one, to provision a _volume_. Navigate to *Storage* -> *PersistentVolumes* to obtain a list. Sort by *Claim*.
++
+image::images/Storage/07_PV_List.png[]
+
+. Now navigate to *Virtualization* -> *Bootable volumes* to obtain a list of the available volumes
++
+image::images/Storage/08_List_Bootable_Volumes.png[]
+
+
+== Snapshots
+
+=== Introduction
+A `snapshot` represents the state and data of a _virtual machine_ (_VM_) at a specific point in time. You can use a `snapshot` to restore an existing VM to a previous state (represented by the `snapshot`) for backup and disaster recovery or to rapidly roll back to a previous development version.
+
+You can create and delete virtual machine (VM) `snapshots` for VMs, whether the VMs are powered off (offline) or on (online). You can only restore to a powered off (offline) VM. *OpenShift Virtualization* supports VM `snapshots` on the following:
+
+* *Red Hat OpenShift Data Foundation*
+
+* Any other cloud storage provider with the *Container Storage Interface (CSI)* driver that supports the _Kubernetes Volume Snapshot API_.
+
+With the VM snapshots feature, cluster administrators and application developers can:
+
+. Create a new snapshot
+
+. List all snapshots attached to a specific VM
+
+. Restore a VM from a snapshot
+
+. Delete an existing VM snapshot
+
+=== Operate with Snapshots
+
+. Navigate back to *Virtualization* -> *VirtualMachines* and select the vm `fedora02` on the project `vmexamples`
++
+image::images/Storage/09_VM_Overview.png[]
+
+. Navigate to the *Snapshots* tab
++
+image::images/Storage/10_VM_Snapshots_Tab.png[]
+
+. Press *Take snapshot* and a dialog will open.
++
+image::images/Storage/11_VM_Snapshot_Dialog.png[]
+
+. Press *Save* and wait till the _Snapshot_ is with `Succeeded` status
++
+image::images/Storage/12_VM_Snapshot_Taken.png[]
+
+. Press the three dots and check the *Restore* option is greyed out because the VM is running
++
+image::images/Storage/13_VM_Restore_Disabled.png[]
+
+. Switch to the *Console* tab to perform a modification. Login with the user `fedora` and password `r3dh4t1`. Execute the command:
++
+[source,sh]
+----
+[fedora@fedora02 ~]$ sudo rm -rf /boot/grub2; sudo shutdown -r now
+----
+
+. The _Virtual Machine_ will not be able to boot. 
++
+image::images/Storage/14_VM_Crashed.png[]
+
+. Using the *Actions* dropdown menu, stop the _Virtual Machine_. Wait some minutes till the VM is Stopped.
+
+. Navigate back to the *Snapshots* tab and press *Restore* on the previous created snapshot.
++
+image::images/Storage/15_VM_Restore.png[]
+
+. In the dialog shown, press *Restore*
++
+image::images/Storage/16_VM_Restore_Dialog.png[]
+
+. Wait till the VM is restored and start the VM 
++
+image::images/Storage/17_VM_Restored.png[]
+
+. Ensure the VM is booting properly.
++
+image::images/Storage/18_VM_Running.png[]
+
+
+
+
+== Clone a Virtual Machine
+
+Cloning creates a new VM that uses its own disk image for storage, but most of the clone's configuration and stored data is identical to the source VM.
+
+. Press *Clone* from the *Actions* menu and a dialog will open
++
+image::images/Storage/19_VM_Clone_Dialog.png[]
++
+Notice the VM, if is powered on, it will be stopped to perform the clone.
+
+. A new VM is created, the disks are cloned and automatically the portal will redirect you to the new VM.
++
+image::images/Storage/20_VM_Cloned.png[]
+
+
+== Summary
+
+In this module you have learned the basics concepts of storage on OpenShift, review how OpenShift Virtualization automatically is downloading and creating boot sources. Furthermore, you have perform tasks related to the storage to the VM, such as create snapshots, restore snapshot and clone a Virtual Machine.
