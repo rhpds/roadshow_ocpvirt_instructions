@@ -9,9 +9,10 @@
 
 OpenShift Container Platform supports multiple types of storage, both for on-premise and cloud providers. You can manage container storage for persistent and non-persistent data in an OpenShift Container Platform cluster.
 
+////
 === Glosarry of terms
 
-*Access modes*: Volume access modes describe volume capabilities. You can use access modes to match _persistent volume claim_ (*PVC*) and _persistent volume_ (*PV*). The following are the examples of access modes:
+*Access modes*: Volume access modes describe volume capabilities. The following are the examples of access modes:
 
 . ReadWriteOnce (RWO)
 . ReadOnlyMany (ROX)
@@ -37,15 +38,15 @@ OpenShift Container Platform supports multiple types of storage, both for on-pre
 *Reclaim policy*:A policy that tells the cluster what to do with the volume after it is released. A volume’s reclaim policy can be `Retain`, `Recycle`, or `Delete`.
 
 *Storage class*:A _storage class_ provides a way for administrators to describe the classes of storage they offer. Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators.
-
+////
 
 == OpenShift Virtualization Operator Boot Sources
 
 A boot source contains a bootable operating system (OS) and all of the configuration settings for the OS, such as drivers. For some operating systems, a boot source is automatically provided. If it is not provided, then an administrator must prepare a custom boot source.
 
-Provided boot sources are updated automatically to the latest version of the operating system. For auto-updated boot sources, _persistent volume claims_ (PVCs) are created with the cluster’s default _storage class_.
+Red Hat provided boot sources are automatically updated to the latest version of the operating system.
 
-To use the boot sources feature, install the latest release of *OpenShift Virtualization*. The namespace `openshift-virtualization-os-images` enables the feature and is installed with the *OpenShift Virtualization Operator*.
+The project `openshift-virtualization-os-images` contains all available boot sources and is automatically enabled when *OpenShift Virtualization* is installed.
 
 . Navigate to *Storage* -> *PersistentVolumeClaims*:
 +
@@ -55,7 +56,7 @@ image::images/Storage/00_Left_Menu.png[]
 +
 image::images/Storage/01_Select_Project.png[]
 
-. List the _Persistent Volume Claims_ automatially created by the Operator.
+. List the boot sources that were automatially created by OpenShift Virtualization.
 +
 image::images/Storage/02_List_PVCs.png[]
 
@@ -63,8 +64,8 @@ image::images/Storage/02_List_PVCs.png[]
 +
 image::images/Storage/03_PVC_Info.png[]
 
-. When a VM is created, the _Boot Source_ image is cloned and a new _persistent volume claim_ is created.
-. Switch to the project `vmexamples` and review the list of the _PVCs_:
+. When a VM is created, the _Boot Source_ image is cloned and a new disk is created.
+. Switch to the project `vmexamples` and review the list of the _PVCs_ (disks):
 +
 image::images/Storage/04_List_PVCs_VMs.png[]
 
@@ -80,31 +81,24 @@ image::images/Storage/07_PV_List.png[]
 +
 image::images/Storage/08_List_Bootable_Volumes.png[]
 
-
 == Snapshots
 
 === Introduction
+
 A `snapshot` represents the state and data of a _virtual machine_ (_VM_) at a specific point in time. You can use a `snapshot` to restore an existing VM to a previous state (represented by the `snapshot`) for backup and disaster recovery or to rapidly roll back to a previous development version.
 
-You can create and delete virtual machine (VM) `snapshots` for VMs, whether the VMs are powered off (offline) or on (online). You can only restore to a powered off (offline) VM. *OpenShift Virtualization* supports VM `snapshots` on the following:
-
-* *Red Hat OpenShift Data Foundation*
-
-* Any other cloud storage provider with the *Container Storage Interface (CSI)* driver that supports the _Kubernetes Volume Snapshot API_.
+You can create and delete virtual machine (VM) `snapshots` for VMs, whether the VMs are powered off (offline) or on (online). You can only restore to a powered off (offline) VM.
 
 With the VM snapshots feature, cluster administrators and application developers can:
 
 . Create a new snapshot
-
 . List all snapshots attached to a specific VM
-
 . Restore a VM from a snapshot
-
 . Delete an existing VM snapshot
 
 === Operate with Snapshots
 
-. Navigate back to *Virtualization* -> *VirtualMachines* and select the vm `fedora02` on the project `vmexamples`
+. Navigate back to *Virtualization* -> *VirtualMachines* and select the vm `fedora02` in the project `vmexamples`
 +
 image::images/Storage/09_VM_Overview.png[]
 
@@ -112,19 +106,21 @@ image::images/Storage/09_VM_Overview.png[]
 +
 image::images/Storage/10_VM_Snapshots_Tab.png[]
 
-. Press *Take snapshot* and a dialog will open.
+. Press *Take snapshot* and a dialog will open
 +
 image::images/Storage/11_VM_Snapshot_Dialog.png[]
 
-. Press *Save* and wait till the _Snapshot_ is with `Succeeded` status
+. Press *Save* and wait till the _Snapshot_ has been created and *status* shows as `Succeeded`
 +
 image::images/Storage/12_VM_Snapshot_Taken.png[]
 
-. Press the three dots and check the *Restore* option is greyed out because the VM is running
+. Press the three dots and check that the *Restore* option is greyed out because the VM is running
 +
 image::images/Storage/13_VM_Restore_Disabled.png[]
 
-. Switch to the *Console* tab to perform a modification. Login with the user `fedora` and password `r3dh4t1`. Execute the command:
+. Switch to the *Console* tab to perform a modification to your running VM. This small modification will break your VM and it won't be able to boot any more.
++
+Login with the user `fedora` and password `ocpVirtIsGre@t`. Execute the command:
 +
 [source,sh]
 ----
@@ -135,7 +131,7 @@ image::images/Storage/13_VM_Restore_Disabled.png[]
 +
 image::images/Storage/14_VM_Crashed.png[]
 
-. Using the *Actions* dropdown menu, stop the _Virtual Machine_. Wait some minutes till the VM is Stopped.
+. Using the *Actions* dropdown menu, stop the _Virtual Machine_. Wait until the VM is Stopped.
 
 . Navigate back to the *Snapshots* tab and press *Restore* on the previous created snapshot.
 +
@@ -145,16 +141,13 @@ image::images/Storage/15_VM_Restore.png[]
 +
 image::images/Storage/16_VM_Restore_Dialog.png[]
 
-. Wait till the VM is restored and start the VM 
+. Wait untill the VM is restored and then start the VM 
 +
 image::images/Storage/17_VM_Restored.png[]
 
-. Ensure the VM is booting properly.
+. Ensure that the VM is booting properly again.
 +
 image::images/Storage/18_VM_Running.png[]
-
-
-
 
 == Clone a Virtual Machine
 
@@ -170,7 +163,6 @@ Notice the VM, if is powered on, it will be stopped to perform the clone.
 +
 image::images/Storage/20_VM_Cloned.png[]
 
-
 == Summary
 
-In this module you have learned the basics concepts of storage on OpenShift, review how OpenShift Virtualization automatically is downloading and creating boot sources. Furthermore, you have perform tasks related to the storage to the VM, such as create snapshots, restore snapshot and clone a Virtual Machine.
+In this module you have learned the basics concepts of storage on OpenShift, review how OpenShift Virtualization automatically is downloading and creating boot sources. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring snapshot and cloning a Virtual Machine.

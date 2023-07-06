@@ -81,7 +81,7 @@ image::images/Create_VM_URL/04_Wizard_Storage_settings.png[]
 +
 image::images/Create_VM_URL/05_Wizard_Scripts.png[]
 
-. Press *Edit* in the *Cloud-init* section to specify the password `ocpVirtIsGr@at` for the user `fedora`
+. Press *Edit* in the *Cloud-init* section to specify the password `ocpVirtIsGre@t` for the user `fedora`
 +
 image::images/Create_VM_URL/05_Wizard_Scripts_Password.png[]
 
@@ -89,18 +89,7 @@ image::images/Create_VM_URL/05_Wizard_Scripts_Password.png[]
 +
 image::images/Create_VM_URL/06_Wizard_Review.png[]
 
-. Navigate to *Workloads* -> *Pods*:
-+
-image::images/Create_VM_URL/06_Pod_Left_Menu.png[]
-
-. Click the `importer-fedora02` importer Pod link:
-+
-image::images/Create_VM_URL/07_VM_List_Import.png[]
-+
-In the list of VMs, you can see that the `fedora02` is listed as `Importing (CDI)`.
-(CDI stands for Containerized Data Importer.)
-
-. Once the Virtual Machine is running feel free to connect to it using the *Console* tab. Remember that the user is `fedora` and the password is now the one that you specified before (for example `ocpVirtIsGr@at`).
+. Once the Virtual Machine is running feel free to connect to it using the *Console* tab. Remember that the user is `fedora` and the password is now the one that you specified before (for example `ocpVirtIsGre@t`).
 
 ////
 == Virtual Machine Templates
