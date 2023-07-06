@@ -23,7 +23,7 @@ parameters:
     value: set-by-trigger
   - name: OPENSHIFT_CONSOLE_IMAGE
     required: true
-    value: quay.io/openshift/origin-console:4.12
+    value: quay.io/openshift/origin-console:4.13
   - name: WORKSHOP_VARS
     required: true
     value: '{}'
