@@ -1,4 +1,4 @@
-name: OpenShift Virtualization Roadshow 
+name: Red Hat OpenShift Virtualization Roadshow 
 
 modules:
     activate:
@@ -10,9 +10,4 @@ modules:
     - 06_network_management
     - 07_storage_management
     - 08_migrate_vms
-    - 09_metallb
-    - 10_backup_restore
-    - 11_thanks
-
-
-
+    - 09_thanks
