@@ -2,7 +2,7 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 message: |
-  Created ${NAME} Deployment, Service, and Route
+  Created ${NAME} DeploymentConfig, ServiceAccount, Service, and Route
 
 metadata:
   annotations:
@@ -14,16 +14,13 @@ metadata:
 parameters:
   - name: NAME
     required: true
-    value: bookbag
+    value: bookbag-demo
   - name: IMAGE_STREAM_NAME
     required: true
-    value: bookbag
+    value: bookbag-demo
   - name: IMAGE_STREAM_NAMESPACE
   - name: IMAGE
     value: set-by-trigger
-  - name: OPENSHIFT_CONSOLE_IMAGE
-    required: true
-    value: quay.io/openshift/origin-console:4.13
   - name: WORKSHOP_VARS
     required: true
     value: '{}'
@@ -32,29 +29,20 @@ parameters:
     value: '*'
   - name: AUTH_PASSWORD
     value: ''
-  - name: ROUTEHOST
-    value: ''
+  - name: CONSOLE_IMAGE
+    value: quay.io/openshift/origin-console:4.5
+    required: true
+  - name: CONSOLE_BRANDING
+    value: openshift
+    required: true
+  - name: ROLE
+    description: >-
+      Role to assign to bookbag service account. Default, 'basic-user'.
+      Ex: admin, edit, view
+    required: true
+    value: edit
 
 objects:
-  - apiVersion: v1
-    kind: ServiceAccount
-    metadata:
-      labels:
-        app: ${NAME}
-      name: ${NAME}
-
-  - apiVersion: v1
-    kind: RoleBinding
-    metadata:
-      labels:
-        app: ${NAME}
-      name: ${NAME}
-    roleRef:
-      name: admin
-    subjects:
-    - kind: ServiceAccount
-      name: ${NAME}
-
   - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     metadata:
@@ -88,32 +76,14 @@ objects:
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           serviceAccountName: ${NAME}
-          volumes:
-            - name: envvars
-              configMap:
-                defaultMode: 0644
-                name: ${NAME}-env
-            - name: shared
-              emptyDir: {}
           initContainers:
             - name: setup-console
+              image: ${IMAGE}
               command:
                 - /opt/workshop/bin/setup-console.sh
-              env:
-                - name: CLUSTER_SUBDOMAIN
-                - name: OPENSHIFT_PROJECT
-                - name: OPENSHIFT_USERNAME
-                - name: OPENSHIFT_PASSWORD
-                - name: OPENSHIFT_TOKEN
-                - name: OC_VERSION
-                - name: ODO_VERSION
-                - name: KUBECTL_VERSION
-              image: ${IMAGE}
-              imagePullPolicy: IfNotPresent
-              resources: {}
               volumeMounts:
-                - mountPath: /var/run/workshop
-                  name: shared
+                - name: shared
+                  mountPath: /var/run/workshop
           containers:
             - name: terminal
               env:
@@ -124,29 +94,29 @@ objects:
                 - name: AUTH_PASSWORD
                   value: ${AUTH_PASSWORD}
                 - name: CLUSTER_SUBDOMAIN
+                - name: CONSOLE_URL
+                  value: http://0.0.0.0:10083
                 - name: OAUTH_SERVICE_ACCOUNT
                   value: ${NAME}
                 - name: DOWNLOAD_URL
                 - name: WORKSHOP_FILE
-                - name: CONSOLE_URL
-                  value: ""
                 - name: OC_VERSION
                 - name: ODO_VERSION
                 - name: KUBECTL_VERSION
                 - name: WORKSHOP_VARS
                   value: ${WORKSHOP_VARS}
-              image: ${IMAGE}
+              image: ${WORKSHOP_IMAGE}
               imagePullPolicy: IfNotPresent
               ports:
                 - containerPort: 10080
                   protocol: TCP
               resources: {}
               volumeMounts:
-                - mountPath: /opt/workshop/envvars
-                  name: envvars
-                - mountPath: /var/run/workshop
-                  name: shared
+                - name: shared
+                  mountPath: /var/run/workshop
+
             - name: console
+              image: ${CONSOLE_IMAGE}
               command:
                 - /var/run/workshop/start-console.sh
               env:
@@ -161,13 +131,32 @@ objects:
                 - name: BRIDGE_USER_AUTH
                   value: disabled
                 - name: BRIDGE_BRANDING
-                  value: openshift
-              image: ${OPENSHIFT_CONSOLE_IMAGE}
-              imagePullPolicy: IfNotPresent
-              resources: {}
+                  value: ${CONSOLE_BRANDING}
               volumeMounts:
-                - mountPath: /var/run/workshop
-                  name: shared
+                - name: shared
+                  mountPath: /var/run/workshop
+          volumes:
+            - name: shared
+              emptyDir: {}
+
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: ${NAME}
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: ${ROLE}
+    subjects:
+    - kind: ServiceAccount
+      name: ${NAME}
 
   - apiVersion: v1
     kind: Service
@@ -192,20 +181,11 @@ objects:
         app: ${NAME}
       name: ${NAME}
     spec:
-      host: ${ROUTEHOST}
       port:
         targetPort: 10080-tcp
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
       to:
         kind: Service
         name: ${NAME}
-
-  - apiVersion: v1
-    data:
-      gateway.sh: ""
-      terminal.sh: ""
-      workshop.sh: ""
-    kind: ConfigMap
-    metadata:
-      labels:
-        app: ${NAME}
-      name: ${NAME}-env
