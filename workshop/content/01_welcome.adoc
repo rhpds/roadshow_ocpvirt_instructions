@@ -1,32 +1,14 @@
 :preinstall_operators: %preinstall_operators%
 
-== Welcome to the Lab
+== Welcome to the Red Hat OpenShift Virtualization Roadshow
 
-This *OpenShift Virtualization Roadshow* is organized in the following sections:
+Today you will learn how to use *Red Hat OpenShift Virtualization* to run your Virtual Machines. This includes creating VMs, managing your VMs, attaching the VMs to physical networks and finally migrating VMs from an existing *VMware vCenter* environment to Red Hat OpenShift Virtualization.
 
-* *Review environment*: This section reviews the *OpenShift* installation to be used for the following labs. It includes basic  concepts for people who is new to *OpenShift*.
+The *Red Hat OpenShift Virtualization Roadshow* is organized in the following sections:
 
-
-ifeval::["{preinstall_operators}" == "True"]
-* *OpenShift Virtualization basics*: In this section you will review the *OpenShift Virtualization* operator. This lab covers the basics and the required concepts needed to run simple *Virtual Machines*.
-endif::[]
-
-ifeval::["{preinstall_operators}" == "False"]
-* *OpenShift Virtualization basics*: In this section you will perform the installation of the *OpenShift Virtualization* operator. This lab covers the basics and the required concepts needed to run simple *Virtual Machines*.
-endif::[]
-
-
-* *Virtual Machine Customization*: One of the most important concepts running *Virtual Machines* is to run VMs from an existing disk and the possibility to customize them.
-* *Pod Review and Virtual Machine Management*: A *Virtual Machine* is associated to a *Pod*, this section reviews how internally the VMs are running and how to migrate VMs between nodes.
-* *Network Attachment*: *Virtual Machines* by default are running in the *Pod networking*. For several use cases is required to run the VMs attached to a physical network, this section will demonstrate how to configure *OpenShift* for that purpose.
-* *Storage Management*: This module will introduce you to the basics of the storage on *OpenShift* and how *OpenShift Virtualization* automatically provides boot sources. As well this module will show how to perform operations with snapshots and how to clone Virtual Machines..
-* *Migrating Virtual Machines*: In this section several migration from different providers will be performed. Using the operator *Migration Toolkit Virtualization* (*MTV*) migration from *VMWare vCenter* will be performed. 
-
-ifeval::["{preinstall_operators}" == "True"]
-* *MetalLB*: Using baremetal on-premise environment entails challenge to provide external access to the applications running on VMs. Using *MetalLB* will solve that challenge.
-
-endif::[]
-
-ifeval::["{preinstall_operators}" == "False"]
-* *MetalLB*: Using baremetal on-premise environment entails challenge to provide external access to the applications running on VMs. Using *MetalLB* will solve that challenge. This module will show how to install and configure this operator.
-endif::[]
+* *Review environment*: This section reviews the *OpenShift* installation to be used for the following labs.
+* *Virtual Machine Customization*: One of the most important concepts running *Virtual Machines* is to run VMs from an existing disk image and the possibility to customize the VMs.
+* *Virtual Machine Management*: This section reviews some VM customizeion options how to live migrate VMs between servers.
+* *Network Attachment*: *Virtual Machines* by default are running in the OpenShift inernal *Pod network*. This section will demonstrate how to connect VMs to a *physical network*.
+* *Storage Management*: This module will introduce you to the basics of the storage on *OpenShift* and how *OpenShift Virtualization* automatically provides boot sources. As well this module will show how to perform operations with snapshots and how to clone Virtual Machines.
+* *Migrating Virtual Machines*: In this section you will migrate a few VMs from *VMWare vCenter* to *OpenShift Virtualization*.

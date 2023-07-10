@@ -1,6 +1,5 @@
 :scrollbar:
 :toc2:
-:preinstall_operators: %preinstall_operators%
 
 = Network Management Lab
 
@@ -8,109 +7,27 @@
 
 == Introduction to Network Management
 
-By default, the virtual machines (VMs) are attached to Pod networking, enabling access from Pods and other VMs.
+By default, all virtual machines are attached to OpenShift Pod networking, enabling access from any other workload on the OpenShift cluster. This includes other VMs and any OpenShift native applications.
 
-In this lab, you connect a VM to a physical network so that it is accessible outside the cluster of Red Hat^(R)^ OpenShift^(R)^ Container Platform.
+// WKTBD: Maybe add some NetworkPolicy (there is a web console wizard available now in 4.13).
+
+In this lab, you connect a VM to a physical network so that it is accessible outside the Red Hat^(R)^ OpenShift^(R)^ Container Platform environment. Your OpenShift environment has alreay been configured with a Linux Bridge on each worker node that your virtual machines can connect to thus allowing for easy connectivy with/from outside network resources.
 
 .Goals
-* Create a Linux^(R)^ Bridge on worker nodes
 * Create a network attachment definition
 
-ifeval::["{preinstall_operators}" == "False"]
-
-
-== Install NMstate operator
-
-The Kubernetes NMState Operator provides a Kubernetes API for performing state-driven network configuration across the OpenShift Container Platform cluster’s nodes with NMState. The Kubernetes NMState Operator provides users with functionality to configure various network interface types, DNS, and routing on cluster nodes. Additionally, the daemons on the cluster nodes periodically report on the state of each node’s network interfaces to the API server.
-
-. Navigate to *Operators* -> *OperatorHub* and filter for `nmstate`
-+
-image::images/Networking/00_OperatorHub.png[]
-. Press on the tile and perform the installation pressing *Install*
-+
-image::images/Networking/00_Operator_Install.png[]
-. Review default options and press *Install*
-+
-image::images/Networking/00_Operator_Install2.png[]
-
-. After installation, press *View Operator* 
-+
-image::images/Networking/00_Operator_Installed.png[]
-
-. Create a new instance for the *NMState* pressing `Create instance`
-+
-image::images/Networking/00_Operator_Create_Instance.png[]
-
-. Review the options available and press *Create* without modify any.
-+
-image::images/Networking/00_Operator_Create_Instance_Wizard.png[]
-
-endif::[]
-
-== Create Linux Bridge on Worker Nodes
-
-Worker nodes have an extra network interface that is connected to a physical network.
-To configure the physical network, you need to create a new custom resource whose _kind_ is `NodeNetworkConfigurationPolicy`.
-
-. In the OpenShift Container Platform web console, navigate to *Administration* -> *CustomResourceDefinitions*:
-+
-image::images/Networking/10_CustomResourceDefinitions.png[]
-
-. In the *Search by name* field, type `NodeNetworkConfigurationPolicy`:
-+
-image::images/Networking/11_NodeNetworkConfigurationPol.png[]
-
-. Click `NodeNetworkConfigurationPolicy` and navigate to the *Instances* tab:
-+
-image::images/Networking/12_nodenetworkconfigurationpolicies.png[]
-
-. Click *Create NodeNetworkConfigurationPolicy*:
-+
-image::images/Networking/13_Create_NNCP.png[]
-
-. Copy and paste the following content into the editor:
-+
-[source,yaml]
-----
-apiVersion: nmstate.io/v1
-kind: NodeNetworkConfigurationPolicy
-metadata:
-  name: br-flat
-spec:
-  nodeSelector:
-    node-role.kubernetes.io/worker: ""
-  desiredState:
-    interfaces:
-      - name: br-flat
-        description: Linux bridge with enp3s0 as a port
-        type: linux-bridge
-        state: up
-        ipv4:
-          dhcp: false
-          enabled: false
-        bridge:
-          options:
-            stp:
-              enabled: false
-          port:
-            - name: enp3s0
-----
-+
-This configuration uses the `enp3s0` interface on the Worker Nodes to create a Linux Bridge called `br-flat`.
-
-. Click *Create*.
-
-. Watch the *Conditions* section until the *Available* status changes to `True`:
-+
-image::images/Networking/14_Status_NNCP.png[]
-
 == Create Network Attachment Definition
+
+In order to use the Linux Bridge with your VM you need to create a *Network Attachment Definition* and then associate that definition with your VM.
 
 . Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
 +
 image::images/Networking/01_NAD_Dashboard.png[]
-
-. IMPORTANT: Select project `vmexamples`
++
+[IMPORTANT]
+====
+Select project `vmexamples`.
+====
 
 . Complete the form for the `vmexamples` project as follows, then click *Create network attachment definition*:
 * *Name*: `flatnetwork`
@@ -140,6 +57,8 @@ image::images/Networking/06_VM_Network_Console.png[]
 +
 The `eth1` interface obtains an IP address from the flat network (192.168.3.x/24). That network has a DHCP server providing IPs to that network.
 
+// WKTBD: How do we show this if we don't have the console tab in the bookbag?
+////
 . Using the available console in the right part, you can confirm you have direct access to the VM through a flat network
 +
 [%nowrap]
@@ -156,8 +75,7 @@ Replace the IP which the IP assigned to the node.
 ----
 SSH-2.0-OpenSSH_8.7     
 ----
-
-
+////
 
 == Summary
 
