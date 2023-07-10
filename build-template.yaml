@@ -18,7 +18,7 @@ parameters:
     required: true
     value: quay.io/openshifthomeroom/workshop-dashboard:5.0.0
   - name: GIT_REPO
-    value: https://github.com/redhat-gpte-devopsautomation/bookbag-template.git
+    value: https://github.com/agonzalezrh/roadshow_ocpvirt_instructions
 
 objects:
   - apiVersion: image.openshift.io/v1
