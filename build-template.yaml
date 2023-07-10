@@ -5,7 +5,7 @@ message: |
 
 metadata:
   annotations:
-    openshift.io/display-name: Bookbag
+    openshift.io/display-name: Bookbag Build
     tags: gpte
     template.openshift.io/bindable: "false"
   name: bookbag-build
@@ -13,12 +13,12 @@ metadata:
 parameters:
   - name: NAME
     required: true
-    value: bookbag-demo
+    value: bookbag
   - name: BUILDER_IMAGE
     required: true
     value: quay.io/openshifthomeroom/workshop-dashboard:5.0.0
   - name: GIT_REPO
-    value: https://github.com/redhat-gpte-labs/bookbag-demo.git
+    value: https://github.com/redhat-gpte-devopsautomation/bookbag-template.git
 
 objects:
   - apiVersion: image.openshift.io/v1
@@ -41,10 +41,9 @@ objects:
           uri: ${GIT_REPO}
         type: Git
       strategy:
-        dockerStrategy:
+        sourceStrategy:
           from:
             kind: DockerImage
             name: ${BUILDER_IMAGE}
         type: Source
-      # Manually trigger builds.
       triggers: []

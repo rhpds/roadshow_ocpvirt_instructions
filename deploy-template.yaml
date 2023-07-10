@@ -2,7 +2,7 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 message: |
-  Created ${NAME} DeploymentConfig, ServiceAccount, Service, and Route
+  Created ${NAME} DeploymentConfig, ServiceAccount, Role, Service, and Route
 
 metadata:
   annotations:
@@ -30,7 +30,7 @@ parameters:
   - name: AUTH_PASSWORD
     value: ''
   - name: CONSOLE_IMAGE
-    value: quay.io/openshift/origin-console:4.5
+    value: quay.io/openshift/origin-console:4.13
     required: true
   - name: CONSOLE_BRANDING
     value: openshift
@@ -105,7 +105,7 @@ objects:
                 - name: KUBECTL_VERSION
                 - name: WORKSHOP_VARS
                   value: ${WORKSHOP_VARS}
-              image: ${WORKSHOP_IMAGE}
+              image: ${IMAGE}
               imagePullPolicy: IfNotPresent
               ports:
                 - containerPort: 10080
