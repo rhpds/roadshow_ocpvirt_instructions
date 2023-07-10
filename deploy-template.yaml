@@ -105,6 +105,8 @@ objects:
                 - name: KUBECTL_VERSION
                 - name: WORKSHOP_VARS
                   value: ${WORKSHOP_VARS}
+                - name: WORKSHOP_ONLY
+                  value: true
               image: ${IMAGE}
               imagePullPolicy: IfNotPresent
               ports:
@@ -183,9 +185,6 @@ objects:
     spec:
       port:
         targetPort: 10080-tcp
-      tls:
-        insecureEdgeTerminationPolicy: Redirect
-        termination: edge
       to:
         kind: Service
         name: ${NAME}
