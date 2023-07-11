@@ -106,7 +106,7 @@ objects:
                 - name: WORKSHOP_VARS
                   value: ${WORKSHOP_VARS}
                 - name: WORKSHOP_ONLY
-                  value: true
+                  value: "true"
               image: ${IMAGE}
               imagePullPolicy: IfNotPresent
               ports:
