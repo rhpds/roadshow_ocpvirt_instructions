@@ -22,7 +22,7 @@ In this section you will explore the Red Hat OpenShift Container Platform enviro
 Almost every interaction with Red Hat OpenShift Container Platform can be done in the OpenShift Console. The console is a full featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system - and in our case create and managed virtual machines.
 
 // WKTBD: Replace with actual password from variable
-. Navigate to %ocp_url% and login with user `admin` and the password that you received from your host.
+. Navigate to %ocp_url% and login with user `admin` and the password `%ocp_password%`.
 
 . From the navigation menu, select *Compute* -> *Nodes*:
 +

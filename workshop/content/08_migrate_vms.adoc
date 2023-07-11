@@ -69,7 +69,7 @@ You will migrate three of the four virtual machines - you will not need to migra
 . Navigate to link:https://portal.vc.opentlc.com/ui/app/folder;nav=v/urn:vmomi:Folder:group-v16081:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[https://portal.vc.opentlc.com^]
 
 // WKTBD: replace with student's credentials
-. Login with the user `ocpvirtroadshow@vc.opentlc.com` and the password `%vcenter_password%`
+. Login with the user `%vcenter_user%@vc.opentlc.com` and the password `%vcenter_password%`
 
 . Review the existing VMs
 +
@@ -109,9 +109,9 @@ image::images/MTV/93_MTV_Create_Provider.png[]
 . Select *VMware* on the *Provider type* dropdown and fill the following data:
 .. *Name*: `vmware`
 .. *vCenter host name or IP address*: `portal.vc.opentlc.com`
-.. *vCenter user name*: `ocpvirtroadshow@vc.opentlc.com`
+.. *vCenter user name*: `%vcenter_user%`
 .. *vCenter password*: `%vcenter_password%`
-.. *VDDK init image*: `image-registry.openshift-image-registry.svc:5000/vmexamples/vddk:latest`
+.. *VDDK init image*: `image-registry.openshift-image-registry.svc:5000/openshift/vddk:latest`
 .. Check `Skip certificate validation (if checked, the provider's certificate won't be validated)`
 .. *SHA-1 fingerprint*: `70:2D:52:D2:D1:A5:A2:75:58:8F:3D:07:D5:7E:E9:73:81:BC:88:A2`
 +
