@@ -66,7 +66,7 @@ You will migrate three of the four virtual machines - you will not need to migra
 === Review VMware environment
 
 // WKTBD: Replace with link to student's individual account
-. Navigate to link:https://portal.vc.opentlc.com/ui/app/folder;nav=v/urn:vmomi:Folder:group-v16081:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[https://portal.vc.opentlc.com^]
+. Navigate to link:https://portal.vc.opentlc.com/ui/app/folder;nav=v/urn:vmomi:Folder:group-d1:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[https://portal.vc.opentlc.com^]
 
 // WKTBD: replace with student's credentials
 . Login with the user `%vcenter_user%@vc.opentlc.com` and the password `%vcenter_password%`
