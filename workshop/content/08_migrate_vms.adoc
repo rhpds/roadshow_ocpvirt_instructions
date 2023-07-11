@@ -109,7 +109,7 @@ image::images/MTV/93_MTV_Create_Provider.png[]
 . Select *VMware* on the *Provider type* dropdown and fill the following data:
 .. *Name*: `vmware`
 .. *vCenter host name or IP address*: `portal.vc.opentlc.com`
-.. *vCenter user name*: `%vcenter_user%`
+.. *vCenter user name*: `%vcenter_user%@vc.opentlc.com`
 .. *vCenter password*: `%vcenter_password%`
 .. *VDDK init image*: `image-registry.openshift-image-registry.svc:5000/openshift/vddk:latest`
 .. Check `Skip certificate validation (if checked, the provider's certificate won't be validated)`
