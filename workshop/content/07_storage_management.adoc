@@ -91,10 +91,10 @@ You can create and delete virtual machine (VM) `snapshots` for VMs, whether the 
 
 With the VM snapshots feature, cluster administrators and application developers can:
 
-. Create a new snapshot
-. List all snapshots attached to a specific VM
-. Restore a VM from a snapshot
-. Delete an existing VM snapshot
+* Create a new snapshot
+* List all snapshots attached to a specific VM
+* Restore a VM from a snapshot
+* Delete an existing VM snapshot
 
 === Operate with Snapshots
 

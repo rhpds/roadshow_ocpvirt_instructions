@@ -112,7 +112,6 @@ image::images/MTV/93_MTV_Create_Provider.png[]
 .. *vCenter user name*: `%vcenter_user%@vc.opentlc.com`
 .. *vCenter password*: `%vcenter_password%`
 .. *VDDK init image*: `image-registry.openshift-image-registry.svc:5000/openshift/vddk:latest`
-.. Check `Skip certificate validation (if checked, the provider's certificate won't be validated)`
 .. *SHA-1 fingerprint*: `70:2D:52:D2:D1:A5:A2:75:58:8F:3D:07:D5:7E:E9:73:81:BC:88:A2`
 +
 image::images/MTV/94_MTV_Fill_Dialog.png[]
@@ -182,7 +181,7 @@ image::images/MTV/52_General_VMWARE_Plan.png[]
 . On the next step, select `All datacenters`  and press *Next*
 +
 image::images/MTV/53_VM_Filter_VMWARE_Plan.png[]
-. On the next step select the VMs `winweb01`, `winweb02` and `database`. Press *Next*:
+. On the next step select  all the VMs. Press *Next*:
 +
 image::images/MTV/54_VM_Select_VMWARE_Plan.png[]
 

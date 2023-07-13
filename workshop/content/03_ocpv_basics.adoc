@@ -20,9 +20,9 @@ In this lab, you become familiar with running virtual machines (VMs) on Red Hat^
 
 === Overview
 
-OpenShift Virtualization includes an overview dashboard to review the status and he inventory information.
+OpenShift Virtualization includes an overview dashboard to review the status and the inventory information.
 
-. From the left menu, navigate to *Virtualization* -> *Overview*:
+From the left menu, navigate to *Virtualization* -> *Overview*:
 +
 image::images/Create_VM_PVC/00_Overview.png[]
 
@@ -62,7 +62,7 @@ image::images/Create_VM_PVC/05_Create_VM_Quick.png[]
 image::images/Create_VM_PVC/05_Create_VM_Quick_Name.png[]
 
 +
-. After a few seconds, expect to see that the VM is `Running`.
+. After a few seconds, expect to see the VM is `Running`.
 +
 image::images/Create_VM_PVC/06_Fedora_Running.png[]
 
@@ -180,7 +180,8 @@ image::images/Create_VM_PVC/29_Windows_2k9_Parameters.png[]
 . In this dialog:
 .. Specify the name `windows`
 .. Enable the checkbox *Boot from CD* and specify the url: http://192.168.123.100:81/Windows2019.iso
-. Reduce the disk size to *5 GiB*.
+. Reduce the CD disk size to *5 GiB*.
+. Keep the `Disk source`` size disk to default value *60 GiB*
 . Ensure the `Mount Windows drivers disk` is enabled. This is required to install Windows systems, which will provide the drivers for VirtIO.
 
 . Press *Next* after filling the parameters.
