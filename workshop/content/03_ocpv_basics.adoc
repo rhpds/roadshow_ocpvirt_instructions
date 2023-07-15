@@ -23,7 +23,7 @@ In this lab, you become familiar with running virtual machines (VMs) on Red Hat^
 OpenShift Virtualization includes an overview dashboard to review the status and the inventory information.
 
 From the left menu, navigate to *Virtualization* -> *Overview*:
-+
+
 image::images/Create_VM_PVC/00_Overview.png[]
 
 === Create a Linux Virtual Machine
