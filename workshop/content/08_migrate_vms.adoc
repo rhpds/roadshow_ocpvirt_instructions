@@ -90,7 +90,7 @@ image::images/MTV/102_vSphere_Datastore.png[]
 
 The *Migration Toolkit for Virtualization* (*MTV*) uses the VMware Virtual Disk Development Kit (*VDDK*) SDK to transfer virtual disks from VMware vSphere. This VDDK has already been set up for you in this environment.
 
-But you do need to register your VMware system to the Mitration Toolkit for Virtualizations as a new provider.
+But you do need to register your VMware system to the Migration Toolkit for Virtualization as a new provider.
 
 . Navigate in the left menu to *Migration* -> *Providers for virtualization*
 . Select project `openshift-mtv`
@@ -123,7 +123,7 @@ Now MTV knows about your VMware vSphere environment and can connect to it.
 
 === Create Storage and Network Mapping
 
-Storage and Networking are handled slightly differently in VMware vSphere and Red Hat OpenShift Container Platform. Therefore it is necesssary to create a (simple) mapping from the environments in VMware vSphere to what's available in OpenShift. This mapping will then be used to translate the VMware vSphere network and storage definitions to OpenShift network and storage definitions.
+Storage and Networking are handled slightly differently in VMware vSphere and Red Hat OpenShift Container Platform. Therefore it is necessary to create a (simple) mapping from the environments in VMware vSphere to what's available in OpenShift. This mapping will then be used to translate the VMware vSphere network and storage definitions to OpenShift network and storage definitions.
 
 Usually you have to set up the mappings just once and then reuse these mappings for subsequent VM Migration Plans.
 
@@ -208,19 +208,19 @@ image::images/MTV/59_Completed_VMWARE_Plan.png[]
 +
 [IMPORTANT]
 ====
-Having many participantes doing the same task in parallel can cause this task would be slowest than in a real environment. Be patient.
+Having many participants performing the same task in parallel can cause this task perform slower than in a real environment. Please be patient.
 ====
 
 === Review and configure migrated Virtual Machines
 
-Your VMs have now been migrated and could be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would have in VMware vCenter.
+Your VMs have now been migrated and can be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would have in VMware vCenter.
 
-However the VMs are not connected to each other yet - this is because networking works a little bit different in OpenShift Container Platform.
+However the VMs are not connected to each other yet - this is because networking works a little bit differently in OpenShift Container Platform.
 
-A load balancer on OpenShift is called a *Service*. You will create this service shortly. But the service selects the recipients of the traffic that it load balances via so called label selectors. Now your VMs do not have that label yet.
+A load balancer on OpenShift is called a *Service*. You will create this service shortly. But the service selects the recipients of the traffic that it load balances via so-called label selectors. Currently your VMs do not have a label assigned yet.
 
-So in order to connect your VMs you need to do the following:
-* Add a label to your VMs (same label to both Windows IIS servers because they are both behind the same load balancer)
+In order to connect your VMs you need to do the following:
+* Add a label to your VMs (same label to both Windows IIS servers because they are both behind the same load balancer).
 * Create the service to make the two Windows IIS servers available for other workloads on the cluster.
 * Make the service available outside of OpenShift (by creating what's called a *Route*).
 
@@ -234,7 +234,7 @@ image::images/MTV/60_VMWARE_VMs_List.png[]
 Ensure you select the project `vmexamples`
 ====
 
-. Access to the `winweb01` and navigate to the *YAML* tab
+. Access to the `winweb01` and navigate to the *YAML* tab.
 . Find the `spec:` section and under the `template.metadata` add the following lines to label the VM resources:
 +
 [%nowrap]
@@ -294,7 +294,7 @@ image::images/MTV/63_VMWARE_VMs_Create_Route.png[]
 +
 image::images/MTV/64_VMWARE_VMs_URL.png[]
 
-. You see an error. This is because the Windows web servers are not able to resolve the internal name `database` to connect to the database VM.
+. When the page loads you will see an error. This is because the Windows web servers are not able to resolve the internal name `database` to connect to the database VM.
 +
 It's rather easy to fix this connectivity issue. You just need to create another service in front of the database VM to make the database available within the OpenShift cluster. Note that because this database does *not* need to be (or even should not be) accessible from outside of the OpenShift environment you do not need to create a route for this service.
 

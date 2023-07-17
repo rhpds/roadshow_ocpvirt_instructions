@@ -5,7 +5,7 @@
 
 :numbered:
 
-This lab will introduce you to the basics of creating VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and even do some light customizations. In the next lab you will customize the VMs a little bit further.
+This lab will introduce you to the basics of creating VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and even do some light customization. In the next lab you will customize the VMs a little bit further.
 
 You will also see how easy it is to create both Linux (Fedora) and Windows (Server) VMs right from the OpenShift Console.
 
@@ -23,7 +23,7 @@ In this lab, you become familiar with running virtual machines (VMs) on Red Hat^
 OpenShift Virtualization includes an overview dashboard to review the status and the inventory information.
 
 From the left menu, navigate to *Virtualization* -> *Overview*:
-
++
 image::images/Create_VM_PVC/00_Overview.png[]
 
 === Create a Linux Virtual Machine
@@ -37,7 +37,7 @@ image::images/Create_VM_PVC/01_Left_Menu.png[]
 The *Virtualization* tab is available only when Red Hat OpenShift Virtualization is installed and properly configured.
 ====
 
-. Examine the *Virtual Machines* dashboard that appears, currently empty because no VMs exists:
+. Examine the *VirtualMachines* dashboard that appears, currently empty because no VMs exists:
 +
 image::images/Create_VM_PVC/02_OCP_Virt_Dashboard.png[]
 
@@ -47,7 +47,7 @@ image::images/Create_VM_PVC/02_OCP_Virt_Dashboard.png[]
 +
 image::images/Create_VM_PVC/03_Create_Project.png[]
 
-. Click *Create VirtualMachine*, and expect a dashboard to appear showing the available pre-defined templates:
+. Click *Create VirtualMachine*, and a dashboard will appear showing the available pre-defined VM templates:
 +
 image::images/Create_VM_PVC/04_Create_VM_Templates.png[]
 +
@@ -93,19 +93,19 @@ image::images/Create_VM_PVC/14_Fedora_Console_Show_Password.png[]
 You can click on `Paste` to paste the password after copy it.
 +
 [IMPORTANT]
-If the `Paste` functionality is not working, take in consideration that the console input is using US keymap. One small trick is to write in the login the password to ensure you are writing the prope characters (specially the `-` is correct).
+If the `Paste` functionality is not working, take in consideration that the console input is using US keymap. One small trick is to write in the login the password to ensure you are writing the proper characters (specifically that the `-` character is correct).
 
 . After you log in, run the `ip a` command to display the interfaces and IP addresses:
 +
 image::images/Create_VM_PVC/15_Fedora_Network.png[]
 +
-The IP address assigned is an internal IP address used by the _KVM hypervisor_ and is not the accessible IP.
+The IP address assigned is an internal IP address used by the _KVM hypervisor_ and is not an externally accessible IP.
 
 . Run `lsblk` to display the list of disks and their capacities and free space:
 +
 image::images/Create_VM_PVC/16_Fedora_Disk.png[]
 +
-* `/dev/vda` is the disk created during the VM creation and the size specified at creation time.
+* `/dev/vda` is the disk created during the VM creation and is the size specified at creation time.
 * `/dev/vdb` is used for `cloud-init` required data (for example, to configure the `fedora` user password).
 
 . Examine the number of CPUs and amount of memory associated with the VM (which match the `flavor` specified during creation), using the `nproc` and `free -m` commands:
@@ -128,7 +128,7 @@ image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 * Active users
 * Utilization: CPU, Memory, Storage and Network.
 
-. You can navigate to the tab *Metrics* to obtain more information about the usage, being able to specify the time rage.
+. You can navigate to the tab *Metrics* to obtain more information about the usage, including being able to specify the time rage.
 +
 image::images/Create_VM_PVC/19_Fedora_Metrics.png[]
 
@@ -139,8 +139,8 @@ The tab *Configuration* it is the entry point to obtain information about the re
 * *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction.
 * *Environment*: It is possible attach _ConfigMaps_, _Secrets_ and _Service Accounts_ as extra disks.
 * *Network interfaces*: It shows the current network interfaces configured for the VM and add new ones.
-* *Disks*: It lists the disks attached to the system and allows to add new disks to the system. if the guest is configured with the agent, it lists the filesystems and the utilization.
-* *Scripts*: It allows to configure _Cloud Init_, setting the commands to be executed in the first boot, the injection of SSH keys and netwrk configuration.
+* *Disks*: It lists the disks attached to the system and allows to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization.
+* *Scripts*: It allows us to configure _Cloud Init_, setting the commands to be executed on the first boot such as the injection of SSH keys, installation of applications, and network configuration.
 
 . Examine the network interfaces attached to the VM clicking on the subtab *Network interfaces:
 +
@@ -341,7 +341,7 @@ image::images/Create_VM_PVC/30_Windows_2k9_Sysprep.png[]
 +
 image::images/Create_VM_PVC/31_Windows_2k9_Create.png[]
 
-. The Virtual Machine will start the provisioning, downloading the ISO image, and starting the instance.
+. The Virtual Machine will start the provisioning process by downloading the ISO image, configuring, and starting the instance.
 +
 image::images/Create_VM_PVC/32_Windows_2k9_Provisioning.png[]
 
@@ -350,15 +350,15 @@ image::images/Create_VM_PVC/32_Windows_2k9_Provisioning.png[]
 image::images/Create_VM_PVC/33_Windows_2k9_Console.png[]
 +
 [NOTE]
-It is not needed for this workshop to wait for the installation. You can continue to the next module.
+It is not needed for this workshop to wait for the installation to complete. You can continue to the next module.
 +
 [IMPORTANT]
 The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
 
 == Summary
 
-In this lab, you have created a VM using a pre-configured PVC provided by the OpenShift Virtualization. You then explored the VM properties and connected to your VM using the built in console.
+In this lab, you have created a VM using a pre-configured PVC provided by the OpenShift Virtualization. You then explored the VM properties and connected to your VM using the built-in console.
 
 You then created a new Windows VM using a ISO disk image from a location on the network.
 
-You may continue to the next lab, _Virtual Machine Customization Lab_, where you will customize the VM during creation and you will manage the VM.
+You may continue to the next lab, _Virtual Machine Customization Lab_, where you will customize the VM during creation and you will be able to manage the VM.

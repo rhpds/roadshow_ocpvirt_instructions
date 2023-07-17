@@ -58,7 +58,7 @@ image::images/Pods_Migration/17_VM_Info_Node.png[]
 +
 image::images/Pods_Migration/19_VM_Dialog_Migrate.png[]
 
-. The VM will change the status to `Migrating`. After some seconds ensure it was moved correctly (check that the worker node name has changed)
+. The VM will change the status to `Migrating`. After some seconds you can ensure it was moved correctly by checking that the worker node name has changed.
 +
 image::images/Pods_Migration/21_Migrated.png[]
 
@@ -67,7 +67,7 @@ image::images/Pods_Migration/21_Migrated.png[]
 
 === Resize a Virtual Machine
 
-It is possible to change the resources, CPU and Memory, associated to a _Virtual Machine_ after it is created. 
+It is possible to change the resources such as CPU and Memory associated to a _Virtual Machine_ after it is created. 
 
 . In the *Details* tab press in the configuration under `CPU | Memory`
 +
@@ -84,7 +84,8 @@ image::images/Pods_Migration/36_VM_Resources_Dialog.png[]
 image::images/Pods_Migration/37_VM_Resources_Warning.png[]
 
 . Using the *Actions* menu, press *Restart* to reboot the instance.
-////
+
+
 
 == Summary
 

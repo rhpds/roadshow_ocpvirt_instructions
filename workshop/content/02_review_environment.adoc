@@ -19,7 +19,7 @@ In this section you will explore the Red Hat OpenShift Container Platform enviro
 
 === Review Nodes and Machines
 
-Almost every interaction with Red Hat OpenShift Container Platform can be done in the OpenShift Console. The console is a full featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system - and in our case create and managed virtual machines.
+Almost every interaction with Red Hat OpenShift Container Platform can be done in the OpenShift Console. The console is a full featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system - and in our case create and manage virtual machines.
 
 // WKTBD: Replace with actual password from variable
 . Navigate to %ocp_url% and login with user `admin` and the password `%ocp_password%`.
@@ -28,11 +28,11 @@ Almost every interaction with Red Hat OpenShift Container Platform can be done i
 +
 image::images/Install/Compute_Nodes.png[]
 +
-There are three control planes and three workers in the OpenShift 4 Cluster. In addition, the `ipmi` (Intelligent Platform Management Interface) is being used to manage the bare-metal nodes.
+There are three control plane nodes and three worker nodes in the OpenShift 4 Cluster. In addition, the `ipmi` (Intelligent Platform Management Interface) is being used to manage the bare metal nodes.
 +
-A node is a virtual or bare-metal machine in an OpenShift cluster. Worker nodes host your application containers, grouped as pods. The control plane nodes run services that are required to control the OpenShift cluster.
+A node is a virtual or bare metal machine in an OpenShift cluster. Worker nodes host your application containers, grouped as pods. The control plane nodes run services that are required to control the OpenShift cluster.
 
-. Click in one of the worker nodes to obtain resource information about the node:
+. Click on one of the worker nodes to obtain resource information about the node:
 +
 image::images/Install/Worker0_Information.png[]
 +
@@ -50,13 +50,13 @@ When using `Baseboard Management Console (BMC)` it is possible to manage the nod
 +
 image::images/Install/BMHosts.png[]
 +
-During the installation the *Control Plane* nodes are provisioned (that is why the status is `Externally privioned`) and when the cluster is ready, the *Worker* nodes are provisioned (status `Provisioned`). It is possible scale up easily the cluster with new hosts through the button *Add Host*.
+During the installation the *Control Plane* nodes are provisioned (that is why the status is `Externally privioned`) and when the cluster is ready, the *Worker* nodes are provisioned (status `Provisioned`). It is possible to easily scale up the cluster with new hosts through the button *Add Host*.
 
-. Click in any of the worker nodes to obtain information about the physical (bare-metal) node:
+. Click on any of the worker nodes to obtain information about the physical (bare metal) node:
 +
 image::images/Install/Worker0_BMhost.png[]
 +
-The information shown is simillar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the baremetal node. Using the *Actions* menu is possible to operate with the baremetal host, being possible to restart or stop the system using `BMC`.
+The information shown is similar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the bare metal node. Using the *Actions* menu is possible to operate with the bare metal host, being possible to restart or stop the system using `BMC`.
 
 == Summary
 

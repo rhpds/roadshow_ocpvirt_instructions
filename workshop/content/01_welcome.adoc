@@ -2,13 +2,13 @@
 
 == Welcome to the Red Hat OpenShift Virtualization Roadshow
 
-Today you will learn how to use *Red Hat OpenShift Virtualization* to run your Virtual Machines. This includes creating VMs, managing your VMs, attaching the VMs to physical networks and finally migrating VMs from an existing *VMware vCenter* environment to Red Hat OpenShift Virtualization.
+Today you will learn how to use *Red Hat OpenShift Virtualization* to run your Virtual Machines. This includes creating VMs, managing your VMs, attaching the VMs to physical networks, and finally migrating VMs from an existing *VMware vCenter* environment to Red Hat OpenShift Virtualization.
 
 The *Red Hat OpenShift Virtualization Roadshow* is organized in the following sections:
 
-* *Review environment*: This section reviews the *OpenShift* installation to be used for the following labs.
-* *Virtual Machine Customization*: One of the most important concepts running *Virtual Machines* is to run VMs from an existing disk image and the possibility to customize the VMs.
-* *Virtual Machine Management*: This section reviews some VM customizeion options how to live migrate VMs between servers.
-* *Network Attachment*: *Virtual Machines* by default are running in the OpenShift inernal *Pod network*. This section will demonstrate how to connect VMs to a *physical network*.
-* *Storage Management*: This module will introduce you to the basics of the storage on *OpenShift* and how *OpenShift Virtualization* automatically provides boot sources. As well this module will show how to perform operations with snapshots and how to clone Virtual Machines.
-* *Migrating Virtual Machines*: In this section you will migrate a few VMs from *VMWare vCenter* to *OpenShift Virtualization*.
+* *Review environment*: This section reviews the *OpenShift* installation to be used for the each of the following labs.
+* *Virtual Machine Customization*: One of the most important concepts when running *Virtual Machines* is to run the VMs from an existing disk image and also have the possibility to customize the VMs.
+* *Virtual Machine Management*: This section reviews some VM customization options and demonstrates how to live migrate VMs between servers.
+* *Network Attachment*: *Virtual Machines* by default are running in the OpenShift internal *Pod network*. This section will demonstrate how to connect VMs to an external *physical network*.
+* *Storage Management*: This module will introduce you to the basics of the storage on *OpenShift* and how *OpenShift Virtualization* automatically provides boot sources for machine images. This module will also show how to perform operations with snapshots and how to clone *Virtual Machines*.
+* *Migrating Virtual Machines*: In this section you will use the Migration Toolkit for Virtualization (MTV) to migrate a few VMs from and exiting *VMWare vCenter* environemnt, to *OpenShift Virtualization*.

@@ -56,7 +56,7 @@ image::images/Networking/05_VM_Network_Attach.png[]
 image::images/Networking/06_VM_Network_Console.png[]
 +
 The `eth1` interface obtains an IP address from the flat network (192.168.3.x/24). That network has a DHCP server providing IPs to that network.
-
+////
 // WKTBD: How do we show this if we don't have the console tab in the bookbag?
 ////
 . Using the available console in the right part, you can confirm you have direct access to the VM through a flat network
