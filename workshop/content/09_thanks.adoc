@@ -2,4 +2,4 @@
 
 During this session you learned the basics of OpenShift Virtualization and how to create and administer Virtual Machines.
 
-You also used the Migration Toolkit for Virtualizatopn to easily move a few virtual machines from VMware vSpherer to Red Hat OpenShift Container Platform.
+You also used the Migration Toolkit for Virtualization to easily move a few virtual machines from VMware vSphere to Red Hat OpenShift Container Platform.

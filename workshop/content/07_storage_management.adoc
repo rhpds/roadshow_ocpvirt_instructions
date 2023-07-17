@@ -10,7 +10,7 @@
 OpenShift Container Platform supports multiple types of storage, both for on-premise and cloud providers. You can manage container storage for persistent and non-persistent data in an OpenShift Container Platform cluster.
 
 ////
-=== Glosarry of terms
+=== Glossary of terms
 
 *Access modes*: Volume access modes describe volume capabilities. The following are the examples of access modes:
 
@@ -23,7 +23,7 @@ OpenShift Container Platform supports multiple types of storage, both for on-pre
 
 *Dynamic Provisioning*: The framework allows you to create storage volumes on-demand, eliminating the need for cluster administrators to pre-provision persistent storage.
 
-*Ephemeral storage*: Pods and containers can require temporary or transient local storage for their operation. The lifetime of this ephemeral storage does not extend beyond the life of the individual pod, and this ephemeral storage cannot be shared across pods.
+*Ephemeral storage*: Pods and containers may require temporary or transient local storage for their operation. The lifetime of this ephemeral storage does not extend beyond the life of the individual pod, and this ephemeral storage cannot be shared across pods.
 
 *Local volumes*: A local volume represents a mounted local storage device such as a disk, partition or directory.
 
@@ -40,11 +40,11 @@ OpenShift Container Platform supports multiple types of storage, both for on-pre
 *Storage class*:A _storage class_ provides a way for administrators to describe the classes of storage they offer. Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators.
 ////
 
-== OpenShift Virtualization Operator Boot Sources
+== OpenShift Virtualization Default Boot Sources
 
 A boot source contains a bootable operating system (OS) and all of the configuration settings for the OS, such as drivers. For some operating systems, a boot source is automatically provided. If it is not provided, then an administrator must prepare a custom boot source.
 
-Red Hat provided boot sources are automatically updated to the latest version of the operating system.
+Red Hat provided boot sources are automatically updated to the latest version of the operating system available.
 
 The project `openshift-virtualization-os-images` contains all available boot sources and is automatically enabled when *OpenShift Virtualization* is installed.
 
@@ -88,6 +88,8 @@ image::images/Storage/08_List_Bootable_Volumes.png[]
 A `snapshot` represents the state and data of a _virtual machine_ (_VM_) at a specific point in time. You can use a `snapshot` to restore an existing VM to a previous state (represented by the `snapshot`) for backup and disaster recovery or to rapidly roll back to a previous development version.
 
 You can create and delete virtual machine (VM) `snapshots` for VMs, whether the VMs are powered off (offline) or on (online). You can only restore to a powered off (offline) VM.
+
+// AC - Perhaps a comment about advanced snapshot or cloning features provided by storage class and CSI drivers?
 
 With the VM snapshots feature, cluster administrators and application developers can:
 
@@ -165,4 +167,4 @@ image::images/Storage/20_VM_Cloned.png[]
 
 == Summary
 
-In this module you have learned the basics concepts of storage on OpenShift, review how OpenShift Virtualization automatically is downloading and creating boot sources. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring snapshot and cloning a Virtual Machine.
+In this module you have learned the basics concepts of storage on OpenShift, review how OpenShift Virtualization automatically is downloading and creating boot sources. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring a snapshot, and cloning a Virtual Machine.
