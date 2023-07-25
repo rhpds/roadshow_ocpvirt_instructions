@@ -9,7 +9,30 @@ This lab will introduce you to the basics of creating VMs in OpenShift Virtualiz
 
 You will also see how easy it is to create both Linux (Fedora) and Windows (Server) VMs right from the OpenShift Console.
 
+== OpenShift Virtualization Overview Dashboard
+
+The overview dashboard provides a cluster-level view of virtual machines and resources used, along with status information for the health of OpenShift Virtualization and virtual machines. It is a useful starting point for administrators who want a quick and high-level view of what's happening with OpenShift Virtualization.
+
+. From the left navigation menu, browse to *Virtualization* -> *Overview*
++
+image::images/Create_VM_PVC/create_overview.png[]
++
+This overview page provides the OpenShift Virtualization administrator a global overview of the virtual machines in the cluster. A normal user would only see the VMs in his/her own project.
++
+[NOTE]
+If the `Getting started resources` panel is shown, use the links there to access more information about OpenShift virtualization, including Quick Starts which e.g. provide a guided walk through of how to create a VM and upload a custom boot source for your virtual machines. You can hide the panel using the three-dots menu in the upper right corner of the panel.
++
+image::images/Create_VM_PVC/create_quickstarts.png[]
+
+. Review the top consumers
++
+Scrolling down on the page shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster there are no consumers, so there is not much to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard". That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
++
+image::images/Create_VM_PVC/create_overview_consumers_png.png[]
+
 == Introduction to Creation and Administration of VMs
+
+Creating virtual machines is one of the most frequently accomplished tasks for a virtualization administrator. This section will walk through the process of creating a new virtual machine using a pre-created template. As the virtualization administrator, you have the ability to create your own templates that use guest operating system disks with your organization's customizations, preferred VM sizing options, and additional customization options using cloud-init or sysprep.
 
 In this lab, you become familiar with running virtual machines (VMs) on Red Hat^(R)^ OpenShift^(R)^ Container Platform. You create a new virtual machine based on a bootable operating system disk image that is provided in the default configuration of OpenShift Virtualization.
 
@@ -17,14 +40,6 @@ In this lab, you become familiar with running virtual machines (VMs) on Red Hat^
 * Create a new virtual machine
 * Access the VM console
 * Gain experience using the VM console
-
-=== Overview
-
-OpenShift Virtualization includes an overview dashboard to review the status and the inventory information.
-
-From the left menu, navigate to *Virtualization* -> *Overview*:
-+
-image::images/Create_VM_PVC/00_Overview.png[]
 
 === Create a Linux Virtual Machine
 
@@ -37,21 +52,22 @@ image::images/Create_VM_PVC/01_Left_Menu.png[]
 The *Virtualization* tab is available only when Red Hat OpenShift Virtualization is installed and properly configured.
 ====
 
-. Examine the *VirtualMachines* dashboard that appears, currently empty because no VMs exists:
+. Examine the *VirtualMachines* dashboard that appears, which is currently empty because no VMs exist:
 +
 image::images/Create_VM_PVC/02_OCP_Virt_Dashboard.png[]
 
-. Before you create a VM, create a new project:
+. Before creating a VM we need to create a new project. Virtual machines are deployed to a specific project, or namespace, where, by default, users without permission to the namespace cannot access, manage, or control them. Administrators can access all projects, and therefore view all virtual machines, however regular users must be given access to projects as needed.
++
 .. Click *Project: All Projects* and then click *Create Project*.
 .. In the *Name* field, type `vmexamples` to name the project, then click *Create*.
 +
 image::images/Create_VM_PVC/03_Create_Project.png[]
 
-. Click *Create VirtualMachine*, and a dashboard will appear showing the available pre-defined VM templates:
+. Click *Create VirtualMachine*, and a dashboard will appear showing the available pre-defined VM templates. 
++
+Reviewing the list of available templates you’ll notice that some have a blue badge which indicates "Source available". These are templates which are using the automatically downloaded and stored template disks reviewed in the previous page. If you were deploying in your own environment, you have the option of preventing these from being created and/or removing those source disks, followed by creating and uploading custom disks for your organization.
 +
 image::images/Create_VM_PVC/04_Create_VM_Templates.png[]
-+
-The templates with an already configured disks are marked in blue with `Source available`.
 
 . Select the *Fedora VM* tile and a dialog opens.
 +
@@ -62,18 +78,20 @@ image::images/Create_VM_PVC/05_Create_VM_Quick.png[]
 image::images/Create_VM_PVC/05_Create_VM_Quick_Name.png[]
 
 +
-. After a few seconds, expect to see the VM is `Running`.
+. After a few seconds, expect to see the VM is `Running`. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes will depend on the storage provider.
 +
 image::images/Create_VM_PVC/06_Fedora_Running.png[]
 
-. After the VM is created, examine the *Events* tabs:
+. After the VM is created, examine the *Events* tab to see some details of the process. If there are any issues with the creation fo the VM, they will show up on this tab as well.
 +
 image::images/Create_VM_PVC/09_Fedora_Events.png[]
 +
-* A _DataVolume_ is created. _DataVolumes_ are a way to automate importing virtual machine disks onto OpenShift native storage during the virtual machine's launch flow.
+* A _DataVolume_ is created. _DataVolumes_ are used to manage the creation of a VM disk, abstracting the clone or import process onto OpenShift native storage during the virtual machine's creation flow.
 * The _VM_ is started.
 
-. Click the *Details* tab to obtain information related to the VM:
+. Click the *Details* tab to obtain information related to the VM. Note that for this template, the default is 1 CPU and 2 GiB of memory. As the administrator, you can create templates which customize the default configuration of virtual machines.
++
+The IP address of the virtual machine on the software-defined network (SDN) is also displayed here, along with information about the boot order, workload profile, the cluster node hosting the virtual machine, and more.
 +
 image::images/Create_VM_PVC/10_Fedora_Details.png[]
 
@@ -83,7 +101,7 @@ image::images/Create_VM_PVC/10_Fedora_Details.png[]
 +
 image::images/Create_VM_PVC/13_Fedora_Console.png[]
 
-. Click *Guest login credentials* to see the password generated for the `fedora` user:
+. Click *Guest login credentials* to see the password generated for the `fedora` user. This is only visible when the VM has been customized, which is done by default with this template, using OpenShift Virtualization to set the password using cloud-init.
 +
 image::images/Create_VM_PVC/14_Fedora_Console_Show_Password.png[]
 
@@ -99,24 +117,24 @@ If the `Paste` functionality is not working, take in consideration that the cons
 +
 image::images/Create_VM_PVC/15_Fedora_Network.png[]
 +
-The IP address assigned is an internal IP address used by the _KVM hypervisor_ and is not an externally accessible IP.
+Since this network adapter is connected to the SDN, the IP address assigned is an internal IP address used by the _KVM hypervisor_ and is not an externally accessible IP. This IP will not change even if the VM is live migrated to a different node and the external IP where the VM is connected to the SDN changes.
 
 . Run `lsblk` to display the list of disks and their capacities and free space:
 +
 image::images/Create_VM_PVC/16_Fedora_Disk.png[]
 +
 * `/dev/vda` is the disk created during the VM creation and is the size specified at creation time.
-* `/dev/vdb` is used for `cloud-init` required data (for example, to configure the `fedora` user password).
+* `/dev/vdb` is used for `cloud-init` required data (for example, to configure the `fedora` user password). This disk can be removed after the VM has been created.
 
 . Examine the number of CPUs and amount of memory associated with the VM (which match the `flavor` specified during creation), using the `nproc` and `free -m` commands:
 +
 image::images/Create_VM_PVC/17_Fedora_CPU_Memory.png[]
 
-. Mount the `cloud-init` disk:
+. To review the guest customization, mount the `cloud-init` disk:
 +
 image::images/Create_VM_PVC/21_Fedora01_Cloud_Init.png[]
 
-. The instance is running the guest agent to collect information for the hypervisor.
+. The instance is running the guest agent to surface information for the hypervisor and coordinate tasks such as disk quiescing.
 +
 image::images/Create_VM_PVC/19_Fedora_Agent.png[]
 . Click the *Overview* tab to show the information obtained from the guest VM:
@@ -136,25 +154,29 @@ image::images/Create_VM_PVC/19_Fedora_Metrics.png[]
 
 The tab *Configuration* it is the entry point to obtain information about the resources of the Virtual Machine. It includes five subtabs:
 
-* *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction.
-* *Environment*: It is possible attach _ConfigMaps_, _Secrets_ and _Service Accounts_ as extra disks.
+* *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction. This is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
+* *Environment*: It is possible attach _ConfigMaps_, _Secrets_ and _Service Accounts_ as extra disks. This is useful when needing to pass configuration data to the application(s) running in the virtual machine.
 * *Network interfaces*: It shows the current network interfaces configured for the VM and add new ones.
 * *Disks*: It lists the disks attached to the system and allows to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization.
-* *Scripts*: It allows us to configure _Cloud Init_, setting the commands to be executed on the first boot such as the injection of SSH keys, installation of applications, and network configuration.
+* *Scripts*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows. Including setting the commands to be executed on the first boot such as the injection of SSH keys, installation of applications, network configuration, and more.
 
 . Examine the network interfaces attached to the VM clicking on the subtab *Network interfaces:
 +
 image::images/Create_VM_PVC/20_Network_Tab.png[]
 +
-When a VM is created, an interface in the `PodNetworking` network of type `masquerade` is created by default. This provides access from the VM to outside the OpenShift Cluster and allows the other VMs and Pods from the same namespace to access the VM.
+When a VM is created, an interface in the `PodNetworking` network of type `masquerade` is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift Cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route or load balancer, however that won't be covered in this workshop.
 
 . List the disks associated with the VM:
 +
 image::images/Create_VM_PVC/21_Disks_Tab.png[]
 +
-In this environment, the default StorageClass is called `ocs-storagecluster-ceph-rbd`.
+In this environment, the default StorageClass, which defines the source and type of storage used for the disk, is called `ocs-storagecluster-ceph-rbd`. This storage is the default type provided by OpenShift Data Foundation (ODF). Each storage provider has different storage classes that define the characteristics of the storage backing the VM disk.
 
-=== Creating a Windows Machine
+=== Creating a Windows Virtual Machine
+
+In this segment we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ablity to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
+
+This process can be streamlined after the initial operating system install by creating a template from the virutal machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organizations guidelines and requirements when preparing a template OS.
 
 . From the left menu, navigate to *Virtualization* -> *VirtualMachines*:
 +
@@ -181,7 +203,7 @@ image::images/Create_VM_PVC/29_Windows_2k9_Parameters.png[]
 .. Specify the name `windows`
 .. Enable the checkbox *Boot from CD* and specify the url: http://192.168.123.100:81/Windows2019.iso
 . Reduce the CD disk size to *5 GiB*.
-. Keep the `Disk source`` size disk to default value *60 GiB*
+. Keep the `Disk source` size disk to default value *60 GiB*
 . Ensure the `Mount Windows drivers disk` is enabled. This is required to install Windows systems, which will provide the drivers for VirtIO.
 
 . Press *Next* after filling the parameters.
