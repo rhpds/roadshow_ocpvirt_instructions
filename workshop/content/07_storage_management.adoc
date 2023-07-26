@@ -7,44 +7,45 @@
 
 == Introduction to Storage Management 
 
-OpenShift Container Platform supports multiple types of storage, both for on-premise and cloud providers. You can manage container storage for persistent and non-persistent data in an OpenShift Container Platform cluster.
+Red Hat OpenShift supports multiple types of storage, both for on-premises and cloud providers. OpenShift Virtualization can use any supported container storage interface (CSI) provisioner in the environment you're running on. For example, OpenShift Data Foundation, NetApp, Dell/EMC, Fujitsu, Hitachi, Pure Storage, Portworx, and many others support on-premises, CSI provisioned, ReadWriteMany (RWX) volumes with OpenShift Virutalization.
 
-////
+This segment of the workshop will explore Persistent Volume Claims (PVCs), which are used to request storage from the provider and store a VM disk. Many storage providers also support snapshots and clones of their devices, be sure to check with your vendor to verify the features supported by the CSI driver and storage device.
+
+Importantly, there are no restrictions on storage protocol (e.g. NFS, iSCSI, FC, etc.) specific to OpenShift Virtualization. The only requirement is that the RWX access mode is available when doing live migration. Otherwise, the storage that best meets the needs of your VMs and applications is always the right choice.
+
 === Glossary of terms
 
-*Access modes*: Volume access modes describe volume capabilities. The following are the examples of access modes:
+*Container Storage Interface (CSI)*: An API specification for the management of container storage across different container orchestration (CO) systems. An OpenShift cluster can have many CSI provisioners from different vendors and each VM can use storage from multiple vendors without conflicts.
 
-. ReadWriteOnce (RWO)
-. ReadOnlyMany (ROX)
-. ReadWriteMany (RWX)
-. ReadWriteOncePod (RWOP)
+*Dynamic Provisioning*: The storage framework allows you to create  volumes on-demand, eliminating the need for cluster administrators to pre-provision persistent storage. Each VM disk is stored in a dynamically created storage volume at a 1:1 ratio.
 
-*Container Storage Interface (CSI)*: An API specification for the management of container storage across different container orchestration (CO) systems.
+*Persistent volumes (PV)*: OpenShift Virtualization uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. VMs use a _PVC_ to request PV resources without having specific knowledge of the underlying storage infrastructure.
 
-*Dynamic Provisioning*: The framework allows you to create storage volumes on-demand, eliminating the need for cluster administrators to pre-provision persistent storage.
+*Persistent volume claims (PVCs)*: A _PVC_ is a request for storage capacity and, when bound to a PV, how the system knows which storage volume to mount for the VM. As a VM user, you're able to use the storage without knowing the details of the underlying infrastructure environment.
 
-*Ephemeral storage*: Pods and containers may require temporary or transient local storage for their operation. The lifetime of this ephemeral storage does not extend beyond the life of the individual pod, and this ephemeral storage cannot be shared across pods.
+*Storage class*: A _storage class_ provides a way for administrators to describe the classes of storage they offer, for example "gold", "silver", and "bronze". Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators. These will be specific to your storage vendor.
 
-*Local volumes*: A local volume represents a mounted local storage device such as a disk, partition or directory.
 
-*OpenShift Data Foundation*: A provider of agnostic persistent storage for *OpenShift Container Platform* supporting file, block, and object storage, either in-house or in hybrid clouds
 
-*Persistent storage*: Pods and containers can require permanent storage for their operation. *OpenShift Container Platform* uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. Developers can use _PVC_ to request _PV_ resources without having specific knowledge of the underlying storage infrastructure.
-
-*Persistent volumes (PV)*: *OpenShift Container Platform* uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. Developers can use _PVC_ to request PV resources without having specific knowledge of the underlying storage infrastructure.
-
-*Persistent volume claims (PVCs)*: You can use a _PVC_ to mount a _PersistentVolume_ into a Pod. You can access the storage without knowing the details of the cloud environment.
-
-*Reclaim policy*:A policy that tells the cluster what to do with the volume after it is released. A volume’s reclaim policy can be `Retain`, `Recycle`, or `Delete`.
-
-*Storage class*:A _storage class_ provides a way for administrators to describe the classes of storage they offer. Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators.
-////
++
+image::images/environment_pvc_details.png[]
++
+These PVCs contain the template disks for virtual machines. They were created automatically by the Operator when it was deployed, importing the disks from Red Hat sources. As the virtualization administrator, you can disable this behavior and have the ability to create and add your own template disks, including those for Microsoft Windows operating systems.
 
 == OpenShift Virtualization Default Boot Sources
 
-A boot source contains a bootable operating system (OS) and all of the configuration settings for the OS, such as drivers. For some operating systems, a boot source is automatically provided. If it is not provided, then an administrator must prepare a custom boot source.
+Persistent virtual machines require persistent storage. This lab environmet has OpenShift Data Foundation deployed to provide access to shared persistent volumes to host application data and virtual machine disks. During the installation of the OpenShift Virtualization Operator, some `PersistentVolumeClaims` were automatically created to hold template disks for for various Linux distributions. These include:
 
-Red Hat provided boot sources are automatically updated to the latest version of the operating system available.
+* Red Hat Enterprise Linux 8
+* Red Hat Enterprise Linux 9
+* Fedora
+* CentOS 7
+* CentOS Stream 8
+* CentOS Stream 9
+
+Using these OS images is optional and the creation + download can be disabled by via the appropriate setting in the Operator. However, they are a quick and convenient way to get started provisioning virtual machines with OpenShift Virtualization since they use the "cloud" image for each of the respective distributions. This image includes cloud-init and, often, is a reduced OS footprint optimized for virtualization. Additionally, Red Hat providied boot images are automatically updated when new templates are released.
+
+In this section, we will examine the PVCs created by the Operator along with PVCs used by a virtual machine.
 
 The project `openshift-virtualization-os-images` contains all available boot sources and is automatically enabled when *OpenShift Virtualization* is installed.
 
@@ -60,12 +61,15 @@ image::images/Storage/01_Select_Project.png[]
 +
 image::images/Storage/02_List_PVCs.png[]
 
-. Select one of the list, for example `fedora-XX` one to obtain more information
+. Select one from the list, for example `fedora-XX`, to obtain detailed information
++
+In this lab, each of the PVCs will come from the `ocs-storagecluster-ceph-rbd` storage class, provided by OpenShift Data Foundation. The details of the PVC show that it is a `ReadWriteMany` PVC, which is required for live migration, and is using `block` mode. The mode can be `block` or `file`, depending on the storage vendor, and either will work equally well so long as `RWX` mode is available.
++
+The capacity should be large enough to hold the base operating system and any packages/software installed that will be used by any VMs created from this template disk. VMs created by cloning the disk can increase the size of the disk, but cannot shrink it.
 +
 image::images/Storage/03_PVC_Info.png[]
 
-. When a VM is created, the _Boot Source_ image is cloned and a new disk is created.
-. Switch to the project `vmexamples` and review the list of the _PVCs_ (disks):
+. When a VM is created, the _Boot Source_ image is cloned and a new disk is created. Switch to the project `vmexamples` and review the list of the _PVCs_ (disks). You will see a PVC for each of the disks for VMs in this project and a PVC for the Microsoft Windows Serveer 2019 disk image that was created in an earlier section of this workshop. This PVC, with the Microsoft Windows ISO, can be reused by other virtual machines to install the operating system if desired.
 +
 image::images/Storage/04_List_PVCs_VMs.png[]
 
@@ -85,9 +89,16 @@ image::images/Storage/08_List_Bootable_Volumes.png[]
 
 === Introduction
 
-A `snapshot` represents the state and data of a _virtual machine_ (_VM_) at a specific point in time. You can use a `snapshot` to restore an existing VM to a previous state (represented by the `snapshot`) for backup and disaster recovery or to rapidly roll back to a previous development version.
+OpenShift Virtualization relies on the CSI storage provider's snapshot capability to create disk snapshots for the virtual machine, which can be taken "online", while the VM is running, or "offline", while the VM is powered off. If the KVM integrations are installed to the VM, you will also have the option of quiesing the guest operating system (quiesing ensures that the snapshot of the disk represents a consistent state of the guest file systems, e.g. buffers are flushed and the journal is consistent).
 
-You can create and delete virtual machine (VM) `snapshots` for VMs, whether the VMs are powered off (offline) or on (online). You can only restore to a powered off (offline) VM.
+Since disk snapshots are dependent on the storage implementation, abstracted by CSI, performance impact and capacity used will depend on the storage provider. Work with your storage vendor to determine how the system will manage PVC snapshots and the impact they may, or may not, have.
+
+[IMPORTANT]
+====
+Snapshots, by themselves, are not a backup or disaster recovery capablity. The data needs to be protected in other ways, such as one or more copies stored in a different location, to be able to recover from the storage system failing.
+
+In addition to the OpenShift API for Data Protection (OADP), partners such as Kasten by Veeam, Trilio, and Storware support the ablity to backup and restore virtual machines to the same cluster or other clusters as needed.
+====
 
 // AC - Perhaps a comment about advanced snapshot or cloning features provided by storage class and CSI drivers?
 
@@ -95,7 +106,7 @@ With the VM snapshots feature, cluster administrators and application developers
 
 * Create a new snapshot
 * List all snapshots attached to a specific VM
-* Restore a VM from a snapshot
+* Revert a VM to a snapshot
 * Delete an existing VM snapshot
 
 === Operate with Snapshots
@@ -110,6 +121,9 @@ image::images/Storage/10_VM_Snapshots_Tab.png[]
 
 . Press *Take snapshot* and a dialog will open
 +
+[NOTE]
+There is a warning about the `cloudinitdisk` not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
++
 image::images/Storage/11_VM_Snapshot_Dialog.png[]
 
 . Press *Save* and wait till the _Snapshot_ has been created and *status* shows as `Succeeded`
@@ -122,7 +136,7 @@ image::images/Storage/13_VM_Restore_Disabled.png[]
 
 . Switch to the *Console* tab to perform a modification to your running VM. This small modification will break your VM and it won't be able to boot any more.
 +
-Login with the user `fedora` and password `ocpVirtIsGre@t`. Execute the command:
+Login with the user `fedora` and password `ocpVirtIsGre@t` (or whatever you used in the previous module). Execute the command:
 +
 [source,sh]
 ----
@@ -131,9 +145,12 @@ Login with the user `fedora` and password `ocpVirtIsGre@t`. Execute the command:
 
 . The _Virtual Machine_ will not be able to boot. 
 +
+[IMPORTANT]
+In the previous step, the operating system was shutdown from within the guest. However, OpenShift Virtualization will restart it automatically by default. This behavior can be changed globally or on a per-VM basis.
++
 image::images/Storage/14_VM_Crashed.png[]
 
-. Using the *Actions* dropdown menu, stop the _Virtual Machine_. Wait until the VM is Stopped.
+. Using the *Actions* dropdown menu, stop the _Virtual Machine_. Wait until the VM is stopped.
 
 . Navigate back to the *Snapshots* tab and press *Restore* on the previous created snapshot.
 +
@@ -147,7 +164,7 @@ image::images/Storage/16_VM_Restore_Dialog.png[]
 +
 image::images/Storage/17_VM_Restored.png[]
 
-. Ensure that the VM is booting properly again.
+. Verify that the VM is booting properly again.
 +
 image::images/Storage/18_VM_Running.png[]
 
@@ -159,12 +176,16 @@ Cloning creates a new VM that uses its own disk image for storage, but most of t
 +
 image::images/Storage/19_VM_Clone_Dialog.png[]
 +
-Notice the VM, if is powered on, it will be stopped to perform the clone.
+[NOTE]
+Notice the VM, if is powered on, it will be stopped to perform the clone. If you have a snapshot of the VM, you can also create a clone from the snapshot without powering off the VM.
 
 . A new VM is created, the disks are cloned and automatically the portal will redirect you to the new VM.
 +
 image::images/Storage/20_VM_Cloned.png[]
++
+[IMPORTANT]
+The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
 
 == Summary
 
-In this module you have learned the basics concepts of storage on OpenShift, review how OpenShift Virtualization automatically is downloading and creating boot sources. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring a snapshot, and cloning a Virtual Machine.
+In this module you have learned the basics concepts of storage on OpenShift, as well as reviewed how OpenShift Virtualization will automatically download and create boot sources for some guest operating systems. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring a snapshot, and cloning a virtual machine.
