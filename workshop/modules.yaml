@@ -31,9 +31,15 @@ modules:
         exit_sign: Storage Management
     07_storage_management:
         name: Storage Management
-        exit_sign: Migrating Virtual Machines        
+        exit_sign: Migrating Virtual Machines
     08_migrate_vms:
         name: Migrating Virtual Machines
-        exit_sign: Continue
-    09_thanks:
+        exit_sign: MetalLB
+    09_metallb:
+        name: MetalLB
+        exit_sign: Backup and Restore
+    10_backup_restore:
+        name: Backup and Restore
+        exit_sign: Thanks
+    11_thanks:
         name: Thanks
