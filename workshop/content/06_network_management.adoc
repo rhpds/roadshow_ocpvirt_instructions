@@ -75,15 +75,22 @@ image::images/Networking/06_VM_Network_Console.png[]
 +
 The `eth1` interface obtains an IP address from the flat network (`192.168.3.x/24`). That network has a DHCP server providing IPs to that network. 
 +
-////
-// WKTBD: How do we show this if we don't have the console tab in the bookbag?
-////
 
 . (Optional) Verify external connectivity of the VM using the bastion host. Connect to the host via SSH as provided in the lab environment materials shared at the start of this workshop.
 +
+.. Open a terminal pressing the right-top icon:
++
+image::images/OCP_Terminal_Icon.png[]
+
+.. A console in the bottom part of the screen will appear
++
+image::images/OCP_Terminal.png[]
+
+.. Type the following command replacing the IP
++
 [%nowrap]
 ----
-[~] $ curl 192.168.3.118:22                           
+bash-4.4 ~ $ curl 192.168.3.118:22                           
 ----
 +
 [NOTE]
