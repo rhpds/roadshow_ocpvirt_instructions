@@ -86,11 +86,9 @@ image::images/MTV/101_vSphere_Network.png[]
 +
 image::images/MTV/102_vSphere_Datastore.png[]
 
-=== Add the VMware provider to the migration toolkit
+=== Review the VMware provider to the migration toolkit
 
 The *Migration Toolkit for Virtualization* (*MTV*) uses the VMware Virtual Disk Development Kit (*VDDK*) SDK to transfer virtual disks from VMware vSphere. This VDDK has already been set up for you in this environment.
-
-However, you will need to register the source vCenter system to the Migration Toolkit for Virtualization as a new provider.
 
 . Navigate in the left menu to *Migration* -> *Providers for virtualization*
 . Select project `openshift-mtv`
@@ -99,6 +97,17 @@ image::images/MTV/91_MTV_Providers.png[]
 +
 [TIP]
 MTV 2.4 and later are project/namespace aware and do not require administrator privileges. You can delegate VM imports to application teams and VM users so that they can self-serve and migrate at their own pace!
+
+. By default, there is a provider called `host` which represents the *OpenShift Virtualization* as a target platform
++
+image::images/MTV/92_MTV_Provider_list.png[]
+
+. The lab is already configured with the VMWare provider named `vmware`.
+
+////
+However, you will need to register the source vCenter system to the Migration Toolkit for Virtualization as a new provider.
+
+
 
 . By default, there is a provider called `host` which represents the *OpenShift Virtualization* as a target platform
 +
@@ -123,6 +132,7 @@ image::images/MTV/94_MTV_Fill_Dialog.png[]
 image::images/MTV/95_MTV_Provider_Added.png[]
 
 Now MTV knows about your VMware vSphere environment and can connect to it.
+////
 
 === Create Storage and Network Mapping
 
@@ -226,6 +236,7 @@ However, the VMs are not connected to each other yet - this is because we connec
 A load balancer on OpenShift is called a *Service*. You will create this shortly. But the service selects the recipients of the traffic that it load balances via labels assigned to the targets. Currently the VMs do not have a label assigned yet.
 
 In order to successfully assocaite the  VMs with the Service, we need to do the following:
+
 * Add a label to the VMs. We will use the same label for both Windows IIS servers because they are both behind the same load balancer.
 * Create the service to make the two Windows IIS servers available for other workloads on the cluster. OpenShift will automatically make the load balancer internally accessible using the name of the Service as the DNS name.
 * Make the service available outside of OpenShift by creating a *Route*.

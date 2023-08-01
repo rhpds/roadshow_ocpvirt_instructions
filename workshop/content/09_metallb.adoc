@@ -114,6 +114,8 @@ endif::[]
 
 For this lab we will use the same network where the OpenShift Cluster nodes are located. The network 192.168.123.0/24 and for this exercirse we will reserve the range 192.168.123.200-192.168.123.250.
 
+. Switch to project `metallb-system`
+
 . Switch the tab *IPAddressPool* and press *Create IPAddressPool*
 +
 image::images/MetalLB/08_MetalLB_IPAddressPool_Form.png[]
@@ -169,6 +171,14 @@ Notice the `type` indicated is `LoadBalancer`, this indicates to use *MetalLB*
 . Press *Create* and review the *Service* created
 +
 image::images/MetalLB/12_Service_created.png[]
+
+. Open the web terminal clicking in the following icon in the right-top part.
++
+image::images/OCP_Terminal_Icon.png[]
+
+. A console in the bottom part of the screen appears
++
+image::images/OCP_Terminal.png[]
 
 . Using the right console, try to access to the IP assigned and the port 3306
 +

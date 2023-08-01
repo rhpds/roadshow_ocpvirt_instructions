@@ -51,7 +51,7 @@ You will perform a backup of the VM `fedora02`. The selection of the objects to 
 +
 image::images/Backup/04_Backup_Tab.png[]
 
-. Switch to the YAML view and replace the content with the following one:
+. Switch to the _YAML view_ and replace the content with the following one:
 +
 [source,yaml]
 ----
