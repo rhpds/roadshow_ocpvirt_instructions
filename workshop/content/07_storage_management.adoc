@@ -13,24 +13,7 @@ This segment of the workshop will explore Persistent Volume Claims (PVCs), which
 
 Importantly, there are no restrictions on storage protocol (e.g. NFS, iSCSI, FC, etc.) specific to OpenShift Virtualization. The only requirement is that the RWX access mode is available when doing live migration. Otherwise, the storage that best meets the needs of your VMs and applications is always the right choice.
 
-=== Glossary of terms
-
-*Container Storage Interface (CSI)*: An API specification for the management of container storage across different container orchestration (CO) systems. An OpenShift cluster can have many CSI provisioners from different vendors and each VM can use storage from multiple vendors without conflicts.
-
-*Dynamic Provisioning*: The storage framework allows you to create  volumes on-demand, eliminating the need for cluster administrators to pre-provision persistent storage. Each VM disk is stored in a dynamically created storage volume at a 1:1 ratio.
-
-*Persistent volumes (PV)*: OpenShift Virtualization uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. VMs use a _PVC_ to request PV resources without having specific knowledge of the underlying storage infrastructure.
-
-*Persistent volume claims (PVCs)*: A _PVC_ is a request for storage capacity and, when bound to a PV, how the system knows which storage volume to mount for the VM. As a VM user, you're able to use the storage without knowing the details of the underlying infrastructure environment.
-
-*Storage class*: A _storage class_ provides a way for administrators to describe the classes of storage they offer, for example "gold", "silver", and "bronze". Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators. These will be specific to your storage vendor.
-
-
-
-+
-image::images/environment_pvc_details.png[]
-+
-These PVCs contain the template disks for virtual machines. They were created automatically by the Operator when it was deployed, importing the disks from Red Hat sources. As the virtualization administrator, you can disable this behavior and have the ability to create and add your own template disks, including those for Microsoft Windows operating systems.
+image::images/Storage/00_disk_concepts.png[]
 
 == OpenShift Virtualization Default Boot Sources
 
@@ -189,3 +172,15 @@ The cloned VM will have the same identity as the source VM, which may cause conf
 == Summary
 
 In this module you have learned the basics concepts of storage on OpenShift, as well as reviewed how OpenShift Virtualization will automatically download and create boot sources for some guest operating systems. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring a snapshot, and cloning a virtual machine.
+
+=== Glossary of terms
+
+*Container Storage Interface (CSI)*: An API specification for the management of container storage across different container orchestration (CO) systems. An OpenShift cluster can have many CSI provisioners from different vendors and each VM can use storage from multiple vendors without conflicts.
+
+*Dynamic Provisioning*: The storage framework allows you to create  volumes on-demand, eliminating the need for cluster administrators to pre-provision persistent storage. Each VM disk is stored in a dynamically created storage volume at a 1:1 ratio.
+
+*Persistent volumes (PV)*: OpenShift Virtualization uses the Kubernetes persistent volume (PV) framework to allow cluster administrators to provision persistent storage for a cluster. VMs use a _PVC_ to request PV resources without having specific knowledge of the underlying storage infrastructure.
+
+*Persistent volume claims (PVCs)*: A _PVC_ is a request for storage capacity and, when bound to a PV, how the system knows which storage volume to mount for the VM. As a VM user, you're able to use the storage without knowing the details of the underlying infrastructure environment.
+
+*Storage class*: A _storage class_ provides a way for administrators to describe the classes of storage they offer, for example "gold", "silver", and "bronze". Different classes might map to quality of service levels, backup policies, arbitrary policies determined by the cluster administrators. These will be specific to your storage vendor.

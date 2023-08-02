@@ -1,0 +1,193 @@
+:scrollbar:
+:toc2:
+:preinstall_operators: %preinstall_operators%
+
+=  MetalLB
+
+ifeval::["{preinstall_operators}" == "False"]
+In this lab, you will learn how to install the MetalLB operator, configure and expose services outside of the cluster.
+
+.Goals
+* Install Operator 
+* Configure MetalLB
+* Expose service externally
+endif::[]
+
+
+ifeval::["{preinstall_operators}" == "True"]
+In this lab, you will review the MetalLB operator and expose services outside of the cluster.
+
+.Goals
+* Review Operator 
+* Expose service externally
+endif::[]
+
+Using MetalLB is valuable when you have a bare-metal cluster, or a virtual infrastructure that is treated like bare metal, and you want to ensure fault-tolerant access to an application through an external IP address.
+
+For MetalLB to meet this need, you must configure your networking infrastructure to ensure that the network traffic for the external IP address is routed from clients to the host network for the cluster. 
+
+It can operate in two modes:
+
+* *MetalLB operating in layer2 mode* provides support for failover by utilizing a mechanism similar to IP failover. However, instead of relying on the virtual router redundancy protocol (VRRP) and keepalived, MetalLB leverages a gossip-based protocol to identify instances of node failure. When a failure is detected, another node assumes the role of the leader node, and a gratuitous ARP message is dispatched to broadcast this change.
+* *MetalLB operating in layer3 or border gateway protocol (BGP) mode* delegates failure detection to the network. The _BGP_ router or routers that the *OpenShift Container Platform* nodes have established a connection with will identify any node failure and terminate the routes to that node.
+
+Using MetalLB instead of IP failover is preferable for ensuring high availability of pods and services.
+
+=== Layer2 mode
+
+In layer 2 mode, the speaker pod on one node announces the external IP address for a service to the host network. From a network perspective, the node appears to have multiple IP addresses assigned to a network interface.
+
+In layer 2 mode, all traffic for a service IP address is routed through one node. After traffic enters the node, the service proxy for the CNI network provider distributes the traffic to all the pods for the service.
+
+When a node becomes unavailable, failover is automatic. The speaker pods on the other nodes detect that a node is unavailable, and a new speaker pod on a surviving node will take ownership of the service IP address from the failed node.
+
+image::images/MetalLB/00_layer2.png[]
+
+=== Layer 3 (BGP) mode
+
+In BGP mode, by default each speaker pod advertises the load balancer IP address for a service to each BGP peer. It is also possible to advertise the IPs coming from a given pool to a specific set of peers by adding an optional list of BGP peers. BGP peers are commonly network routers that are configured to use the BGP protocol. When a router receives traffic for the load balancer IP address, the router picks one of the nodes with a speaker pod that advertised the IP address. The router sends the traffic to that node. After traffic enters the node, the service proxy for the CNI network plugin distributes the traffic to all the pods for the service.
+
+If a node becomes unavailable, the router then initiates a new connection with another node that has a speaker pod which is advertising the load balancer IP address.
+
+image::images/MetalLB/00_bgp.png[]
+
+ifeval::["{preinstall_operators}" == "False"]
+
+== Install and configure the MetalLB operator
+
+. Navigate to *Operators* -> *OperatorHub* and filter for `metallb`
++
+image::images/MetalLB/01_OperatorHub.png[]
+. Click the tile that appears and press *Install*
++
+image::images/MetalLB/02_Operator.png[]
+
+. Review the _Custom Resources Definition_ which are going to be created and without modifying any options press *Install*
++
+image::images/MetalLB/03_Operator_Install.png[]
+
+=== Configure Operator
+
+. Like other Operators it is required configure them after the installation. Press *View Operator* to begin.
++
+image::images/MetalLB/04_Operator_Installed.png[]
+
+. In the next window press "Create instance" on the *MetalLB* tile
++
+image::images/MetalLB/05_MetalLB.png[]
+
+. In the dialog that appears, scroll down and press *Create*
++
+image::images/MetalLB/06_MetalLB_create.png[]
+
+. Wait until the `Status` column indicates that MetalLB is available
++
+image::images/MetalLB/07_MetalLB_available.png[]
+
+endif::[]
+
+ifeval::["{preinstall_operators}" == "True"]
+
+== Review Operator
+
+. Navigate to *Operators* -> *Installed Operators*. Select *All Projects* and select *MetalLB*
++
+image::images/MetalLB/01_Operator_Installed.png[]
+
+. Review the *Provided APIs* on the Details tab
++
+image::images/MetalLB/02_Review_Operator.png[]
+
+. Select the tab *MetalLB* to ensure the deployment is installed and configured correctly
++
+image::images/MetalLB/03_Review_Operator_MetalLB.png[]
+
+endif::[]
+
+=== Define IP AddressPool
+
+For this lab we will use the same network where the OpenShift Cluster nodes are located (`192.168.123.0/24`) and for this exercise we will reserve the IP range `192.168.123.200-192.168.123.250` to be used for load balanced services in the OpenShift cluster.
+
+. Switch to project `metallb-system`
+
+. Switch the tab *IPAddressPool* and press *Create IPAddressPool*
++
+image::images/MetalLB/08_MetalLB_IPAddressPool_Form.png[]
+
+. Use the name `ip-addresspool-webapp` and under section _addresses_, remove any existing addresses and configure `192.168.123.200-192.168.123.250` as the address pool. When complete it should look similar to this image:
++
+image::images/MetalLB/09_MetalLB_IPAddressPool_Defined.png[]
+
+. Scroll down and press *Create*
+
+=== Configure Layer2 mode
+
+For this lab we will use MetalLB in layer2 mode. 
+
+. Switch to the *L2Advertisement* tab and pressI know you are on the road, have you ever cloned a git repo, and the content you are looking at on the web page, doesn't match the file in front of you, even with everything synced? *Create L2Advertisement*
+
+. Indicate the name `l2-adv-webapp` and under section _ipaddressPools_ specify the value `ip-addresspool-webapp` as is shown:
++
+image::images/MetalLB/10_MetalLB_L2Advertisement.png[]
+
+. Press *Create*
+
+== Expose the database node externally
+
+The VM migrated from VMWare is accessible currently from inside the cluster using the service created in the previous module. In this task you will expose the port 3306 outside of the cluster.
+
+. Navigate to *Networking* -> *Services* and select the project `vmexamples`
++
+image::images/MetalLB/11_Services.png[]
+
+. Press *Create Service* and fill the form with the following code snippet:
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-metallb
+  namespace: vmexamples
+spec:
+  type: LoadBalancer
+  selector:
+    vm.kubevirt.io/name: database
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+----
++
+[NOTE]
+Notice the `type` indicated is `LoadBalancer`. Since this cluster has MetalLB installed, it will result in the specified port(s) exposed using that. There are other load balancer options available from partners such as F5, Nginx, and more.
+
+. Press *Create* and review the *Service* created. Notice the IP address assigned to the load balancer is from the range specified earlier in the lab.
++
+image::images/MetalLB/12_Service_created.png[]
+
+. To verify connectivity to the database service via the external IP, open the web terminal clicking in the following icon in the right-top part.
++
+image::images/OCP_Terminal_Icon.png[]
+
+. A console in the bottom part of the screen appears
++
+image::images/OCP_Terminal.png[]
+
+. Using the right console, try to access the IP assigned and the port 3306
++
+[%nowrap]
+----
+[~] $ curl -s 192.168.123.202:3306 | cut -c1-16       
+----
++
+.Sample Output
++
+[%nowrap]
+----
+5.5.68-MariaDB
+----
+
+== Summary 
+
+MetalLB is a straightforward and simple solution for baremetal, on-premises deployments to expose applications outside of the cluster, without the need to configure physical networks with NMstate or multus.
