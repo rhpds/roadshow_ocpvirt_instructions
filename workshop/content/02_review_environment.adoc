@@ -13,8 +13,6 @@ In this lab, you will review the environment to be used during this Workshop.
 * Explore the nodes and machines in your *Red Hat OpenShift Container Platform* cluster
 // * Learn the basic concepts of *Red Hat OpenShift Container Platform*
 
-== Review Red Hat OpenShift Container Platform Cluster
-
 In this section you will explore the Red Hat OpenShift Container Platform environment that has been provided for you. This environment runs on Bare Metal hosts in the Equinix cloud. You will understand how the nodes in this cluster are configured and which hardware capabilities they have.
 
 === Supported Platforms
@@ -53,9 +51,17 @@ Review https://docs.openshift.com/container-platform/4.12/virt/install/preparing
 [NOTE]
 If your cluster uses worker nodes with different CPUs, e.g. Intel and AMD, live migration failures can occur because different CPUs have different capabilities. 
 
+== Review Red Hat OpenShift Cluster
+
+When deployed using the installer provisoined infrastructure (IPI) method, OpenShift uses https://metal3.io/[Metal3] to manage the hardware using the out-of-band management controller. This results in the hardware being represented in three different ways in the cluster:
+
+. https://docs.openshift.com/container-platform/4.13/nodes/index.html[`Node`] - The node as viewed and used by the Kubernetes scheduler. This is the object which represents the usable resources in the cluster.
+. https://docs.openshift.com/container-platform/4.13/machine_management/index.html[`Machine`] - An object managed by an infrastructure provider. In this lab, and when using OpenShift Virtualization, this is a physical server that is abstracted by the Metal3 Operator. These are grouped and managed as a set via the `MachineSet` paradigm.
+. `BareMetalHost` - This is the lowest level and direct interaction with the management of the physical server.
+
 === Review Nodes and Machines
 
-Almost every interaction with Red Hat OpenShift Container Platform can be done in the OpenShift Console. The console is a full featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system - and in our case create and manage virtual machines.
+Almost every interaction with Red Hat OpenShift can be done in the OpenShift Console. The console is a full featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system.
 
 // WKTBD: Replace with actual password from variable
 . Navigate to %ocp_url% and login with user `admin` and the password `%ocp_password%`.
@@ -66,13 +72,13 @@ image::images/Install/Compute_Nodes.png[]
 +
 There are three control plane nodes and three worker nodes in the OpenShift 4 Cluster. In addition, the `ipmi` (Intelligent Platform Management Interface) is being used to manage the bare metal nodes.
 +
-A node is a virtual or bare metal machine in an OpenShift cluster. Worker nodes host your application containers, grouped as pods. The control plane nodes run services that are required to control the OpenShift cluster.
+A node is a virtual or bare metal machine in an OpenShift cluster. Worker nodes host virtual machines and other workloads. The control plane nodes run services that are required to control and manage the OpenShift cluster.
 
 . Click on one of the worker nodes to obtain resource information about the node:
 +
 image::images/Install/Worker0_Information.png[]
 +
-The *Overview* tab is showing useful information about the utilization of the resources, such as CPU or memory. It also shows all the applications (*Pods*) that are running inside on this node.
+The *Overview* tab is showing useful information about the utilization of the resources, such as CPU and memory. It also shows all the applications (*Pods*) that are running inside on this node.
 
 [NOTE]
 At least one physical node is required for OpenShift Virtualization, "nesting" and emulation are not supported. However, other nodes in the cluster can be virtual machines, for example control plane and infrastructure nodes.
@@ -83,20 +89,23 @@ image::images/Install/Worker0_Details.png[]
 
 === Review Bare Metal hosts
 
-When using `Baseboard Management Console (BMC)` it is possible to manage the nodes using the *Red Hat OpenShift Platform* console. 
+When using `Baseboard Management Console (BMC)` it is possible to manage the nodes using the *Red Hat OpenShift* console. 
 
 . Select *Compute* -> *Bare Metal Hosts*:
 +
 image::images/Install/BMHosts.png[]
 +
-During the installation the *Control Plane* nodes are provisioned (that is why the status is `Externally privioned`) and when the cluster is ready, the *Worker* nodes are provisioned (status `Provisioned`). It is possible to easily scale up the cluster with new hosts through the button *Add Host*.
+During installation, the *Control Plane* nodes are provisioned (that is why the status is `Externally provisioned`) and when the control plane is ready, the *Worker* nodes are provisioned (status `Provisioned`) and joined to the cluster. While not a part of this lab, it is possible to scale up the cluster by adding new hosts using the *Add Host* button.
 
 . Click on any of the worker nodes to obtain information about the physical (bare metal) node:
 +
 image::images/Install/Worker0_BMhost.png[]
 +
-The information shown is similar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the bare metal node. Using the *Actions* menu is possible to operate with the bare metal host, being possible to restart or stop the system using `BMC`.
+The information shown is similar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the bare metal node. Using the *Actions* menu is possible to manage aspects of the bare metal host, such as restarting or stopping the system using `BMC`.
 
+. Explore the other tabs in the interface to see more details about the hosts, including the network interfaces and disks. Additionally, the host can be *Deprovisioned*, which will result in it being removed from the cluster, RHCOS removed, and the machine marked as ready to configure.
+
+////
 == The OpenShift Virtualization Operator
 
 Due to the time constraints of this session, the OpenShift Virtualization Operator has been preinstalled for you. You can navigate to *Operators* -> *Installed Operators* to get the list of the operators installed to the cluster. Ensure *All Projects* is selected to list Operators across all namespaces and type `virtualization` in the search box to filter the list.
@@ -104,6 +113,7 @@ Due to the time constraints of this session, the OpenShift Virtualization Operat
 For this workshop we'll be focusing on two Operators: OpenShift Virtualization and the Migration Toolkit for Virtualization.
 
 image::images/Install/environment_installed_operators.png[]
+
 
 === Examine the OpenShift Virtualization Operator
 
@@ -129,6 +139,7 @@ This screen represents global configuration options for OpenShift Virtualization
 image::images/Install/environment_operator_create.png[]
 +
 *IMPORTANT:* Do not click *Create* at the bottom of the form. This is unnecessary, OpenShift Virtualization has already been deployed to the lab cluster.
+////
 
 == Summary
 
