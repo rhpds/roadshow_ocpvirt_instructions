@@ -22,8 +22,6 @@ In this lab, you will review the MetalLB operator and expose services outside of
 * Expose service externally
 endif::[]
 
-== Introduction
-
 Using MetalLB is valuable when you have a bare-metal cluster, or a virtual infrastructure that is treated like bare metal, and you want to ensure fault-tolerant access to an application through an external IP address.
 
 For MetalLB to meet this need, you must configure your networking infrastructure to ensure that the network traffic for the external IP address is routed from clients to the host network for the cluster. 
@@ -43,19 +41,15 @@ In layer 2 mode, all traffic for a service IP address is routed through one node
 
 When a node becomes unavailable, failover is automatic. The speaker pods on the other nodes detect that a node is unavailable, and a new speaker pod on a surviving node will take ownership of the service IP address from the failed node.
 
-
 image::images/MetalLB/00_layer2.png[]
 
-
-=== BGP mode
+=== Layer 3 (BGP) mode
 
 In BGP mode, by default each speaker pod advertises the load balancer IP address for a service to each BGP peer. It is also possible to advertise the IPs coming from a given pool to a specific set of peers by adding an optional list of BGP peers. BGP peers are commonly network routers that are configured to use the BGP protocol. When a router receives traffic for the load balancer IP address, the router picks one of the nodes with a speaker pod that advertised the IP address. The router sends the traffic to that node. After traffic enters the node, the service proxy for the CNI network plugin distributes the traffic to all the pods for the service.
 
 If a node becomes unavailable, the router then initiates a new connection with another node that has a speaker pod which is advertising the load balancer IP address.
 
-
 image::images/MetalLB/00_bgp.png[]
-
 
 ifeval::["{preinstall_operators}" == "False"]
 
@@ -108,13 +102,11 @@ image::images/MetalLB/02_Review_Operator.png[]
 +
 image::images/MetalLB/03_Review_Operator_MetalLB.png[]
 
-
 endif::[]
-
 
 === Define IP AddressPool
 
-For this lab we will use the same network where the OpenShift Cluster nodes are located (192.168.123.0/24) and for this exercise we will reserve the IP range 192.168.123.200-192.168.123.250.
+For this lab we will use the same network where the OpenShift Cluster nodes are located (`192.168.123.0/24`) and for this exercise we will reserve the IP range `192.168.123.200-192.168.123.250` to be used for load balanced services in the OpenShift cluster.
 
 . Switch to project `metallb-system`
 
@@ -168,13 +160,13 @@ spec:
 ----
 +
 [NOTE]
-Notice the `type` indicated is `LoadBalancer`, this indicates that the service should use *MetalLB*
+Notice the `type` indicated is `LoadBalancer`. Since this cluster has MetalLB installed, it will result in the specified port(s) exposed using that. There are other load balancer options available from partners such as F5, Nginx, and more.
 
-. Press *Create* and review the *Service* created
+. Press *Create* and review the *Service* created. Notice the IP address assigned to the load balancer is from the range specified earlier in the lab.
 +
 image::images/MetalLB/12_Service_created.png[]
 
-. Open the web terminal clicking in the following icon in the right-top part.
+. To verify connectivity to the database service via the external IP, open the web terminal clicking in the following icon in the right-top part.
 +
 image::images/OCP_Terminal_Icon.png[]
 
@@ -196,6 +188,6 @@ image::images/OCP_Terminal.png[]
 5.5.68-MariaDB
 ----
 
-
 == Summary 
-MetalLB is a great solution for baremetal on-premises deployments to be able to expose applications outside of the cluster, without the need to configure physical networks with multus.
+
+MetalLB is a straightforward and simple solution for baremetal, on-premises deployments to expose applications outside of the cluster, without the need to configure physical networks with NMstate or multus.
