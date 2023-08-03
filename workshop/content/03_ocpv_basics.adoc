@@ -7,7 +7,7 @@
 
 This lab will introduce you to the basics of creating VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
 
-This lab will show two methods for provisioning virtual machines, however there are many different ways and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
+This lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
 
 == OpenShift Virtualization Overview Dashboard
 
@@ -21,25 +21,25 @@ This overview page provides the OpenShift Virtualization administrator a global 
 +
 [NOTE]
 ====
-If the `Getting started resources` panel is shown, use the links there to access more information about OpenShift virtualization, including Quick Starts which e.g. provide a guided walk through of how to create a VM and upload a custom boot source for your virtual machines. You can hide the panel using the three-dots menu in the upper right corner of the panel.
+If the `Getting started resources` panel is shown, use the links there to access more information about OpenShift virtualization, including Quick Starts which e.g. provide a guided walkthrough of how to create a VM and upload a custom boot source for your virtual machines. You can hide the panel using the three-dots menu in the upper right corner of the panel.
 
 image::images/Create_VM_PVC/create_quickstarts.png[]
 ====
 
 . Review the top consumers
 +
-Scrolling down on the page shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster there are no consumers, so there is not much to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard". That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
+Scrolling down on the page shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster, there are no consumers, so there is little to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard". That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
 +
 [IMPORTANT]
-If you don't see any resources here, it's because no VMs have been started in your lab. Revisit this page after this segment to see the overview details.
+If you don't see any resources here, no VMs have been started in your lab. Revisit this page after this segment to see the overview details.
 +
 image::images/Create_VM_PVC/create_overview_consumers_png.png[]
 
-== Introduction to Creation and Administration of VMs
+== Introduction to the Creation and Administration of VMs
 
 Creating virtual machines is one of the most frequently accomplished tasks for a virtualization administrator. This section will walk through the process of creating a new virtual machine using a pre-created template. As the virtualization administrator, you have the ability to create your own templates that use guest operating system disks with your organization's customizations, preferred VM sizing options, and additional customization options using cloud-init or sysprep.
 
-In this lab, you become familiar with running virtual machines (VMs) on Red Hat^(R)^ OpenShift^(R)^ Container Platform. You create a new virtual machine based on a bootable operating system disk image that is provided in the default configuration of OpenShift Virtualization.
+In this lab, you become familiar with running virtual machines (VMs) on Red Hat^(R)^ OpenShift^(R)^ Container Platform. You create a new virtual machine based on a bootable operating system disk image provided in the default configuration of OpenShift Virtualization.
 
 .Goals
 * Create a new virtual machine
@@ -74,7 +74,7 @@ Reviewing the list of available templates you’ll notice that some have a blue 
 +
 image::images/Create_VM_PVC/04_Create_VM_Templates.png[]
 
-. Select the *Fedora VM* tile and a dialog opens.
+. Select the *Fedora VM* tile, and a dialog opens.
 +
 image::images/Create_VM_PVC/05_Create_VM_Quick.png[]
 
@@ -94,7 +94,7 @@ image::images/Create_VM_PVC/09_Fedora_Events.png[]
 * A _DataVolume_ is created. _DataVolumes_ are used to manage the creation of a VM disk, abstracting the clone or import process onto OpenShift native storage during the virtual machine's creation flow.
 * The _VM_ is started.
 
-. Click the *Details* tab to obtain information related to the VM. Note that for this template, the default is 1 CPU and 2 GiB of memory. As the administrator, you can create templates which customize the default configuration of virtual machines.
+. Click the *Details* tab to obtain information related to the VM. Note that for this template, the default is 1 CPU and 2 GiB of memory. As the administrator, you can create templates that customize the default configuration of virtual machines.
 +
 The IP address of the virtual machine on the software-defined network (SDN) is also displayed here, along with information about the boot order, workload profile, the cluster node hosting the virtual machine, and more.
 +
@@ -113,10 +113,10 @@ image::images/Create_VM_PVC/14_Fedora_Console_Show_Password.png[]
 . Log in to the VM using the `fedora` user and the indicated password.
 +
 [IMPORTANT]
-You can click on `Paste` to paste the password after copy it.
+You can click on `Paste` to paste the password after copying it.
 +
 [IMPORTANT]
-If the `Paste` functionality is not working, take in consideration that the console input is using US keymap. One small trick is to write in the login the password to ensure you are writing the proper characters (specifically that the `-` character is correct).
+If the `Paste` functionality is not working, take into consideration that the console input is using US keymap. One small trick is to write in the login the password to ensure you are writing the proper characters (specifically that the `-` character is correct).
 
 . After you log in, run the `ip a` command to display the interfaces and IP addresses:
 +
@@ -151,25 +151,25 @@ image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 * Active users
 * Utilization: CPU, Memory, Storage and Network.
 
-. You can navigate to the tab *Metrics* to obtain more information about the usage, including being able to specify the time rage.
+. You can navigate to the tab *Metrics* to obtain more information about the usage, including being able to specify the time range.
 +
 image::images/Create_VM_PVC/19_Fedora_Metrics.png[]
 
-==== Examine Resources Associated with the Virtual Machime
+==== Examine Resources Associated with the Virtual Machine
 
 The tab *Configuration* it is the entry point to obtain information about the resources of the Virtual Machine. It includes five subtabs:
 
 * *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction. This is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
-* *Environment*: It is possible attach _ConfigMaps_, _Secrets_ and _Service Accounts_ as extra disks. This is useful when needing to pass configuration data to the application(s) running in the virtual machine.
+* *Environment*: It is possible to attach _ConfigMaps_, _Secrets_, and _Service Accounts_ as extra disks. This is useful when passing configuration data to the application(s) running in the virtual machine.
 * *Network interfaces*: It shows the current network interfaces configured for the VM and add new ones.
 * *Disks*: It lists the disks attached to the system and allows to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization.
-* *Scripts*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows. Including setting the commands to be executed on the first boot such as the injection of SSH keys, installation of applications, network configuration, and more.
+* *Scripts*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
 
-. Examine the network interfaces attached to the VM clicking on the subtab *Network interfaces:
+. Examine the network interfaces attached to the VM by clicking on the subtab *Network interfaces:
 +
 image::images/Create_VM_PVC/20_Network_Tab.png[]
 +
-When a VM is created, an interface in the `PodNetworking` network of type `masquerade` is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift Cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route or load balancer, however that won't be covered in this workshop.
+When a VM is created, an interface in the `PodNetworking` network of type `masquerade` is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift Cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route or load balancer, however, that won't be covered in this workshop.
 
 . List the disks associated with the VM:
 +
@@ -179,9 +179,9 @@ In this environment, the default StorageClass, which defines the source and type
 
 === Creating a Windows Virtual Machine
 
-In this segment we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ablity to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
+In this segment, we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ability to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
 
-This process can be streamlined after the initial operating system install by creating a template from the virutal machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organizations guidelines and requirements when preparing a template OS.
+This process can be streamlined after the initial operating system installation by creating a template from the virtual machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organization's guidelines and requirements when preparing a template OS.
 
 . From the left menu, navigate to *Virtualization* -> *VirtualMachines*:
 +
@@ -208,10 +208,10 @@ image::images/Create_VM_PVC/29_Windows_2k9_Parameters.png[]
 .. Specify the name `windows`
 .. Enable the checkbox *Boot from CD* and specify the url: http://192.168.123.100:81/Windows2019.iso
 . Reduce the CD disk size to *5 GiB*.
-. Keep the `Disk source` size disk to default value *60 GiB*
+. Keep the `Disk source` size disk to the default value *60 GiB*
 . Ensure the `Mount Windows drivers disk` is enabled. This is required to install Windows systems, which will provide the drivers for VirtIO.
 
-. Press *Next* after filling the parameters.
+. Press *Next* after filling in the parameters.
 +
 image::images/Create_VM_PVC/30_Windows_2k9_Parameters_Filled.png[]
 
@@ -377,15 +377,15 @@ image::images/Create_VM_PVC/32_Windows_2k9_Provisioning.png[]
 image::images/Create_VM_PVC/33_Windows_2k9_Console.png[]
 +
 [NOTE]
-It is not needed for this workshop to wait for the installation to complete. You can continue to the next module.
+It is not necessary for this workshop to wait for the installation to complete. You can continue to the next module.
 +
 [IMPORTANT]
 The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
 
 == Summary
 
-In this lab, you have created a VM using a pre-configured PVC provided by the OpenShift Virtualization. You then explored the VM properties and connected to your VM using the built-in console.
+In this lab, you have created a VM using a pre-configured PVC provided by OpenShift Virtualization. You then explored the VM properties and connected to your VM using the built-in console.
 
-You then created a new Windows VM using a ISO disk image from a location on the network.
+You then created a new Windows VM using an ISO disk image from a location on the network.
 
-You may continue to the next lab, _Virtual Machine Customization Lab_, where you will customize the VM during creation and you will be able to manage the VM.
+You may continue to the next lab, _Virtual Machine Customization Lab_, where you will customize the VM during creation, and you will be able to manage the VM.
