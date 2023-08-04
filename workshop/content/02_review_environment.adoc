@@ -7,17 +7,17 @@
 
 == Introduction
 
-In this lab, you will review the environment to be used during this Workshop.
+In this lab, you will review the environment used during this Workshop.
 
 .Goals
 * Explore the nodes and machines in your *Red Hat OpenShift Container Platform* cluster
 // * Learn the basic concepts of *Red Hat OpenShift Container Platform*
 
-In this section you will explore the Red Hat OpenShift Container Platform environment that has been provided for you. This environment runs on Bare Metal hosts in the Equinix cloud. You will understand how the nodes in this cluster are configured and which hardware capabilities they have.
+In this section, you will explore the Red Hat OpenShift Container Platform environment provided for you. This environment runs on Bare Metal hosts in the Equinix cloud. You will understand how the nodes in this cluster are configured and which hardware capabilities they have.
 
 === Supported Platforms
 
-* Today OpenShift Virtualization is fully supported with self-managed _bare metal servers_ on-premises or at a simliar location, such as a co-lo. The lab you're using today is an OpenShift cluster deployed to Equnix.
+* Today OpenShift Virtualization is fully supported with self-managed _bare metal servers_ on-premises or at a similar location, such as a co-lo. The lab you're using today is an OpenShift cluster deployed to Equinix.
 
 * Amazon Web Services (AWS) bare metal instances are tech preview. See link:https://access.redhat.com/articles/6409731[Deploy OpenShift Virtualization on AWS Bare Metal Nodes for details]. 
 
@@ -53,15 +53,15 @@ If your cluster uses worker nodes with different CPUs, e.g. Intel and AMD, live 
 
 == Review Red Hat OpenShift Cluster
 
-When deployed using the installer provisoined infrastructure (IPI) method, OpenShift uses https://metal3.io/[Metal3] to manage the hardware using the out-of-band management controller. This results in the hardware being represented in three different ways in the cluster:
+When deployed using the installer provisioned infrastructure (IPI) method, OpenShift uses https://metal3.io/[Metal3] to manage the hardware using the out-of-band management controller. This results in the hardware being represented in three different ways in the cluster:
 
-. https://docs.openshift.com/container-platform/4.13/nodes/index.html[`Node`] - The node as viewed and used by the Kubernetes scheduler. This is the object which represents the usable resources in the cluster.
+. https://docs.openshift.com/container-platform/4.13/nodes/index.html[`Node`] - The node is viewed and used by the Kubernetes scheduler. This is the object which represents the usable resources in the cluster.
 . https://docs.openshift.com/container-platform/4.13/machine_management/index.html[`Machine`] - An object managed by an infrastructure provider. In this lab, and when using OpenShift Virtualization, this is a physical server that is abstracted by the Metal3 Operator. These are grouped and managed as a set via the `MachineSet` paradigm.
 . `BareMetalHost` - This is the lowest level and direct interaction with the management of the physical server.
 
 === Review Nodes and Machines
 
-Almost every interaction with Red Hat OpenShift can be done in the OpenShift Console. The console is a full featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system.
+Almost every interaction with Red Hat OpenShift can be done in the OpenShift Console. The console is a full-featured web application that allows administrators and users alike to use the platform in a guided manner. Wizards are provided for most tasks which makes it easy to administer the system.
 
 // WKTBD: Replace with actual password from variable
 . Navigate to %ocp_url% and login with user `admin` and the password `%ocp_password%`.
@@ -101,7 +101,7 @@ During installation, the *Control Plane* nodes are provisioned (that is why the 
 +
 image::images/Install/Worker0_BMhost.png[]
 +
-The information shown is similar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the bare metal node. Using the *Actions* menu is possible to manage aspects of the bare metal host, such as restarting or stopping the system using `BMC`.
+The information shown is similar to the *Nodes* one, with the exception is providing information related to the hardware and the physical status of the bare metal node. Using the *Actions* menu, it is possible to manage aspects of the bare metal host, such as restarting or stopping the system using `BMC`.
 
 . Explore the other tabs in the interface to see more details about the hosts, including the network interfaces and disks. Additionally, the host can be *Deprovisioned*, which will result in it being removed from the cluster, RHCOS removed, and the machine marked as ready to configure.
 
