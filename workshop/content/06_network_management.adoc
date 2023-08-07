@@ -7,10 +7,10 @@
 
 == Introduction to Network Management
 
-By default, all virtual machines are attached to the OpenShift software-defined network (SDN), which enabls access from other workloads on the OpenShift cluster, including other VMs and any OpenShift native applications.
+By default, all virtual machines are attached to the OpenShift software-defined network (SDN), which enables access from other workloads on the OpenShift cluster, including other VMs and any OpenShift native applications.
 
-* The SDN provides additional features for abstracting, connecting, and exposing applications in a controlled manner, whether they're deployed as VMs or Pods in the cluster. These include the `Service` and `Route` features of OpenShift.
-* OpenShift's network policy engine allows the VM user or administrator to create rules which allow, or deny, network traffic to and from individual VMs or entire projects/namespaces.
+* The SDN provides additional features for abstracting, connecting, and exposing applications in a controlled manner, whether deployed as VMs or Pods in the cluster. These include the `Service` and `Route` features of OpenShift.
+* OpenShift's network policy engine allows the VM user or administrator to create rules which allow or deny network traffic to and from individual VMs or entire projects/namespaces.
 
 However, virtual machines may also connect directly to one or more external networks, such as VLANs, when needed. This is in addition to the SDN, which means that, for example, the administrator can connect to the VM from an external IP address, but the application communicates across the SDN with other VMs hosted by OpenShift Virtualization.
 
@@ -19,7 +19,7 @@ At a high level, this is done by configuring the host networking, such as creati
 // WKTBD: Maybe add some NetworkPolicy (there is a web console wizard available now in 4.13).
 
 [NOTE]
-The OpenShift environment has alreay been configured with a Linux Bridge on each compute node which your virtual machines will connect to, thus allowing for easy connectivy with/from outside network resources.
+The OpenShift environment has already been configured with a Linux Bridge on each compute node your virtual machines will connect to, thus allowing for easy connectivity with/from outside network resources.
 
 .Goals
 * Create a network attachment definition
@@ -30,7 +30,7 @@ The OpenShift environment has alreay been configured with a Linux Bridge on each
 In order to use the Linux Bridge with your VM you need to create a *Network Attachment Definition*. This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the `default` project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own Vms. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
 
 [NOTE]
-Due to time constraints, the host network has already been configured in this lab. If you want to lean more about the host networking, along with how to view and manage the configuration, please use the NMState documentation found https://docs.openshift.com/container-platform/4.13/networking/k8s_nmstate/k8s-nmstate-observing-node-network-state.html[here].
+Due to time constraints, the host network has already been configured in this lab. If you want to learn more about the host networking, along with how to view and manage the configuration, please use the NMState documentation found https://docs.openshift.com/container-platform/4.13/networking/k8s_nmstate/k8s-nmstate-observing-node-network-state.html[here].
 
 . Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
 +
@@ -49,11 +49,11 @@ Select project `vmexamples`.
 image::images/Networking/02_NAD_Create.png[]
 +
 [NOTE]
-The form above has an input for `VLAN Tag Number`, which is used when connecting to a network that needs to have a VLAN tag assigned. This lab is using an untagged network, so no VLAN number is required here.
+The form above has an input for `VLAN Tag Number`, which is used when connecting to a network that needs to have a VLAN tag assigned. This lab uses an untagged network, so no VLAN number is required here.
 +
 A single Linux Bridge on the host can have many different VLANs. In this scenario, you only need to create a Network Attachment Definiton for each one, not a separate host interface and bridge.
 
-. Examine the details of the network attachment definition. Because this was created in the `vmexamples` project, it will not be avaialble in other projects.
+. Examine the details of the network attachment definition. Because this was created in the `vmexamples` project, it will not be available in other projects.
 +
 image::images/Networking/03_NAD_Created.png[]
 
@@ -65,11 +65,11 @@ image::images/Networking/04_VM_Network_Tab.png[]
 
 . Click *Add Network Interface*, complete the form as shown, then click *Save*.
 +
-Because this is a bridge connecting to the external network, we don't need to rely on any OpenShift features or capablities to enable access, such as masquerade (NAT) for the virtual machines using the network. As a result, *type* should be `Bridge` here.
+Because this is a bridge connecting to the external network, we don't need to rely on any OpenShift features or capabilities to enable access, such as masquerade (NAT) for the virtual machines using the network. As a result, *type* should be `Bridge` here.
 +
 image::images/Networking/05_VM_Network_Attach.png[]
 
-. Use the *Actions* menu to restart the VM. After rebooting, navigate to *Console* tab:
+. Use the *Actions* menu to restart the VM. After rebooting, navigate to the *Console* tab:
 +
 image::images/Networking/06_VM_Network_Console.png[]
 +
@@ -78,7 +78,7 @@ The `eth1` interface obtains an IP address from the flat network (`192.168.3.x/2
 
 . (Optional) Verify external connectivity of the VM using the bastion host. Connect to the host via SSH as provided in the lab environment materials shared at the start of this workshop.
 +
-.. Open a terminal pressing the right-top icon:
+.. Open a terminal by pressing the right-top icon:
 +
 image::images/OCP_Terminal_Icon.png[]
 
@@ -105,4 +105,4 @@ SSH-2.0-OpenSSH_8.7
 
 == Summary
 
-In this lab, you connected a VM to an external layer 2 network using a Linux bridge so that it is directly accessible form outside the OpenShift cluster.
+In this lab, you connected a VM to an external layer 2 network using a Linux bridge so that it is directly accessible from outside the OpenShift cluster.
