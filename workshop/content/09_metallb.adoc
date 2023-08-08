@@ -22,7 +22,7 @@ In this lab, you will review the MetalLB operator and expose services outside of
 * Expose service externally
 endif::[]
 
-Using MetalLB is valuable when you have a bare-metal cluster, or a virtual infrastructure that is treated like bare metal, and you want to ensure fault-tolerant access to an application through an external IP address.
+Using MetalLB is valuable when you have a bare-metal cluster or a virtual infrastructure that is treated like bare-metal, and you want to ensure fault-tolerant access to an application through an external IP address.
 
 For MetalLB to meet this need, you must configure your networking infrastructure to ensure that the network traffic for the external IP address is routed from clients to the host network for the cluster. 
 
@@ -45,9 +45,9 @@ image::images/MetalLB/00_layer2.png[]
 
 === Layer 3 (BGP) mode
 
-In BGP mode, by default each speaker pod advertises the load balancer IP address for a service to each BGP peer. It is also possible to advertise the IPs coming from a given pool to a specific set of peers by adding an optional list of BGP peers. BGP peers are commonly network routers that are configured to use the BGP protocol. When a router receives traffic for the load balancer IP address, the router picks one of the nodes with a speaker pod that advertised the IP address. The router sends the traffic to that node. After traffic enters the node, the service proxy for the CNI network plugin distributes the traffic to all the pods for the service.
+In BGP mode, by default, each speaker pod advertises the load balancer IP address for a service to each BGP peer. It is also possible to advertise the IPs coming from a given pool to a specific set of peers by adding an optional list of BGP peers. BGP peers are commonly network routers that are configured to use the BGP protocol. When a router receives traffic for the load balancer IP address, the router picks one of the nodes with a speaker pod that advertised the IP address. The router sends the traffic to that node. After traffic enters the node, the service proxy for the CNI network plugin distributes the traffic to all the pods for the service.
 
-If a node becomes unavailable, the router then initiates a new connection with another node that has a speaker pod which is advertising the load balancer IP address.
+If a node becomes unavailable, the router then initiates a new connection with another node that has a speaker pod that is advertising the load balancer IP address.
 
 image::images/MetalLB/00_bgp.png[]
 
@@ -106,7 +106,7 @@ endif::[]
 
 === Define IP AddressPool
 
-For this lab we will use the same network where the OpenShift Cluster nodes are located (`192.168.123.0/24`) and for this exercise we will reserve the IP range `192.168.123.200-192.168.123.250` to be used for load balanced services in the OpenShift cluster.
+For this lab, we will use the same network where the OpenShift Cluster nodes are located (`192.168.123.0/24`) and for this, exercise we will reserve the IP range `192.168.123.200-192.168.123.250` to be used for load-balanced services in the OpenShift cluster.
 
 . Switch to project `metallb-system`
 
@@ -122,9 +122,9 @@ image::images/MetalLB/09_MetalLB_IPAddressPool_Defined.png[]
 
 === Configure Layer2 mode
 
-For this lab we will use MetalLB in layer2 mode. 
+For this, lab we will use MetalLB in layer2 mode. 
 
-. Switch to the *L2Advertisement* tab and pressI know you are on the road, have you ever cloned a git repo, and the content you are looking at on the web page, doesn't match the file in front of you, even with everything synced? *Create L2Advertisement*
+. Switch to the *L2Advertisement* tab and press *Create L2Advertisement*
 
 . Indicate the name `l2-adv-webapp` and under section _ipaddressPools_ specify the value `ip-addresspool-webapp` as is shown:
 +
@@ -134,7 +134,7 @@ image::images/MetalLB/10_MetalLB_L2Advertisement.png[]
 
 == Expose the database node externally
 
-The VM migrated from VMWare is accessible currently from inside the cluster using the service created in the previous module. In this task you will expose the port 3306 outside of the cluster.
+The VM migrated from VMWare is currently accessible from inside the cluster using the service created in the previous module. In this task, you will expose the port 3306 outside of the cluster.
 
 . Navigate to *Networking* -> *Services* and select the project `vmexamples`
 +
@@ -166,7 +166,7 @@ Notice the `type` indicated is `LoadBalancer`. Since this cluster has MetalLB in
 +
 image::images/MetalLB/12_Service_created.png[]
 
-. To verify connectivity to the database service via the external IP, open the web terminal clicking in the following icon in the right-top part.
+. To verify connectivity to the database service via the external IP, open the web terminal by clicking the following icon in the right-top part.
 +
 image::images/OCP_Terminal_Icon.png[]
 
@@ -190,4 +190,4 @@ image::images/OCP_Terminal.png[]
 
 == Summary 
 
-MetalLB is a straightforward and simple solution for baremetal, on-premises deployments to expose applications outside of the cluster, without the need to configure physical networks with NMstate or multus.
+MetalLB is a straightforward and simple solution for bare-metal, on-premises deployments to expose applications outside of the cluster, without the need to configure physical networks with NMstate or multus.
