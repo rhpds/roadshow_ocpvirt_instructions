@@ -39,7 +39,7 @@ The following prerequisites apply to all migrations:
 * VM names must contain only lowercase letters (a-z), numbers (0-9), or hyphens (-), up to a maximum of 253 characters. The first and last characters must be alphanumeric. The name must not contain uppercase letters, spaces, periods (.), or special characters.
 * VM names must not duplicate the name of an existing VM in the OpenShift Virtualization environment.
 
-The *Migration Toolkit for Virtualization* will automatically assign a new name to a VM that does not comply with the rules. If this happens, MTV will automatically generates a new VM nameto allow a migration to proceed smoothly.
+The *Migration Toolkit for Virtualization* will automatically assign a new name to a VM that does not comply with the rules. If this happens, MTV will automatically generate a new VM name to allow the migration to proceed smoothly.
 
 == Migrating Virtual Machines from VMware
 
@@ -47,12 +47,12 @@ A three-tier application has been deployed on VMware for you to migrate to OpenS
 
 The application consists of the following four virtual machines:
 
-* One proxy system redirecting traffic to the web servers
+* One proxy system that redirects traffic to the web servers
 * Two Microsoft Windows servers with IIS hosting a PHP application connecting to the database
 * One Linux system running a MariaDB database
 
 // WKTBD: Replace with actual link for each student
-Application is access from the following link: http://webapp.vc.opentlc.com/
+The application is accessible from the following link: http://webapp.vc.opentlc.com/
 
 You will migrate three of the four virtual machines - you will not need to migrate the proxy (load balancer) VM because OpenShift handles network traffic and load balancing natively for VMs connected to the SDN.
 
@@ -69,7 +69,7 @@ You will migrate three of the four virtual machines - you will not need to migra
 image::images/MTV/100_vSphere_VM_List.png[]
 +
 [NOTE]
-The VMs with suffix `_running` are the active ones. As for the migration have to be stopped, a clone of the VMs were created for the migration. Those VMs are the ones without that suffix.
+The VMs with the suffix `_running` are the active ones. As for the migration have to be stopped, a clone of the VMs were created for the migration. Those VMs are the ones without that suffix.
 
 . Review Segment navigating link:https://portal.vc.opentlc.com/ui/app/dvportgroup;nav=n/urn:vmomi:DistributedVirtualPortgroup:dvportgroup-1916:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/ports[to this link^]
 +
@@ -102,7 +102,7 @@ However, you will need to register the source vCenter system to the Migration To
 
 
 
-. By default, there is a provider called `host` which represents the *OpenShift Virtualization* as a target platform
+. By default, there is a provider called `host` which represents *OpenShift Virtualization* as a target platform
 +
 image::images/MTV/92_MTV_Provider_list.png[]
 
@@ -131,13 +131,13 @@ Now MTV knows about your VMware vSphere environment and can connect to it.
 
 Storage and networking are managed differently in VMware vSphere and Red Hat OpenShift. Therefore it is necessary to create a (simple) mapping from the source datastores and networks in VMware vSphere to the equivalent in OpenShift. This mapping will then be used to translate the VMware vSphere network and storage definitions to OpenShift network and storage definitions.
 
-These only need to be configured once and are then reused subsequent VM Migration Plans.
+These only need to be configured once and are then reused in subsequent VM Migration Plans.
 
 . Navigate in the left menu to *Migration* -> *NetworkMaps for virtualization* and press *Create NetworkMap*
 +
 image::images/MTV/96_MTV_NetworkMaps.png[]
 
-. Fill the following information in the appeared dialog. Press *Create*.
+. Fill in the following information in the appeared dialog. Press *Create*.
 .. *Name*: `mapping-segment`
 .. *Source provider*: `vmware`
 .. *Target provider*: `host`
@@ -154,7 +154,7 @@ image::images/MTV/98_List_VMWARE_Mapping_Network.png[]
 +
 image::images/MTV/99_MTV_StorageMaps.png[]
 
-. Fill the following information. Press *Create*.
+. Fill in the following information. Press *Create*.
 .. *Name*: `mapping-datastore`
 .. *Source provider*: `vmware`
 .. *Target provider*: `host`
@@ -169,7 +169,7 @@ image::images/MTV/101_List_VMWARE_Mapping_Storage.png[]
 
 === Create a Migration Plan
 
-Now that you have the virtualization provider and the two mappings (network & storage) you can create a Migration Plan - this plan selects which VMs to migrate from VMware vSphere to Red Hat OpenShift Virtualization and how to execute the migration (cold / warm, network mapping, storage mapping, pre- / post-hooks, etc.).
+Now that you have the virtualization provider and the two mappings (network & storage) you can create a Migration Plan - this plan selects which VMs to migrate from VMware vSphere to Red Hat OpenShift Virtualization and how to execute the migration (cold/warm, network mapping, storage mapping, pre-/post-hooks, etc.).
 
 . Navigate in the left menu to *Migration* -> *Plans for virtualization* and press *Create plan*
 +
@@ -205,7 +205,7 @@ image::images/MTV/56_Storage_VMWARE_Plan.png[]
 +
 image::images/MTV/57_Finish_VMWARE_Plan.png[]
 
-. Ensure the status for the plan is *Ready*
+. Ensure the status of the plan is *Ready*
 +
 image::images/MTV/58_Ready_VMWARE_Plan.png[]
 
@@ -217,18 +217,18 @@ image::images/MTV/59_Completed_VMWARE_Plan.png[]
 +
 [IMPORTANT]
 ====
-Having many participants performing the same task in parallel can cause this task perform slower than in a real environment. Please be patient.
+Having many participants performing the same task in parallel can cause this task to perform slower than in a real environment. Please be patient.
 ====
 
 === Review and configure migrated Virtual Machines
 
-Your VMs have now been migrated and can be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would have in VMware vCenter.
+Your VMs have now been migrated and can be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would in VMware vCenter.
 
 However, the VMs are not connected to each other yet - this is because we connected the VMs to the SDN, which works a little bit differently than the external network the VMs were previously connected to.
 
-A load balancer on OpenShift is called a *Service*. You will create this shortly. But the service selects the recipients of the traffic that it load balances via labels assigned to the targets. Currently the VMs do not have a label assigned yet.
+A load balancer on OpenShift is called a *Service*. You will create this shortly. But the service selects the recipients of the traffic that it load balances via labels assigned to the targets. Currently, the VMs do not have a label assigned yet.
 
-In order to successfully assocaite the  VMs with the Service, we need to do the following:
+In order to successfully associate the  VMs with the Service, we need to do the following:
 
 * Add a label to the VMs. We will use the same label for both Windows IIS servers because they are both behind the same load balancer.
 * Create the service to make the two Windows IIS servers available for other workloads on the cluster. OpenShift will automatically make the load balancer internally accessible using the name of the Service as the DNS name.
@@ -285,7 +285,7 @@ spec:
 
 . Press *Create*.
 
-. Now the Windows IIS are accessible from within the OpenShift cluster. Other virtual machines are able to access them using the DNS name `webapp.vmexamples`. However, since these web servers are the front end to an externally accessible appliaction, we will expose them using a *Route*.
+. Now the Windows IIS are accessible from within the OpenShift cluster. Other virtual machines are able to access them using the DNS name `webapp.vmexamples`. However, since these web servers are the front end to an externally accessible application, we will expose them using a *Route*.
 +
 Navigate to *Networking* -> *Routes* in the left navigation menu. Press *Create Route* and fill the following information:
 +
@@ -296,7 +296,7 @@ Navigate to *Networking* -> *Routes* in the left navigation menu. Press *Create 
 +
 [NOTE]
 ====
-OpenShift can automatically (re)encrypt traffic entering the cluster via a Route, however we don't need to use TLS for this application. The *Secure Route* option should not be checked.
+OpenShift can automatically (re)encrypt traffic entering the cluster via a Route, however, we don't need to use TLS for this application. The *Secure Route* option should not be checked.
 ====
 +
 image::images/MTV/63_VMWARE_VMs_Create_Route.png[]
@@ -305,9 +305,9 @@ image::images/MTV/63_VMWARE_VMs_Create_Route.png[]
 +
 image::images/MTV/64_VMWARE_VMs_URL.png[]
 
-. When the page loads you will see an error. This is because the Windows web servers are not able to resolve the internal name `database` to connect to the database VM.
+. When the page loads, you will see an error. This is because the Windows web servers are not able to resolve the internal name `database` to connect to the database VM.
 +
-To fix the connectivity issue, we need to create another Service for the database VM so that it is discoverable by other VMs connected to the SDN. Note that because this database does *not* need to be accessible from outside of the OpenShift environment you do not need to create a route for this service.
+To fix the connectivity issue, we need to create another Service for the database VM so that it is discoverable by other VMs connected to the SDN. Note that because this database does *not* need to be accessible from outside of the OpenShift environment, you do not need to create a route for this service.
 +
 Navigate to *Networking* -> *Services* and press *Create service*. Replace the YAML with the following definition
 +
@@ -338,7 +338,7 @@ image::images/MTV/65_VMWARE_VMs_URL.png[]
 
 == Summary
 
-In addition to the Migration Toolkit for Virtualization, there are three other migration toolkits. The combination of these can be used to move many workloads into and within OpenShift clusters depending on your organiation's needs. 
+In addition to the Migration Toolkit for Virtualization, there are three other migration toolkits. The combination of these can be used to move many workloads into and within OpenShift clusters depending on your organization's needs. 
 
 * https://developers.redhat.com/products/mtr/overview[Migration Toolkit for Runtimes] - Assist and accelerate Java application modernization and migration.
 * https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/[Migration Toolkit for Applications] - Accelerate large-scale application modernization efforts to containers and Kubernetes.
@@ -346,4 +346,4 @@ In addition to the Migration Toolkit for Virtualization, there are three other m
 
 For more information about these, please reach out to your Red Hat account team.
 
-In this module you explored how to migrate virtual machines from VMware vSphere to Red Hat OpenShift Virtualization. You have migrated a web application containing two Windows systems and a Linux system. You used OpenShift features to provide networking access to the application and you learned to create services to provide access internal in the project.
+In this module, you explored how to migrate virtual machines from VMware vSphere to Red Hat OpenShift Virtualization. You have migrated a web application containing two Windows systems and a Linux system. You used OpenShift features to provide networking access to the application, and you learned to create services to provide access internal in the project.
