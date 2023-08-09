@@ -7,7 +7,7 @@
 
 == Introduction
 
-Administering and using virtual machines is more than simply creating them and customizing their configuration. As the platform administrator, we also need to be able to control the VM states and trigger live migrations so that we can balance resources, perform maintenance tasks, and reconfigure nodes.
+Administering and using virtual machines is more than simply creating and customizing their configuration. As the platform administrator, we also need to be able to control the VM states and trigger live migrations so that we can balance resources, perform maintenance tasks, and reconfigure nodes.
 
 .Goals
 
@@ -18,7 +18,7 @@ Administering and using virtual machines is more than simply creating them and c
 
 === Controlling virtual machine state
 
-As a user with permission to the virtual machine, you can stop, start, restart, pause and unpause virtual machines from the web console.
+As a user with permission to access virtual machine, you can stop, start, restart, pause, and unpause virtual machines from the web console.
 
 . In the left menu, go back to *Virtualization* -> *VirtualMachines*:
 
@@ -30,13 +30,13 @@ options:
 image::images/Pods_Migration/30_VM_Actions_List.png[]
 +
 .. *Stop*: Starts a graceful shutdown of the _Virtual Machine_.
-.. *Restart*: This will sends a signal to the operating system to reboot the _Virtual Machine_. Guest integrations are needed for this to work properly.
-.. *Pause*: The process is frozen without further access to CPU resources and I/O but the memory used by the VM at the hypervisor level will stay allocated.
+.. *Restart*: This will send a signal to the operating system to reboot the _Virtual Machine_. Guest integrations are needed for this to work properly.
+.. *Pause*: The process is frozen without further access to CPU resources and I/O, but the memory used by the VM at the hypervisor level will stay allocated.
 
 . Press *Stop* and wait till the _Virtual Machine_ is in state `Stopped`.
 +
 image::images/Pods_Migration/31_VM_Stopped.png[]
-. Clicking on *Actions* the option *Start* appears and the options *Restart* and *Pause* are greyed out. 
+. Clicking on *Actions*, the option *Start* appears, and the options *Restart* and *Pause* are greyed out. 
 +
 image::images/Pods_Migration/32_VM_Actions_List_Stopped.png[]
 
@@ -50,13 +50,13 @@ image::images/Pods_Migration/33_VM_Actions_Paused.png[]
 
 === Live Migrate a Virtual Machine
 
-In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires on `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virutalization, unlike other virtualization solutions, does not use monolithic datastores, mounted to each cluster member, that hold many VM disks for many different VMs. Instead each VM disk is stored in it's own volume that is only mounted when and where it's needed. 
+In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires on `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
 
 . Navigate to the *Details* tab to see where the worker node is running:
 +
 image::images/Pods_Migration/17_VM_Info_Node.png[]
 
-. Using the menu *Actions* press *Migrate*
+. Using the menu *Actions*, press *Migrate*
 +
 image::images/Pods_Migration/19_VM_Dialog_Migrate.png[]
 
@@ -91,4 +91,4 @@ image::images/Pods_Migration/37_VM_Resources_Warning.png[]
 
 == Summary
 
-In this lab, we explored virtual machine state management tasks and executed a live migration of that VM. Both of these are common, and necessary, tasks as platform administrators.
+In this lab, we explored virtual machine state management tasks and executed a live migration of that VM. Both of these are common and necessary tasks as platform administrators.
