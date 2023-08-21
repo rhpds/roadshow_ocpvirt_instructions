@@ -28,6 +28,6 @@ modules:
         exit_sign: Migrating Virtual Machines
     08_migrate_vms:
         name: Migrating Virtual Machines
-        exit_sign: MetalLB
+        exit_sign: Thanks
     12_summit_thanks:
         name: Thanks

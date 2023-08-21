@@ -1,6 +1,6 @@
 :preinstall_operators: %preinstall_operators%
 
-== Welcome to the Red Hat OpenShift Virtualization Roadshow
+== Welcome to the Red Hat OpenShift Virtualization Lab
 
 = Welcome
 
