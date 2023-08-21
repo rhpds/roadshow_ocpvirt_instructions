@@ -1,0 +1,5 @@
+== Thanks for attending the OpenShift Virtualization Lab at Red Hat Summit Connect
+
+Thank you for joining us at Red Hat Summit Connect 2023!
+
+If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].

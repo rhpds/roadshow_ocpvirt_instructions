@@ -1,0 +1,46 @@
+:preinstall_operators: %preinstall_operators%
+
+== Welcome to the Red Hat OpenShift Virtualization Roadshow
+
+= Welcome
+
+Welcome to Red Hat Summit 2023 and thank you for taking the OpenShift Virtualization Lab!
+
+OpenShift Virtualization enables you to bring virtual machines onto a modern, Kubernetes-based infrastructure, allowing you to bring virtualized applications and services to a single platform - Red Hat OpenShift. OpenShift enables the development and delivery of new applications as well as the modernization of existing ones and has the capability to create applications that consist of virtual machines, containers, and serverless - all managed together using Kubernetes-native tools and paradigms.
+
+== What is OpenShift Virtualization?
+
+* OpenShift Virtualization is a feature of Red Hat OpenShift; it is not an add-on or a separate product and is included with all entitlements.
+* All current and future subscribers receive OpenShift Virtualization as part of their OpenShift subscription. It has been generally available since OpenShift 4.5.
+* OpenShift Virtualization is based on the “container-native virtualization” technology being developed upstream under the KubeVirt project, a sandbox project in the Cloud Native Computing Foundation (CNCF). 
+* It leverages the Red Hat Enterprise Linux KVM hypervisor, which is a mature and highly performant open-source hypervisor used by many organizations and cloud service providers globally and which has been under development for over 15 years. 
+* OpenShift Virtualization leverages the RHEL KVM hypervisor and allows the VM to be managed by Kubernetes and KubeVirt. An OpenShift Virtualization VM uses Kubernetes scheduling, network, and storage infrastructure.
+* OpenShift Virtualization includes entitlements for **unlimited virtual RHEL guests**. Guest licensing for other supported operating systems will need to be purchased separately.
+* OpenShift Virtualization is SVVP certified with Microsoft for Windows guest support per the same rules that apply to Red Hat’s other KVM virtualization offerings.
+* OpenShift Virtualization is only supported on bare metal physical servers, typically on-premises or dedicated hosting. Support for other topologies (OpenShift on virtualized infrastructure like RHV or vSphere, OpenShift on public cloud) is not supported at this time.
+
+OpenShift Virtualization allows OpenShift to deploy, manage, and connect virtual machines to an OpenShift cluster. This includes the ability to connect to and manage those VMs using Kubernetes-native methods and take advantage of OpenShift features like Pipelines, GitOps, Service Mesh, and more.
+
+== Why switch from a traditional VM platform?
+
+**Adopt cloud-native development and/or cloud-native operations:**
+Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice. Code in production mode, anywhere you choose to build. Get back to doing work that matters.
+
+**Complete app dev stack:**
+Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
+
+**Shift infrastructure spend to innovation:**
+OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
+
+**Risk mitigation:**
+With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in. 
+
+**Independent from infrastructure:**
+Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
+
+**Pure open source innovation:**
+The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+
+== Next steps
+
+If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].
