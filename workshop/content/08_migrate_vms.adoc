@@ -187,7 +187,7 @@ image::images/MTV/52_General_VMWARE_Plan.png[]
 +
 image::images/MTV/53_VM_Filter_VMWARE_Plan.png[]
 
-. On the next step select  all the VMs. Press *Next*:
+. On the next step select the three VMs: database, winweb01 and winweb02. Haproxy VM can stay unselected as previously explained. Press *Next*:
 +
 image::images/MTV/54_VM_Select_VMWARE_Plan.png[]
 
