@@ -95,7 +95,7 @@ When using `Baseboard Management Console (BMC)` it is possible to manage the nod
 +
 image::images/Install/BMHosts.png[]
 +
-During installation, the *Control Plane* nodes are provisioned (that is why the status is `Externally provisioned`) and when the control plane is ready, the *Worker* nodes are provisioned (status `Provisioned`) and joined to the cluster. While not a part of this lab, it is possible to scale up the cluster by adding new hosts using the *Add Host* button.
+During installation, the *Control Plane* nodes are provisioned by the OpenShift Container Platform installation program (that is why the status is `Externally provisioned`) and when the control plane is ready, the *Worker* nodes are provisioned by cluster itself (hence the status `Provisioned`) and joined to the cluster. While not a part of this lab, it is possible to scale up the cluster by adding new hosts using the *Add Host* button.
 
 . Click on any of the worker nodes to obtain information about the physical (bare metal) node:
 +
