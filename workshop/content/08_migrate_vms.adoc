@@ -287,7 +287,7 @@ spec:
 
 . At `webapp` Service details page locate *Pod selector* link and click it
 +
-image::images/MTV/62_01_VMWARE_VMs_podSelector.png[]
+image::images/MTV/62_00_VMWARE_VMs_podSelector.png[]
 
 . Verify the two Windows VMs are properly pointed by the Service.
 +
