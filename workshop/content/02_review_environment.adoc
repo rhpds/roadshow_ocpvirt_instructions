@@ -28,7 +28,7 @@ Installing OpenShift Virtualization on AWS bare metal instances or on IBM Cloud 
 
 === Requirements for OpenShift Virtualization
 
-Before you install OpenShift Virtualization for Red Hat OpenShift Container, make sure that your Red Hat OpenShift Container Platform cluster meets the following requirements.
+Before you install OpenShift Virtualization for Red Hat OpenShift Container Platform, make sure that your Red Hat OpenShift Container Platform cluster meets the following requirements.
 
 * CPU requirements
 ** Supported by Red Hat Enterprise Linux (RHEL) 8
