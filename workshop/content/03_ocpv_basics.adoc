@@ -388,4 +388,4 @@ In this lab, you have created a VM using a pre-configured PVC provided by OpenSh
 
 You then created a new Windows VM using an ISO disk image from a location on the network.
 
-You may continue to the next lab, _Virtual Machine Customization Lab_, where you will customize the VM during creation, and you will be able to manage the VM.
+You may continue to the next lab, _Virtual Machine Customization_, where you will customize the VM during creation, and you will be able to manage the VM.

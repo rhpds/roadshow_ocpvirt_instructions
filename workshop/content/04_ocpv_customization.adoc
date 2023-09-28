@@ -190,4 +190,4 @@ image::images/Create_VM_URL/16_Ephemeral_Disk.png[]
 
 In this lab, you created and customized a new VM from a QCOW2 image hosted at a URL. You also specified a custom password for the user `fedora` and explored other customization options.
 
-You may continue to the next lab, _VM Management Lab_.
+You may continue to the next lab, _Virtual Machine Management_.
