@@ -87,7 +87,7 @@ image::images/Create_VM_PVC/05_Create_VM_Quick_Name.png[]
 +
 image::images/Create_VM_PVC/06_Fedora_Running.png[]
 
-. After the VM is created, examine the *Events* tab to see some details of the process. If there are any issues with the creation fo the VM, they will show up on this tab as well.
+. After the VM is created, examine the *Events* tab to see some details of the process. If there are any issues with the creation of the VM, they will show up on this tab as well.
 +
 image::images/Create_VM_PVC/09_Fedora_Events.png[]
 +
@@ -151,13 +151,13 @@ image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 * Active users
 * Utilization: CPU, Memory, Storage and Network.
 
-. You can navigate to the tab *Metrics* to obtain more information about the usage, including being able to specify the time range.
+. You can navigate to the *Metrics* tab to obtain more information about the usage, including being able to specify the time range.
 +
 image::images/Create_VM_PVC/19_Fedora_Metrics.png[]
 
 ==== Examine Resources Associated with the Virtual Machine
 
-The tab *Configuration* it is the entry point to obtain information about the resources of the Virtual Machine. It includes five subtabs:
+The *Configuration* tab it is the entry point to obtain information about the resources of the Virtual Machine. It includes five subtabs:
 
 * *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction. This is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
 * *Environment*: It is possible to attach _ConfigMaps_, _Secrets_, and _Service Accounts_ as extra disks. This is useful when passing configuration data to the application(s) running in the virtual machine.
@@ -165,7 +165,7 @@ The tab *Configuration* it is the entry point to obtain information about the re
 * *Disks*: It lists the disks attached to the system and allows to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization.
 * *Scripts*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
 
-. Examine the network interfaces attached to the VM by clicking on the subtab *Network interfaces:
+. Examine the network interfaces attached to the VM by clicking on the *Network interfaces* subtab:
 +
 image::images/Create_VM_PVC/20_Network_Tab.png[]
 +
@@ -215,7 +215,7 @@ image::images/Create_VM_PVC/29_Windows_2k9_Parameters.png[]
 +
 image::images/Create_VM_PVC/30_Windows_2k9_Parameters_Filled.png[]
 
-. Switch to the tab *Scripts* and press *Edit* on the `Sysprep` section
+. Switch to the *Scripts* tab and press *Edit* on the `Sysprep` section
 +
 image::images/Create_VM_PVC/30_Windows_2k9_Scripts.png[]
 
