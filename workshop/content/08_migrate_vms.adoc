@@ -285,6 +285,14 @@ spec:
 
 . Press *Create*.
 
+. At `webapp` Service details page locate *Pod selector* link and click it
++
+image::images/MTV/62_00_VMWARE_VMs_podSelector.png[]
+
+. Verify the two Windows VMs are properly pointed by the Service.
++
+image::images/MTV/62_01_VMWARE_VMs_podSelector_verification.png[]
+
 . Now the Windows IIS are accessible from within the OpenShift cluster. Other virtual machines are able to access them using the DNS name `webapp.vmexamples`. However, since these web servers are the front end to an externally accessible application, we will expose them using a *Route*.
 +
 Navigate to *Networking* -> *Routes* in the left navigation menu. Press *Create Route* and fill the following information:
