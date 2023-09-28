@@ -18,7 +18,7 @@ Administering and using virtual machines is more than simply creating and custom
 
 === Controlling virtual machine state
 
-As a user with permission to access virtual machine, you can stop, start, restart, pause, and unpause virtual machines from the web console.
+As a user with permission to access Virtualization, you can stop, start, restart, pause, and unpause virtual machines from the web console.
 
 . In the left menu, go back to *Virtualization* -> *VirtualMachines*:
 
@@ -50,7 +50,7 @@ image::images/Pods_Migration/33_VM_Actions_Paused.png[]
 
 === Live Migrate a Virtual Machine
 
-In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires on `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
+In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
 
 . Navigate to the *Details* tab to see where the worker node is running:
 +
