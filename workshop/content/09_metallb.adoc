@@ -4,23 +4,14 @@
 
 =  MetalLB
 
-ifeval::["{preinstall_operators}" == "False"]
-In this lab, you will learn how to install the MetalLB operator, configure and expose services outside of the cluster.
-
-.Goals
-* Install Operator 
-* Configure MetalLB
-* Expose service externally
-endif::[]
 
 
-ifeval::["{preinstall_operators}" == "True"]
+
 In this lab, you will review the MetalLB operator and expose services outside of the cluster.
 
 .Goals
 * Review Operator 
 * Expose service externally
-endif::[]
 
 Using MetalLB is valuable when you have a bare-metal cluster or a virtual infrastructure that is treated like bare-metal, and you want to ensure fault-tolerant access to an application through an external IP address.
 
@@ -51,43 +42,6 @@ If a node becomes unavailable, the router then initiates a new connection with a
 
 image::images/MetalLB/00_bgp.png[]
 
-ifeval::["{preinstall_operators}" == "False"]
-
-== Install and configure the MetalLB operator
-
-. Navigate to *Operators* -> *OperatorHub* and filter for `metallb`
-+
-image::images/MetalLB/01_OperatorHub.png[]
-. Click the tile that appears and press *Install*
-+
-image::images/MetalLB/02_Operator.png[]
-
-. Review the _Custom Resources Definition_ which are going to be created and without modifying any options press *Install*
-+
-image::images/MetalLB/03_Operator_Install.png[]
-
-=== Configure Operator
-
-. Like other Operators it is required configure them after the installation. Press *View Operator* to begin.
-+
-image::images/MetalLB/04_Operator_Installed.png[]
-
-. In the next window press "Create instance" on the *MetalLB* tile
-+
-image::images/MetalLB/05_MetalLB.png[]
-
-. In the dialog that appears, scroll down and press *Create*
-+
-image::images/MetalLB/06_MetalLB_create.png[]
-
-. Wait until the `Status` column indicates that MetalLB is available
-+
-image::images/MetalLB/07_MetalLB_available.png[]
-
-endif::[]
-
-ifeval::["{preinstall_operators}" == "True"]
-
 == Review Operator
 
 . Navigate to *Operators* -> *Installed Operators*. Select *All Projects* and select *MetalLB*
@@ -101,8 +55,6 @@ image::images/MetalLB/02_Review_Operator.png[]
 . Select the tab *MetalLB* to ensure the deployment is installed and configured correctly
 +
 image::images/MetalLB/03_Review_Operator_MetalLB.png[]
-
-endif::[]
 
 === Define IP AddressPool
 
