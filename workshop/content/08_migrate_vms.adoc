@@ -97,6 +97,8 @@ MTV 2.4 and later are project/namespace aware and do not require administrator p
 . The lab is already configured with the VMWare provider named `vmware`.
 
 ////
+. Navigate in the left menu to *Migration* -> *Providers for virtualization*
+. Select project `openshift-mtv`
 
 . By default, there is a provider called `host` which represents the *OpenShift Virtualization* as a target platform
 +
