@@ -79,7 +79,7 @@ image::images/MTV/101_vSphere_Network.png[]
 +
 image::images/MTV/102_vSphere_Datastore.png[]
 
-=== Review the VMware provider to the migration toolkit
+=== Create the VMware provider to the migration toolkit
 
 The *Migration Toolkit for Virtualization* (*MTV*) uses the VMware Virtual Disk Development Kit (*VDDK*) SDK to transfer virtual disks from VMware vSphere. This VDDK has already been set up for you in this environment.
 ////
