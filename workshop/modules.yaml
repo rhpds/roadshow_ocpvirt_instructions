@@ -13,23 +13,23 @@ config:
 modules:
     01_welcome:
         name: Welcome
-    08_migrate_vms:
+    02_migrate_vms:
         name: Migrating Virtual Machines
     03_ocpv_basics:
         name: OpenShift Virtualization Basics
     04_ocpv_customization:
         name: '[Optional] Customize Virtual Machines'
-    12_windows_vm:
+    05_windows_vm:
         name: '[Optional] Windows Virtual Machines'
-    02_review_environment:
-        name: '[Optional] Bare metal OpenShift Overview'
-    06_network_management:
+    06_bare_metal:
+        name: '[Optional] Bare Metal OpenShift Overview'
+    07_network_management:
         name: '[Optional] Network Management'
-    07_storage_management:
+    08_storage_management:
         name: '[Optional] Storage Management'
-    10_backup_restore:
+    09_backup_restore:
         name: '[Optional] Backup and Restore'
-    13_service_route:
+    10_service_route:
         name: '[Optional] Exposing apps using a Route'
-    09_metallb:
+    11_metallb:
         name: '[Optional] Exposing apps using MetalLB'
