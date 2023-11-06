@@ -1,7 +1,7 @@
 :scrollbar:
 :toc2:
 
-=  Migration Toolkit for Virtualization
+= Migration Toolkit for Virtualization
 
 == Introduction
 
@@ -47,35 +47,37 @@ A three-tier application has been deployed on VMware for you to migrate to OpenS
 
 The application consists of the following four virtual machines:
 
-* One proxy system that redirects traffic to the web servers
+* One HAproxy system that redirects traffic to the web servers
 * Two Microsoft Windows servers with IIS hosting a PHP application connecting to the database
 * One Linux system running a MariaDB database
 
 // WKTBD: Replace with actual link for each student
 The application is accessible from the following link: http://webapp.vc.opentlc.com/
 
-You will migrate three of the four virtual machines - you will not need to migrate the proxy (load balancer) VM because OpenShift handles network traffic and load balancing natively for VMs connected to the SDN.
+You will migrate three of the four virtual machines - you will not need to migrate the HAproxy (load balancer) VM because OpenShift handles network traffic and load balancing natively for VMs connected to the SDN using a `Service`.
 
 === Review the VMware environment
 
+To help understand the process of mapping resources, such as datastores and port groups, from vSphere into OpenShift's equivalents, network attachment definitions and storage classes, let's begin by reviewing the source environment for the migrations.
+
 // WKTBD: Replace with link to student's individual account
-. Navigate to link:https://portal.vc.opentlc.com/ui/app/folder;nav=v/urn:vmomi:Folder:group-d1:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[https://portal.vc.opentlc.com^]
+. Navigate to vCenter via link:https://portal.vc.opentlc.com/ui/app/folder;nav=v/urn:vmomi:Folder:group-d1:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[https://portal.vc.opentlc.com^]
 
 // WKTBD: replace with student's credentials
 . Login with the user `%vcenter_user%@vc.opentlc.com` and the password `%vcenter_password%`
 
-. Review the existing VMs
+. By default you'll see the VMs and Folders view, where you can see the four VMs representing the application.
 +
 image::images/MTV/100_vSphere_VM_List.png[]
 +
 [NOTE]
 The VMs with the suffix `_running` are the active ones. As for the migration have to be stopped, a clone of the VMs were created for the migration. Those VMs are the ones without that suffix.
 
-. Review Segment navigating link:https://portal.vc.opentlc.com/ui/app/dvportgroup;nav=n/urn:vmomi:DistributedVirtualPortgroup:dvportgroup-1916:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/ports[to this link^]
+. Change to the networks view (or click link:https://portal.vc.opentlc.com/ui/app/dvportgroup;nav=n/urn:vmomi:DistributedVirtualPortgroup:dvportgroup-1916:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/ports[ this link^]), then expand the tree to view the port group used by the virtual machines. Note that the name is `segment-migrating-to-ocpvirt`.
 +
 image::images/MTV/101_vSphere_Network.png[]
 
-. Review storage navigating link:https://portal.vc.opentlc.com/ui/app/datastore;nav=s/urn:vmomi:Datastore:datastore-48:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[to this link^]
+. Finally, review the datastore by browsing to the datastores view (or using link:https://portal.vc.opentlc.com/ui/app/datastore;nav=s/urn:vmomi:Datastore:datastore-48:ee1bef3e-6179-4c1f-9d2a-004c7b0df4e5/vms/vms[this link^]). Expand the tree to see the name of the datastore, `WorkloadDatastore`, and optionally browse to the *VMs* sub-tab to view the capacity used by each virtual machine.
 +
 image::images/MTV/102_vSphere_Datastore.png[]
 
@@ -127,9 +129,9 @@ image::images/MTV/95_MTV_Provider_Added.png[]
 Now MTV knows about your VMware vSphere environment and can connect to it.
 ////
 
-=== Create Storage and Network Mapping
+=== Create storage and network mappings
 
-Storage and networking are managed differently in VMware vSphere and Red Hat OpenShift. Therefore it is necessary to create a (simple) mapping from the source datastores and networks in VMware vSphere to the equivalent in OpenShift. This mapping will then be used to translate the VMware vSphere network and storage definitions to OpenShift network and storage definitions.
+Storage and networking are managed differently in VMware vSphere and Red Hat OpenShift. Therefore it is necessary to maps from the source datastores and networks in VMware vSphere to the equivalent in OpenShift so that the migration toolkit understands how to connect and place virtual machines after importing.
 
 These only need to be configured once and are then reused in subsequent VM Migration Plans.
 
@@ -187,7 +189,7 @@ image::images/MTV/52_General_VMWARE_Plan.png[]
 +
 image::images/MTV/53_VM_Filter_VMWARE_Plan.png[]
 
-. On the next step select the three VMs: database, winweb01 and winweb02. Haproxy VM can stay unselected as previously explained. Press *Next*:
+. On the next step select the three VMs: database, winweb01 and winweb02. Press *Next*:
 +
 image::images/MTV/54_VM_Select_VMWARE_Plan.png[]
 
@@ -224,125 +226,7 @@ Having many participants performing the same task in parallel can cause this tas
 
 Your VMs have now been migrated and can be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would in VMware vCenter.
 
-However, the VMs are not connected to each other yet - this is because we connected the VMs to the SDN, which works a little bit differently than the external network the VMs were previously connected to.
-
-A load balancer on OpenShift is called a *Service*. You will create this shortly. But the service selects the recipients of the traffic that it load balances via labels assigned to the targets. Currently, the VMs do not have a label assigned yet.
-
-In order to successfully associate the  VMs with the Service, we need to do the following:
-
-* Add a label to the VMs. We will use the same label for both Windows IIS servers because they are both behind the same load balancer.
-* Create the service to make the two Windows IIS servers available for other workloads on the cluster. OpenShift will automatically make the load balancer internally accessible using the name of the Service as the DNS name.
-* Make the service available outside of OpenShift by creating a *Route*.
-
-. From the OpenShift console, navigate to *Virtualization* -> *VirtualMachines* and ensure the migrated VMs successfully imported and are running.
-+
-image::images/MTV/60_VMWARE_VMs_List.png[]
-+
-[NOTE]
-====
-Ensure you select the project `vmexamples`
-====
-
-. Access to the `winweb01` and navigate to the *YAML* tab.
-. Find the `spec:` section and under the `template.metadata` add the following lines to label the VM resources:
-+
-[%nowrap]
-----
-      labels:
-        env: webapp
-----
-+
-[IMPORTANT]
-====
-Make sure to get the indentation exactly right - just like in the screenshot below.
-====
-+
-image::images/MTV/61_VMWARE_VMs_YAML.png[]
-
-. *Repeat* the process for the VM `winweb02`.
-
-. Start the _Virtual Machines_ `database`, `winweb01` and `winweb02`
-.. Ensure the VMs are properly working by accessing to the console tab of each VM.
-
-. Navigate to *Networking* -> *Services* and press *Create Service*. Remember the label that you added to your VMs (`env=webapp`)? Here you see that the Service uses that label in its selector to pick which VMs to route traffic to.
-. Replace the YAML with the following definition
-+
-[source,yaml]
-----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp
-  namespace: vmexamples
-spec:
-  selector:
-    env: webapp
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-----
-
-. Press *Create*.
-
-. At `webapp` Service details page locate *Pod selector* link and click it
-+
-image::images/MTV/62_00_VMWARE_VMs_podSelector.png[]
-
-. Verify the two Windows VMs are properly pointed by the Service.
-+
-image::images/MTV/62_01_VMWARE_VMs_podSelector_verification.png[]
-
-. Now the Windows IIS are accessible from within the OpenShift cluster. Other virtual machines are able to access them using the DNS name `webapp.vmexamples`. However, since these web servers are the front end to an externally accessible application, we will expose them using a *Route*.
-+
-Navigate to *Networking* -> *Routes* in the left navigation menu. Press *Create Route* and fill the following information:
-+
-.. *Name*: `route-webapp`
-.. *Service*: `webapp`
-.. *Target port*: `80 -> 80 (TCP)`
-. Press *Create*
-+
-[NOTE]
-====
-OpenShift can automatically (re)encrypt traffic entering the cluster via a Route, however, we don't need to use TLS for this application. The *Secure Route* option should not be checked.
-====
-+
-image::images/MTV/63_VMWARE_VMs_Create_Route.png[]
-
-. Navigate to the address shown in *Location* field
-+
-image::images/MTV/64_VMWARE_VMs_URL.png[]
-
-. When the page loads, you will see an error. This is because the Windows web servers are not able to resolve the internal name `database` to connect to the database VM.
-+
-To fix the connectivity issue, we need to create another Service for the database VM so that it is discoverable by other VMs connected to the SDN. Note that because this database does *not* need to be accessible from outside of the OpenShift environment, you do not need to create a route for this service.
-+
-Navigate to *Networking* -> *Services* and press *Create service*. Replace the YAML with the following definition
-+
-[source,yaml]
-----
-apiVersion: v1
-kind: Service
-metadata:
-  name: database
-  namespace: vmexamples
-spec:
-  selector:
-    vm.kubevirt.io/name: database
-  ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
-----
-+
-[NOTE]
-====
-In this example the service is simply using a selector of the VM's name. This is a default label that is automatically added to all VMs. Since there is only one VM that matches the selector, the service will not load balance to the database, instead we're using the Service for discovery via the internal DNS name.
-====
-
-. Reload the webapp URL and expect to get the proper result
-+
-image::images/MTV/65_VMWARE_VMs_URL.png[]
+If you want to learn more about how to use OpenShift and Kubernetes features with the application hosted in the imported virtual machines, complete the optional module "Exposing apps using a Route".
 
 == Summary
 
@@ -353,5 +237,3 @@ In addition to the Migration Toolkit for Virtualization, there are three other m
 * https://docs.openshift.com/container-platform/4.12/migration_toolkit_for_containers/about-mtc.html[Migration Toolkit for Containers] - Migrate stateful application workloads between OpenShift clusters.
 
 For more information about these, please reach out to your Red Hat account team.
-
-In this module, you explored how to migrate virtual machines from VMware vSphere to Red Hat OpenShift Virtualization. You have migrated a web application containing two Windows systems and a Linux system. You used OpenShift features to provide networking access to the application, and you learned to create services to provide access internal in the project.

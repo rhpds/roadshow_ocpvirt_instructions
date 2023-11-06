@@ -102,7 +102,3 @@ Replace the IP which the IP assigned to the node.
 ----
 SSH-2.0-OpenSSH_8.7
 ----
-
-== Summary
-
-In this lab, you connected a VM to an external layer 2 network using a Linux bridge so that it is directly accessible from outside the OpenShift cluster.

@@ -1,32 +1,29 @@
 :scrollbar:
 :toc2:
 
-== Virtual Machine Customization Lab
+= Introduction to virtual machine customization
 
 :numbered:
 
-== Introduction to Virtual Machine Customization
-
-In this lab, we will customize a virtual machine at creation, including using a customized template disk hosted on an external web server, setting resource properties, and specifying the password configured by cloud-init.
+In this lab, we will customize a virtual machine at creation, including using a customized template disk hosted on an external web server, setting resource properties, and specifying the password configured by `cloud-init`.
 
 .Goals
 * Create VM from a QCOW2 image
 * Customize a VM using the Create Virtual Machine wizard
 
-== Create Virtual Machine
+[IMPORTANT]
+====
+This section will customize a virtual machine at creation time, however if you're interested in modifying virtual machine configuration after creation, the same procedure and diaglogs apply to existing virtual machines.
+
+However, not all resources can be modified while the VM is powered on, i.e. "hot add/remove". Refer to the documentation for details about each resource type and whether it can be modified while the VM is running. Alternatively, the user interface will notify you if the VM needs to be restarted for a change to take effect.
+====
+
+== Customizing a virtual machine at creation
 
 You have already created a Fedora VM in the previous lab. This time you will customize the VM with a few different settings - for example, you will set a custom password for the `fedora` user.
 
 [NOTE]
 The `fedora` user is the default user configured by the https://fedoraproject.org/cloud/[Fedora Cloud image] used in this workshop. Templates created and used by your organization may use a different username or might use cloud-init or SysPrep to automatically join the guest operating system to an identity provider.
-
-. Navigate to *Virtualization* -> *Overview*:
-+
-image::images/Create_VM_URL/00_Left_Menu.png[]
-
-* Since we have created virtual machines in the previous steps, we can now see the resources used by those VMs from this dashboard.
-+
-image::images/Create_VM_URL/00_Overview.png[]
 
 . In the left menu, go back to *Virtualization* -> *VirtualMachines*:
 +
@@ -59,7 +56,6 @@ Even though this template has a disk already available, we want to import a diff
 
 +
 image::images/Create_VM_URL/01_Create_VM_Boot_Source.png[]
-
 +
 Press *Next*
 
@@ -94,6 +90,9 @@ image::images/Create_VM_URL/03_Wizard_Networking_Options.png[]
 * For a newly created NIC, you have the option of customizing the *MAC address* assigned to it. It's greyed out here because we're editing an already created NIC.
 +
 Since there are no other networks avaialble at this time, press *Cancel* to exit the dialog.
++
+[NOTE]
+If you would like to add/manage networks for virtual machines and see how to connect a virtual machine to a layer 2 (VLAN) network, choose the optional Network Management module from the workshop navigation menu.
 
 . Navigate to the *Disks* tab to see the devices allocated to the VM.
 +
@@ -110,6 +109,9 @@ image::images/Create_VM_URL/04_Wizard_Storage_settings.png[]
 * Each disk connects to the VM using an *interface*. The `VirtIO` interface is the KVM paravirtualized interface type.
 * The *StorageClass* indicates the type of storage that is backing the VM disk. This will be different for each storage provider, and some storage providers can have multiple storage classes representing different features, performance, and other capabilities.
 * *Optimized StorageProfile Settings* indicate to use the clone strategy and volume mode indicated for the storage type. These are provided by Red Hat for many CSI providers, but can also be customized for your use cases.
++
+[NOTE]
+If you would like to learn more about virtual machine storage, choose the optional Storage Management module from the workshop navigation menu.
 
 . Navigate to the *Scripts* tab. This tab is used to apply guest OS customization, such as cloud-init or Sysprep, at deployment time.
 +
@@ -118,6 +120,9 @@ image::images/Create_VM_URL/05_Wizard_Scripts.png[]
 * *cloud-init* can be configured using the GUI dialog or using a standard YAML script for more advanced configuration. In the next step, we'll customize this information
 * An *Authorized SSH key* may, optionally, be provided to allow one or more users to connect to the VM without a password. This SSH key can be stored as a `Secret` and automatically applied to new Linux VMs if desired.
 * *Sysprep* is the Microsoft Windows tool for automatically configuring new OS deployments, including setting configurations like hostname, default `Administrator` passwords, and joining an Active Directory domain.
++
+[NOTE]
+If you want to learn more about how to customize and deploy Windows virtual machines, choose the optional Windows Virtual Machines module from the workshop navigation menu.
 
 . Since this is a Fedora VM, press *Edit* in the *Cloud-init* section to specify the password `ocpVirtIsGre@t` for the user `fedora`. Click *Apply* when done.
 +
@@ -185,9 +190,3 @@ image::images/Create_VM_URL/16_Ephemeral_Disk.png[]
 
 . Using the *Actions* menu, delete the VM.
 ////
-
-= Summary
-
-In this lab, you created and customized a new VM from a QCOW2 image hosted at a URL. You also specified a custom password for the user `fedora` and explored other customization options.
-
-You may continue to the next lab, _Virtual Machine Management_.

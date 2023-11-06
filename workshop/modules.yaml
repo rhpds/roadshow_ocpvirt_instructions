@@ -13,33 +13,23 @@ config:
 modules:
     01_welcome:
         name: Welcome
-        exit_sign: Review Environment
-    02_review_environment:
-        name: Review Environment
-        exit_sign: OpenShift Virtualization Basics
-    03_ocpv_basics:
-        name: OpenShift Virtualization Basics
-        exit_sign: Virtual Machine Customization
-    04_ocpv_customization:
-        name: Virtual Machine Customization
-        exit_sign: Virtual Machine Management
-    05_vm_management:
-        name: Virtual Machine Management
-        exit_sign: Network Management
-    06_network_management:
-        name: Network Management
-        exit_sign: Storage Management
-    07_storage_management:
-        name: Storage Management
-        exit_sign: Migrating Virtual Machines
     08_migrate_vms:
         name: Migrating Virtual Machines
-        exit_sign: MetalLB
+    03_ocpv_basics:
+        name: OpenShift Virtualization Basics
+    04_ocpv_customization:
+        name: [Optional] Customize Virtual Machines
+    12_windows_vm:
+        name: [Optional] Windows Virtual Machines
+    02_review_environment:
+        name: [Optional] Bare metal OpenShift Overview
+    06_network_management:
+        name: [Optional] Network Management
+    07_storage_management:
+        name: [Optional] Storage Management
+    13_service_route:
+        name: [Optional] Exposing apps using a Route
     09_metallb:
-        name: MetalLB
-        exit_sign: Backup and Restore
+        name: [Optional] Exposing apps using MetalLB
     10_backup_restore:
-        name: Backup and Restore
-        exit_sign: Thanks
-    11_thanks:
-        name: Thanks
+        name: [Optional] Backup and Restore

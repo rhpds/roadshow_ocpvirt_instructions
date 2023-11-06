@@ -169,10 +169,6 @@ image::images/Storage/20_VM_Cloned.png[]
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
 
-== Summary
-
-In this module, you have learned the basics concepts of storage on OpenShift, as well as reviewed how OpenShift Virtualization will automatically download and create boot sources for some guest operating systems. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring a snapshot, and cloning a virtual machine.
-
 === Glossary of terms
 
 *Container Storage Interface (CSI)*: An API specification for the management of container storage across different container orchestration (CO) systems. An OpenShift cluster can have many CSI provisioners from different vendors, and each VM can use storage from multiple vendors without conflicts.

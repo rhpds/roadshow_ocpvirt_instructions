@@ -1,19 +1,16 @@
 :scrollbar:
-:toc2:
-
-= Environment Review 
+:toc2: 
 
 :numbered:
 
 == Introduction
 
-In this lab, you will review the environment used during this Workshop.
+In this lab, you will review the environment used during this workshop, including an overview of OpenShift deployed to bare metal hosts.
 
 .Goals
 * Explore the nodes and machines in your *Red Hat OpenShift Container Platform* cluster
-// * Learn the basic concepts of *Red Hat OpenShift Container Platform*
 
-In this section, you will explore the Red Hat OpenShift Container Platform environment provided for you. This environment runs on Bare Metal hosts in the Equinix cloud. You will understand how the nodes in this cluster are configured and which hardware capabilities they have.
+In this section, you will explore the Red Hat OpenShift environment provided for you. This environment runs on bare metal hosts in the Equinix cloud. You will understand how the nodes in this cluster are configured and which hardware capabilities they have.
 
 === Supported Platforms
 
