@@ -18,18 +18,18 @@ modules:
     03_ocpv_basics:
         name: OpenShift Virtualization Basics
     04_ocpv_customization:
-        name: [Optional] Customize Virtual Machines
+        name: '[Optional] Customize Virtual Machines'
     12_windows_vm:
-        name: [Optional] Windows Virtual Machines
+        name: '[Optional] Windows Virtual Machines'
     02_review_environment:
-        name: [Optional] Bare metal OpenShift Overview
+        name: '[Optional] Bare metal OpenShift Overview'
     06_network_management:
-        name: [Optional] Network Management
+        name: '[Optional] Network Management'
     07_storage_management:
-        name: [Optional] Storage Management
-    13_service_route:
-        name: [Optional] Exposing apps using a Route
-    09_metallb:
-        name: [Optional] Exposing apps using MetalLB
+        name: '[Optional] Storage Management'
     10_backup_restore:
-        name: [Optional] Backup and Restore
+        name: '[Optional] Backup and Restore'
+    13_service_route:
+        name: '[Optional] Exposing apps using a Route'
+    09_metallb:
+        name: '[Optional] Exposing apps using MetalLB'
