@@ -18,6 +18,7 @@ Additionally, there are a number of optional modules which target activites that
 
 *Virtual infrastructure administrators*
 
+* _Bare metal OpenShift overview_: Managing OpenShift nodes and resources is different than you might be used to. This module explores some aspects and concepts of OpenShift that are important if you're responsible for the server hardware.
 * _Network Management_: Virtual machines, by default, connect to the OpenShift internal software defined network. This section will demonstrate how to connect VMs to an external physical network, such as a VLAN.
 * _Storage Management_: This module will introduce you to the basics of storage on OpenShift and how OpenShift Virtualization automatically provides boot sources for some machine images. This module will also show how to perform operations with snapshots and how to clone a VM.
 * _Backup and Restore_: Protecting virtual machines, and their data, is just as important as the performance and availability. See how the OpenShift API for Data Protection (OADP) provides a storage agnostic way to protect VMs in this lab.
