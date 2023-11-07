@@ -2,18 +2,31 @@
 
 == Welcome to the Red Hat OpenShift Virtualization Roadshow
 
-OpenShift Virtualization enables you to bring virtual machines onto a modern, Kubernetes-based infrastructure. Essentially it brings virtualized applications and services to a single platform, Red Hat OpenShift. It enables the development and delivery of new applications as well as the modernization of existing ones and can create applications that consist of virtual machines, containers, and serverless - all managed together using Kubernetes-native tools and paradigms.
+OpenShift Virtualization enables you to bring virtual machines onto a modern, Kubernetes-based infrastructure. It enables the development and delivery of new applications as well as the modernization of existing ones and can create applications that consist of virtual machines, containers, and serverless functions - all managed together using Kubernetes-native tools and paradigms.
 
-Today you will learn how to use *Red Hat OpenShift Virtualization* to run your Virtual Machines. This includes creating VMs, managing your VMs, attaching the VMs to physical networks, and finally migrating VMs from an existing *VMware vCenter* environment to Red Hat OpenShift Virtualization.
+This workshop has two segments which we encourage all attendees to complete:
 
-The *Red Hat OpenShift Virtualization Roadshow* is organized in the following sections:
+* _Migrating Virtual Machines_: In this section, you will use the Migration Toolkit for Virtualization (MTV) to migrate a few VMs from an existing VMware vSphere environment to OpenShift Virtualization.
+* _OpenShift Virtualization Basics_: This lab focuses on how to create and use virtual machines with OpenShift Virtualization. It covers the most common tasks you would be expected to perform as a VM user/administrator.
 
-* *Review environment*: This section reviews the *OpenShift* installation to be used for each of the following labs.
-* *Virtual Machine Customization*: One of the most important concepts when running *Virtual Machines* is to run the VMs from an existing disk image and also have the capability to customize the VMs.
-* *Virtual Machine Management*: This section reviews some VM customization options and demonstrates how to live migrate VMs between servers.
-* *Network Attachment*: *Virtual Machines* by default, are running in the OpenShift internal *Pod network*. This section will demonstrate how to connect VMs to an external *physical network*.
-* *Storage Management*: This module will introduce you to the basics of storage on *OpenShift* and how *OpenShift Virtualization* automatically provides boot sources for machine images. This module will also show how to perform operations with snapshots and how to clone *Virtual Machines*.
-* *Migrating Virtual Machines*: In this section, you will use the Migration Toolkit for Virtualization (MTV) to migrate a few VMs from an existing  *VMWare vCenter* environment, to *OpenShift Virtualization*.
+Additionally, there are a number of optional modules which target activites that you may be interested in depending on your specific role, responsibilities, and/or what you're curious about.
+
+*Virtual machine administrators*
+
+* _Customize Virtual Machines_: One of the most important concepts when running virtual machines is to run the VMs from an existing disk image and also have the capability to customize the VMs.
+* _Windows Virtual Machines_: Microsoft Windows Server is a commonly used operating system, no virtualization solution would be complete if it wasn't supported! This lab shows one method of provisioning a Windows Server virtual machine, including customization with SysPrep.
+
+*Virtual infrastructure administrators*
+
+* _Bare metal OpenShift overview_: Managing OpenShift nodes and resources is different than you might be used to. This module explores some aspects and concepts of OpenShift that are important if you're responsible for the server hardware.
+* _Network Management_: Virtual machines, by default, connect to the OpenShift internal software defined network. This section will demonstrate how to connect VMs to an external physical network, such as a VLAN.
+* _Storage Management_: This module will introduce you to the basics of storage on OpenShift and how OpenShift Virtualization automatically provides boot sources for some machine images. This module will also show how to perform operations with snapshots and how to clone a VM.
+* _Backup and Restore_: Protecting virtual machines, and their data, is just as important as the performance and availability. See how the OpenShift API for Data Protection (OADP) provides a storage agnostic way to protect VMs in this lab.
+
+*Virtual machine users*
+
+* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the applicaton's front end to the world.
+* _Exposing apps using MetalLB_: Providing connectivity to VM-hosted applications, without putting the VM on an external L2 network, is a powerful way to manage connectivity to the application. This lab walks through the process of exposing just the database to the world, without connecting the VM to the external network.
 
 == What is OpenShift Virtualization?
 

@@ -92,9 +92,9 @@ With the VM snapshots feature, cluster administrators and application developers
 * Revert a VM to a snapshot
 * Delete an existing VM snapshot
 
-=== Operate with Snapshots
+=== Creating and using Snapshots
 
-. Navigate back to *Virtualization* -> *VirtualMachines* and select the vm `fedora02` in the project `vmexamples`
+. Navigate back to *Virtualization* -> *VirtualMachines* and select a virtual machine, for example `fedora02` in the project `vmexamples`.
 +
 image::images/Storage/09_VM_Overview.png[]
 
@@ -168,10 +168,6 @@ image::images/Storage/20_VM_Cloned.png[]
 +
 [IMPORTANT]
 The cloned VM will have the same identity as the source VM, which may cause conflicts with applications and other clients interacting with the VM. Use caution when cloning a VM connected to an external network or in the same project.
-
-== Summary
-
-In this module, you have learned the basics concepts of storage on OpenShift, as well as reviewed how OpenShift Virtualization will automatically download and create boot sources for some guest operating systems. Furthermore, you have performed tasks related to the storage to the VM, such as creating snapshots, restoring a snapshot, and cloning a virtual machine.
 
 === Glossary of terms
 

@@ -8,14 +8,14 @@
 
 There are multiple options for backup and restore of virtual machines with OpenShift Virtualization.
 
-* *OADP (OpenShift APIs for Data Protection)*: is an operator that Red Hat has created to make backup and restore APIs in the OpenShift cluster more accessible for users.
-* *Kasten K10 by Veeam*
+* https://docs.openshift.com/container-platform/4.13/backup_and_restore/application_backup_and_restore/oadp-features-plugins.html[*OADP (OpenShift APIs for Data Protection)*]: A Red Hat Operator which provides a storage agnostic method to back up and restore OpenShift objects, including virtual machines.
+* https://docs.kasten.io/latest/usage/openshift_virtualization.html[*Kasten K10 by Veeam*]
 * https://docs.trilio.io/kubernetes/appendix/backup-and-restore-virtual-machine-running-on-openshift-virtualization[*Trilio for Kubernetes*]
 * https://storware.eu/solutions/containers-backup-and-recovery/red-hat-openshift-backup-restore/[*Storware Backup and Recovery*]
 
 Additionally, many storage partners offer the ability to protect virtual machine disks using their native technology. Be sure to check with your storage and backup vendor(s) to determine compatiblity with OpenShift Virtualization.
 
-In this lab, you will review the OADP operator's configuration, perform a backup of a virtual machine, then restore it.
+This lab will use OADP to perform a virtual machine backup and restore.
 
 .Goals
 * Review Operator 
@@ -79,6 +79,10 @@ spec:
 ----
 +
 Notice that the content of this YAML indicates that any object with the labels `app: fedora02` in the namespace `vmexamples` will be backed up to the location specified in the `DataProtectionApplication` configuration.
++
+[IMPORTANT]
+If you do not have the `fedora02` VM, change the label selectors in the YAML above to match a virtual machine in your environment.
+
 
 . Wait till the `Status` column changes to `Completed`. This indicates that the virtual machine has been successfully backed up.
 +

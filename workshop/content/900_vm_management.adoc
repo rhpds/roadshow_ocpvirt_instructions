@@ -1,22 +1,50 @@
 :scrollbar:
 :toc2:
 
-= Virtual Machine State Management Lab
-
 :numbered:
 
-== Introduction
+= Virtual Machine Management
 
 Administering and using virtual machines is more than simply creating and customizing their configuration. As the platform administrator, we also need to be able to control the VM states and trigger live migrations so that we can balance resources, perform maintenance tasks, and reconfigure nodes.
 
 .Goals
 
+* Review resources for virtual machines
 * Understand how VM power states are managed using the OpenShift console
-* Live migrate a virtual machine
 
-== Virtual Machine Management
+== Examine resources associated with the virtual machine
 
-=== Controlling virtual machine state
+. From the left navigation menu, browse to *Virtualization* -> *VirtualMachines*. Ensure you're using the correct project, `vmexamples`, then click the name of one of the available virtual machines.
++
+image::images/Create_VM_PVC/54_vm_management_navigation.png[]
+
+. Click the *Configuration* tab, this is the entry point to obtain information about the resources of the Virtual Machine. 
++
+image::images/Create_VM_PVC/55_configuration_tab_nav.png[]
++
+It includes five subtabs:
++
+image::images/Create_VM_PVC/56_config_tab_nav_2.png[]
++
+* *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction. This is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
+* *Environment*: It is possible to attach _ConfigMaps_, _Secrets_, and _Service Accounts_ as extra disks. This is useful when passing configuration data to the application(s) running in the virtual machine.
+* *Network interfaces*: It shows the current network interfaces configured for the VM and add new ones.
+* *Disks*: It lists the disks attached to the system and allows to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization.
+* *Scripts*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
+
+. Examine the network interfaces attached to the VM by clicking on the *Network interfaces* subtab:
++
+image::images/Create_VM_PVC/20_Network_Tab.png[]
++
+When a VM is created, an interface on the `PodNetworking` network of type `masquerade` is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route, or Service with type load balancer. Refer to the MetalLB module of this workshop to see how to configure and expose a VM using this method.
+
+. List the disks associated with the VM:
++
+image::images/Create_VM_PVC/21_Disks_Tab.png[]
++
+In this environment, the default StorageClass, which defines the source and type of storage used for the disk, is called `ocs-storagecluster-ceph-rbd`. This storage is the default type provided by OpenShift Data Foundation (ODF). Each storage provider has different storage classes that define the characteristics of the storage backing the VM disk.
+
+== Controlling virtual machine state
 
 As a user with permission to access Virtualization, you can stop, start, restart, pause, and unpause virtual machines from the web console.
 
@@ -48,7 +76,7 @@ image::images/Pods_Migration/33_VM_Actions_Paused.png[]
 
 . Unpause the _Virtual Machine_ using *Actions* and the option *Unpause*.
 
-=== Live Migrate a Virtual Machine
+== Live Migrate a virtual machine
 
 In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
 

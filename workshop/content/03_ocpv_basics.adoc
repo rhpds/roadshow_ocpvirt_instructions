@@ -1,41 +1,12 @@
 :scrollbar:
 :toc2:
+:numbered:
 
 = OpenShift Virtualization Basics
 
-:numbered:
+This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
 
-This lab will introduce you to the basics of creating VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
-
-This lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
-
-== OpenShift Virtualization Overview Dashboard
-
-The overview dashboard provides a cluster-level view of virtual machines and resources used, along with status information for the health of OpenShift Virtualization and virtual machines. It is a useful starting point for administrators who want a quick and high-level view of what's happening with OpenShift Virtualization.
-
-. From the left navigation menu, browse to *Virtualization* -> *Overview*
-+
-image::images/Create_VM_PVC/create_overview.png[]
-+
-This overview page provides the OpenShift Virtualization administrator a global overview of the virtual machines in the cluster. A normal user would only see the VMs in his/her own project.
-+
-[NOTE]
-====
-If the `Getting started resources` panel is shown, use the links there to access more information about OpenShift virtualization, including Quick Starts which e.g. provide a guided walkthrough of how to create a VM and upload a custom boot source for your virtual machines. You can hide the panel using the three-dots menu in the upper right corner of the panel.
-
-image::images/Create_VM_PVC/create_quickstarts.png[]
-====
-
-. Review the top consumers
-+
-Scrolling down on the page shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster, there are no consumers, so there is little to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard". That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
-+
-[IMPORTANT]
-If you don't see any resources here, no VMs have been started in your lab. Revisit this page after this segment to see the overview details.
-+
-image::images/Create_VM_PVC/create_overview_consumers_png.png[]
-
-== Introduction to the Creation and Administration of VMs
+Among other things, this lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
 
 Creating virtual machines is one of the most frequently accomplished tasks for a virtualization administrator. This section will walk through the process of creating a new virtual machine using a pre-created template. As the virtualization administrator, you have the ability to create your own templates that use guest operating system disks with your organization's customizations, preferred VM sizing options, and additional customization options using cloud-init or sysprep.
 
@@ -46,29 +17,39 @@ In this lab, you become familiar with running virtual machines (VMs) on Red Hat^
 * Access the VM console
 * Gain experience using the VM console
 
-=== Create a Linux Virtual Machine
+== Create a new Project
 
-. From the left menu, navigate to *Virtualization* -> *VirtualMachines*:
+Like other objects in OpenShift, Projects, which are an abstraction for Kubnernetes namespaces, are the boundaries for permissions and other aspects of using and manaing the resources. Creating a Project is an important first step for any deployment.
+
+. Browse to *Virtualization* -> *VirtualMachines* using the left navigation menu:
 +
-image::images/Create_VM_PVC/01_Left_Menu.png[]
+image::images/Create_VM_PVC/01_Left_Menu.png[Navigation Menu,136,266]
 +
 [NOTE]
 ====
 The *Virtualization* tab is available only when Red Hat OpenShift Virtualization is installed and properly configured.
 ====
 
-. Examine the *VirtualMachines* dashboard that appears, which is currently empty because no VMs exist:
+. Examine the *VirtualMachines* dashboard that appears. There are currently several VMs listed, but are not turned on:
 +
-image::images/Create_VM_PVC/02_OCP_Virt_Dashboard.png[]
+image::images/Create_VM_PVC/51_vm_list.png[]
 
 . Before creating a VM we need to create a new project. Virtual machines are deployed to a specific project, or namespace, where, by default, users without permission to the namespace cannot access, manage, or control them. Administrators can access all projects, and therefore view all virtual machines, however regular users must be given access to projects as needed.
 +
 .. Click *Project: All Projects* and then click *Create Project*.
++
+image::images/Create_VM_PVC/50_create_new_project.png[]
 .. In the *Name* field, type `vmexamples` to name the project, then click *Create*.
 +
 image::images/Create_VM_PVC/03_Create_Project.png[]
 
-. Click *Create VirtualMachine*, and a dashboard will appear showing the available pre-defined VM templates. 
+== Create a Linux virtual machine
+
+. From the Virtual Machines inventory, click *Create VirtualMachine*
++
+image::images/Create_VM_PVC/53_create_vm_button.png[]
+
+. The wizard will appear showing the available pre-defined VM templates. 
 +
 Reviewing the list of available templates you’ll notice that some have a blue badge which indicates "Source available". These are templates which are using the automatically downloaded and stored template disks reviewed in the previous page. If you were deploying in your own environment, you have the option of preventing these from being created and/or removing those source disks, followed by creating and uploading custom disks for your organization.
 +
@@ -100,7 +81,7 @@ The IP address of the virtual machine on the software-defined network (SDN) is a
 +
 image::images/Create_VM_PVC/10_Fedora_Details.png[]
 
-==== Access Virtual Machine Console
+== Access the virtual machine console
 
 . Click the *Console* tab to access the VM's console:
 +
@@ -139,10 +120,11 @@ image::images/Create_VM_PVC/17_Fedora_CPU_Memory.png[]
 +
 image::images/Create_VM_PVC/21_Fedora01_Cloud_Init.png[]
 
-. The instance is running the guest agent to surface information for the hypervisor and coordinate tasks such as disk quiescing.
+. The instance is running the guest agent to surface information about the guest OS to the hypervsior, along with coordinating tasks such as disk quiescing for snapshots.
 +
 image::images/Create_VM_PVC/19_Fedora_Agent.png[]
-. Click the *Overview* tab to show the information obtained from the guest VM:
+
+. Click the *Overview* tab to show the information obtained from the guest VM, such as the disk utilization, along with seeing resource utlization information:
 +
 image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 +
@@ -155,237 +137,80 @@ image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 +
 image::images/Create_VM_PVC/19_Fedora_Metrics.png[]
 
-==== Examine Resources Associated with the Virtual Machine
 
-The *Configuration* tab it is the entry point to obtain information about the resources of the Virtual Machine. It includes five subtabs:
 
-* *Scheduling*: It includes advanced configuration indicating where the VM should run and the strategy to follow for eviction. This is used to configure (anti)affinity rules, configure node selectors and tolerations, and other behaviors that affect which cluster nodes the VM can be scheduled to.
-* *Environment*: It is possible to attach _ConfigMaps_, _Secrets_, and _Service Accounts_ as extra disks. This is useful when passing configuration data to the application(s) running in the virtual machine.
-* *Network interfaces*: It shows the current network interfaces configured for the VM and add new ones.
-* *Disks*: It lists the disks attached to the system and allows to add new disks to the system. If the guest is configured with the agent, it lists the filesystems and the utilization.
-* *Scripts*: This tab allows us to configure _cloud-init_ for Linux or _sys-prep_ for Microsoft Windows, including setting the commands to be executed on the first boot, such as the injection of SSH keys, installation of applications, network configuration, and more.
+== Live migrate a virtual machine
 
-. Examine the network interfaces attached to the VM by clicking on the *Network interfaces* subtab:
+In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
+
+. Navigate to the *Details* tab to see where the worker node is running:
 +
-image::images/Create_VM_PVC/20_Network_Tab.png[]
-+
-When a VM is created, an interface in the `PodNetworking` network of type `masquerade` is created by default. This connects the VM to the SDN and provides access from the VM to outside the OpenShift Cluster. Other VMs, and Pods, in the cluster can access the virtual machine using this interface. Furthermore, a VM connected to the SDN can be accessed externally using a Route or load balancer, however, that won't be covered in this workshop.
+image::images/Pods_Migration/17_VM_Info_Node.png[]
 
-. List the disks associated with the VM:
+. Using the menu *Actions*, press *Migrate*
 +
-image::images/Create_VM_PVC/21_Disks_Tab.png[]
-+
-In this environment, the default StorageClass, which defines the source and type of storage used for the disk, is called `ocs-storagecluster-ceph-rbd`. This storage is the default type provided by OpenShift Data Foundation (ODF). Each storage provider has different storage classes that define the characteristics of the storage backing the VM disk.
+image::images/Pods_Migration/19_VM_Dialog_Migrate.png[]
 
-=== Creating a Windows Virtual Machine
-
-In this segment, we will install Microsoft Windows Server 2019 using an ISO hosted on a web server. This represents one way to install an operating system to a virtual machine that takes advantage of the ability to source disks from many locations, including a web server, object storage, or other persistent volumes in the cluster.
-
-This process can be streamlined after the initial operating system installation by creating a template from the virtual machine. The specific process for preparing the guest operating system to be used as a template will vary, be sure to follow your organization's guidelines and requirements when preparing a template OS.
-
-. From the left menu, navigate to *Virtualization* -> *VirtualMachines*:
+. After a few seconds, the VM will change the status to `Migrating`. A few seconds later, it will return to the `Running` status, but on a different node. The VM has been successfully live migrated!
 +
-image::images/Create_VM_PVC/01_Left_Menu.png[]
-. It will list the VMs running in the current project.
-+
-image::images/Create_VM_PVC/25_List_VMs.png[]
-. Press on the top-right the button *Create* and select *From template*
-+
-image::images/Create_VM_PVC/26_From_Template.png[]
-. Scroll down and select *Microsoft Windows Server 2019 VM* tile.
-+
-image::images/Create_VM_PVC/27_Windows_2k9_Tile.png[]
+image::images/Pods_Migration/21_Migrated.png[]
 
-. A dialog will appear showing the default configuration related to the template.
-+
-image::images/Create_VM_PVC/28_Windows_2k9_Dialog.png[]
+== [Optional] Controlling virtual machine state
 
-. Press *Customize VirtualMachine* to specify the parameters to be used for the provisioning.
-+
-image::images/Create_VM_PVC/29_Windows_2k9_Parameters.png[]
+As a user with permission to access virtual machines, you can stop, start, restart, pause, and unpause virtual machines from the web console.
 
-. In this dialog:
-.. Specify the name `windows`
-.. Enable the checkbox *Boot from CD* and specify the url: http://192.168.123.100:81/Windows2019.iso
-. Reduce the CD disk size to *5 GiB*.
-. Keep the `Disk source` size disk to the default value *60 GiB*
-. Ensure the `Mount Windows drivers disk` is enabled. This is required to install Windows systems, which will provide the drivers for VirtIO.
+. In the left menu, go back to *Virtualization* -> *VirtualMachines*:
 
-. Press *Next* after filling in the parameters.
-+
-image::images/Create_VM_PVC/30_Windows_2k9_Parameters_Filled.png[]
+. Select the _Virtual Machine_ `fedora02` from the list.
 
-. Switch to the *Scripts* tab and press *Edit* on the `Sysprep` section
+. Press the top-right dropdown, *Actions*, to list the available 
+options:
 +
-image::images/Create_VM_PVC/30_Windows_2k9_Scripts.png[]
+image::images/Pods_Migration/30_VM_Actions_List.png[]
++
+.. *Stop*: Starts a graceful shutdown of the _Virtual Machine_.
+.. *Restart*: This will send a signal to the operating system to reboot the _Virtual Machine_. Guest integrations are needed for this to work properly.
+.. *Pause*: The process is frozen without further access to CPU resources and I/O, but the memory used by the VM at the hypervisor level will stay allocated.
 
-. Fill the `autounattend.xml` form with the following code
+. Press *Stop* and wait till the _Virtual Machine_ is in state `Stopped`.
 +
-[source,xml,role=copy]
-----
-<?xml version="1.0" encoding="utf-8"?>
-<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:schemas-microsoft-com:unattend">
-  <settings pass="windowsPE">
-    <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <DiskConfiguration>
-        <Disk wcm:action="add">
-          <CreatePartitions>
-            <CreatePartition wcm:action="add">
-              <Order>1</Order>
-              <Extend>true</Extend>
-              <Type>Primary</Type>
-            </CreatePartition>
-          </CreatePartitions>
-          <ModifyPartitions>
-            <ModifyPartition wcm:action="add">
-              <Active>true</Active>
-              <Format>NTFS</Format>
-              <Label>System</Label>
-              <Order>1</Order>
-              <PartitionID>1</PartitionID>
-            </ModifyPartition>
-          </ModifyPartitions>
-          <DiskID>0</DiskID>
-          <WillWipeDisk>true</WillWipeDisk>
-        </Disk>
-      </DiskConfiguration>
-      <ImageInstall>
-        <OSImage>
-          <InstallFrom>
-            <MetaData wcm:action="add">
-              <Key>/IMAGE/NAME</Key>
-              <Value>Windows Server 2019 SERVERSTANDARD</Value>
-            </MetaData>
-          </InstallFrom>
-          <InstallTo>
-            <DiskID>0</DiskID>
-            <PartitionID>1</PartitionID>
-          </InstallTo>
-        </OSImage>
-      </ImageInstall>
-      <UserData>
-        <AcceptEula>true</AcceptEula>
-        <FullName>Administrator</FullName>
-        <Organization>My Organization</Organization>
-      </UserData>
-      <EnableFirewall>false</EnableFirewall>
-    </component>
-    <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <SetupUILanguage>
-        <UILanguage>en-US</UILanguage>
-      </SetupUILanguage>
-      <InputLocale>en-US</InputLocale>
-      <SystemLocale>en-US</SystemLocale>
-      <UILanguage>en-US</UILanguage>
-      <UserLocale>en-US</UserLocale>
-    </component>
-  </settings>
-  <settings pass="offlineServicing">
-    <component name="Microsoft-Windows-LUA-Settings" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <EnableLUA>false</EnableLUA>
-    </component>
-  </settings>
-  <settings pass="specialize">
-    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <AutoLogon>
-        <Password>
-          <Value>R3dh4t1!</Value>
-          <PlainText>true</PlainText>
-        </Password>
-        <Enabled>true</Enabled>
-        <LogonCount>999</LogonCount>
-        <Username>Administrator</Username>
-      </AutoLogon>
-      <OOBE>
-        <HideEULAPage>true</HideEULAPage>
-        <HideLocalAccountScreen>true</HideLocalAccountScreen>
-        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-        <NetworkLocation>Work</NetworkLocation>
-        <ProtectYourPC>3</ProtectYourPC>
-        <SkipMachineOOBE>true</SkipMachineOOBE>
-      </OOBE>
-      <UserAccounts>
-        <LocalAccounts>
-          <LocalAccount wcm:action="add">
-            <Description>Local Administrator Account</Description>
-            <DisplayName>Administrator</DisplayName>
-            <Group>Administrators</Group>
-            <Name>Administrator</Name>
-          </LocalAccount>
-        </LocalAccounts>
-      </UserAccounts>
-      <TimeZone>Eastern Standard Time</TimeZone>
-    </component>
-  </settings>
-  <settings pass="oobeSystem">
-    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <InputLocale>en-US</InputLocale>
-      <SystemLocale>en-US</SystemLocale>
-      <UILanguage>en-US</UILanguage>
-      <UserLocale>en-US</UserLocale>
-    </component>
-    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-      <AutoLogon>
-        <Password>
-          <Value>R3dh4t1!</Value>
-          <PlainText>true</PlainText>
-        </Password>
-        <Enabled>true</Enabled>
-        <LogonCount>999</LogonCount>
-        <Username>Administrator</Username>
-      </AutoLogon>
-      <OOBE>
-        <HideEULAPage>true</HideEULAPage>
-        <HideLocalAccountScreen>true</HideLocalAccountScreen>
-        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-        <NetworkLocation>Work</NetworkLocation>
-        <ProtectYourPC>3</ProtectYourPC>
-        <SkipMachineOOBE>true</SkipMachineOOBE>
-      </OOBE>
-      <UserAccounts>
-        <LocalAccounts>
-          <LocalAccount wcm:action="add">
-            <Description>Local Administrator Account</Description>
-            <DisplayName>Administrator</DisplayName>
-            <Group>Administrators</Group>
-            <Name>Administrator</Name>
-          </LocalAccount>
-        </LocalAccounts>
-      </UserAccounts>
-      <TimeZone>Eastern Standard Time</TimeZone>
-    </component>
-  </settings>
-</unattend>
-----
+image::images/Pods_Migration/31_VM_Stopped.png[]
+. Clicking on *Actions*, the option *Start* appears, and the options *Restart* and *Pause* are greyed out. 
++
+image::images/Pods_Migration/32_VM_Actions_List_Stopped.png[]
 
-. Click *Save* on the dialog
-+
-image::images/Create_VM_PVC/30_Windows_2k9_Sysprep.png[]
+. Press *Start*, and wait for the `Running` status.
 
-. Press *Create VirtualMachine*
+. Using the *Actions* menu, press the *Pause* option. The _Virtual Machine_ state will change to `Paused`.
 +
-image::images/Create_VM_PVC/31_Windows_2k9_Create.png[]
+image::images/Pods_Migration/33_VM_Actions_Paused.png[]
 
-. The Virtual Machine will start the provisioning process by downloading the ISO image, configuring, and starting the instance.
-+
-image::images/Create_VM_PVC/32_Windows_2k9_Provisioning.png[]
+. Unpause the _Virtual Machine_ using *Actions* and the option *Unpause*.
 
-. After a few minutes, the Virtual VM will be in `Running` status. Switch to the *Console* tab:
+
+
+== [Optional] Virtualization Overview dashboard
+
+The overview dashboard provides a cluster-level view of virtual machines and resources used, along with status information for the health of OpenShift Virtualization and virtual machines. It is a useful starting point for administrators who want a quick and high-level view of what's happening with OpenShift Virtualization.
+
+. From the left navigation menu, browse to *Virtualization* -> *Overview*
 +
-image::images/Create_VM_PVC/33_Windows_2k9_Console.png[]
+image::images/Create_VM_PVC/create_overview.png[]
++
+This overview page provides the OpenShift Virtualization administrator a global overview of the virtual machines in the cluster. A normal user would only see the VMs in his/her own project.
 +
 [NOTE]
-It is not necessary for this workshop to wait for the installation to complete. You can continue to the next module.
+====
+If the `Getting started resources` panel is shown, use the links there to access more information about OpenShift virtualization, including Quick Starts which e.g. provide a guided walkthrough of how to create a VM and upload a custom boot source for your virtual machines. You can hide the panel using the three-dots menu in the upper right corner of the panel.
+
+image::images/Create_VM_PVC/create_quickstarts.png[]
+====
+
+. Review the top consumers
++
+Scrolling down on the page shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster, there are no consumers, so there is little to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard". That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
 +
 [IMPORTANT]
-The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
-
-== Summary
-
-In this lab, you have created a VM using a pre-configured PVC provided by OpenShift Virtualization. You then explored the VM properties and connected to your VM using the built-in console.
-
-You then created a new Windows VM using an ISO disk image from a location on the network.
-
-You may continue to the next lab, _Virtual Machine Customization_, where you will customize the VM during creation, and you will be able to manage the VM.
+If you don't see any resources here, no VMs have been started in your lab. Revisit this page after this segment to see the overview details.
++
+image::images/Create_VM_PVC/create_overview_consumers_png.png[]
