@@ -17,21 +17,21 @@ modules:
         name: Migrating Virtual Machines
     03_ocpv_basics:
         name: OpenShift Virtualization Basics
-    12_thanks:
+    04_thanks:
         name: Thank you and next steps
-    04_ocpv_customization:
+    05_ocpv_customization:
         name: 'Optional: Customize Virtual Machines'
-    05_windows_vm:
+    06_windows_vm:
         name: 'Optional: Windows Virtual Machines'
-    06_bare_metal:
+    07_bare_metal:
         name: 'Optional: Bare Metal OpenShift Overview'
-    07_network_management:
+    08_network_management:
         name: 'Optional: Network Management'
-    08_storage_management:
+    09_storage_management:
         name: 'Optional: Storage Management'
-    09_backup_restore:
+    10_backup_restore:
         name: 'Optional: Backup and Restore'
-    10_service_route:
-        name: 'Optional: Exposing apps using a Route'
     11_metallb:
         name: 'Optional: Exposing apps using MetalLB'
+    12_service_route:
+        name: 'Optional: Exposing apps using a Route'
