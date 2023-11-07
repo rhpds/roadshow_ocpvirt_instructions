@@ -28,6 +28,8 @@ In order to successfully associate the  VMs with the Service, we need to do the 
 
 To begin, we'll add labels to the virtual machines by modifying their definition in the OpenShift Virtualization GUI.
 
+==== Label the virtual machines
+
 . From the OpenShift console, navigate to *Virtualization* -> *VirtualMachines* and ensure the migrated VMs successfully imported and are running.
 +
 image::images/MTV/60_VMWARE_VMs_List.png[]
@@ -37,7 +39,10 @@ image::images/MTV/60_VMWARE_VMs_List.png[]
 Ensure you select the correct project, `vmexamples` if you completed the *Migrating Virtual Machines* module or `vmimported` if you did not.
 ====
 
-. Access to the `winweb01` and navigate to the *YAML* tab.
+. Select to the `winweb01` VM and navigate to the *YAML* tab.
++
+image::images/MTV/204_label_navigation.png[]
+
 . Find the `spec:` section and under the `template.metadata` add the following lines to label the VM resources:
 +
 [%nowrap]
@@ -58,9 +63,11 @@ image::images/MTV/61_VMWARE_VMs_YAML.png[]
 . Start, or restart if already running, the _Virtual Machines_ `database`, `winweb01` and `winweb02`
 .. Ensure the VMs are properly working by accessing to the console tab of each VM.
 
+==== Create the Service
+
 . Navigate to *Networking* -> *Services* and press *Create Service*. 
 +
-image::images/MTV/200_navigate_service.png[Service Navigation,270,337]
+image::images/MTV/200_navigate_service.png[]
 +
 Remember the label that you added to your VMs (`env=webapp`)? The Service will use that label in its selector to pick which VMs to route traffic to.
 . Replace the YAML with the following definition
@@ -83,7 +90,7 @@ spec:
 +
 [IMPORTANT]
 ====
-Ensure the namespace with your virtual machines, `vmexamples` or `vmimported` is the one used in the Service YAML.
+Ensure the namespace with your virtual machines, `vmexamples` or `vmimported`, is the one used in the Service YAML.
 ====
 +
 image::images/MTV/201_service_yaml.png[]
@@ -112,14 +119,17 @@ image::images/MTV/202_label_troubleshooting_1.png[]
 
 === Create the Route
 
-Now the Windows IIS servers are accessible from within the OpenShift cluster. Other virtual machines are able to access them using the DNS name `webapp.vmexamples`. However, since these web servers are the front end to an externally accessible application, we will expose them using a *Route*.
+Now the Windows IIS servers are accessible from within the OpenShift cluster. Other virtual machines are able to access them using the DNS name `webapp.vmexamples`, which is determined by the name of the Service + the namespace. However, since these web servers are the front end to an application we want to be externally accessible, we will expose it using a *Route*.
 
-. Navigate to *Networking* -> *Routes* in the left navigation menu. Press *Create Route* and fill the following information:
+. Navigate to *Networking* -> *Routes* in the left navigation menu, verify that you're using the correct project name. Press *Create Route*.
++
+image::images/MTV/205_route_navigation.png[]
+
+. Fill the form using the information below, press *Create* when done.
 +
 .. *Name*: `route-webapp`
 .. *Service*: `webapp`
 .. *Target port*: `80 -> 80 (TCP)`
-. Press *Create*
 +
 [NOTE]
 ====
@@ -137,8 +147,8 @@ image::images/MTV/203_route_access.png[]
 image::images/MTV/64_VMWARE_VMs_URL.png[]
 +
 To fix the connectivity issue, we need to create another Service for the database VM so that it is discoverable by other VMs connected to the SDN. Note that because this database does *not* need to be accessible from outside of the OpenShift environment, you do not need to create a Route for this service.
-+
-Navigate to *Networking* -> *Services* and press *Create service*. Replace the YAML with the following definition:
+
+. Navigate to *Networking* -> *Services* and press *Create service*. Replace the YAML with the following definition:
 +
 [source,yaml]
 ----

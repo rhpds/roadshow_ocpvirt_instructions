@@ -1,9 +1,8 @@
 :scrollbar:
 :toc2:
+:numbered:
 
 = OpenShift Virtualization Basics
-
-:numbered:
 
 This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
 

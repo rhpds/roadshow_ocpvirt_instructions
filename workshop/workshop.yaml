@@ -13,3 +13,4 @@ modules:
     - 09_backup_restore
     - 10_service_route
     - 11_metallb
+    - 12_thanks

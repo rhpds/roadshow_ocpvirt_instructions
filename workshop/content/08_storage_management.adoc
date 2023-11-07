@@ -92,9 +92,9 @@ With the VM snapshots feature, cluster administrators and application developers
 * Revert a VM to a snapshot
 * Delete an existing VM snapshot
 
-=== Operate with Snapshots
+=== Creating and using Snapshots
 
-. Navigate back to *Virtualization* -> *VirtualMachines* and select the vm `fedora02` in the project `vmexamples`
+. Navigate back to *Virtualization* -> *VirtualMachines* and select a virtual machine, for example `fedora02` in the project `vmexamples`.
 +
 image::images/Storage/09_VM_Overview.png[]
 

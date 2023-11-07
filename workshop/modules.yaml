@@ -17,6 +17,8 @@ modules:
         name: Migrating Virtual Machines
     03_ocpv_basics:
         name: OpenShift Virtualization Basics
+    12_thanks:
+        name: Thank you and next steps
     04_ocpv_customization:
         name: 'Optional: Customize Virtual Machines'
     05_windows_vm:

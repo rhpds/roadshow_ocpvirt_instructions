@@ -54,7 +54,7 @@ image::images/MetalLB/03_Review_Operator_MetalLB.png[]
 
 == Define IP AddressPool
 
-For this lab, we will use the same network where the OpenShift Cluster nodes are located (`192.168.123.0/24`) and for this, exercise we will reserve the IP range `192.168.123.200-192.168.123.250` to be used for load-balanced services in the OpenShift cluster.
+For this lab, we will use the same network where the OpenShift Cluster nodes are located (`192.168.123.0/24`) and for this exercise we will reserve the IP range `192.168.123.200-192.168.123.250` to be used for load balanced services in the OpenShift cluster.
 
 . In the left navigation menu, browse to *Operators -> Installed Operators*, switch to project `metallb-system`. Then choose the MetalLB Operator
 +

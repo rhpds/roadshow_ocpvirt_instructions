@@ -76,7 +76,7 @@ image::images/Networking/06_VM_Network_Console.png[]
 The `eth1` interface obtains an IP address from the flat network (`192.168.3.x/24`). That network has a DHCP server providing IPs to that network. 
 +
 
-. (Optional) Verify external connectivity of the VM using the bastion host. Connect to the host via SSH as provided in the lab environment materials shared at the start of this workshop.
+. (Optional) Verify external connectivity of the VM using the OpenShift web termianl.
 +
 .. Open a terminal by pressing the right-top icon:
 +
