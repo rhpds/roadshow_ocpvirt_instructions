@@ -16,7 +16,7 @@ parameters:
     value: bookbag
   - name: BUILDER_IMAGE
     required: true
-    value: quay.io/openshifthomeroom/workshop-dashboard:5.0.0
+    value: quay.io/openshifthomeroom/workshop-dashboard:5.0.1
   - name: GIT_REPO
     value: https://github.com/agonzalezrh/roadshow_ocpvirt_instructions
 
