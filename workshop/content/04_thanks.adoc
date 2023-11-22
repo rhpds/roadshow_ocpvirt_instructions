@@ -27,4 +27,4 @@ Depending on your role and interests, you might be interested in completing some
 
 We appreciate your time and effort to gain familiarity with OepnShift Virtualization! If you have questions, please don't hesitate to ask the proctor(s) in the room during your workshop, or reach out to your Red Hat account team at any time.
 
-If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].
+If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about_virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].
