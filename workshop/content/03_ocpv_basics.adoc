@@ -195,22 +195,22 @@ The overview dashboard provides a cluster-level view of virtual machines and res
 
 . From the left navigation menu, browse to *Virtualization* -> *Overview*
 +
-image::images/Create_VM_PVC/create_overview.png[]
+image::images/Create_VM_PVC/create_overview_413.png[]
 +
 This overview page provides the OpenShift Virtualization administrator a global overview of the virtual machines in the cluster. A normal user would only see the VMs in his/her own project.
 +
 [NOTE]
 ====
-If the `Getting started resources` panel is shown, use the links there to access more information about OpenShift virtualization, including Quick Starts which e.g. provide a guided walkthrough of how to create a VM and upload a custom boot source for your virtual machines. You can hide the panel using the three-dots menu in the upper right corner of the panel.
+Don't forget to check out the `Getting started resources` panel and click the "View all quick starts" link there to access more information about OpenShift virtualization, including Quick Starts which provide many guided walkthroughs including how to create a VM and upload a custom boot source for your virtual machines. 
 
-image::images/Create_VM_PVC/create_quickstarts.png[]
+image::images/Create_VM_PVC/create_quickstarts413.png[]
 ====
 
 . Review the top consumers
 +
-Scrolling down on the page shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster, there are no consumers, so there is little to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard". That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
+Use the tabs across the top to view more about the virtualization resources in the cluster. For instance, the "Top consumers" tab shows the VMs which are "top consumers" of various resources, including CPU, memory, and storage. Note that in a newly created cluster, there are no consumers, so there is little to see in the beginning. You might also want to dig deeper into metrics by clicking on "View virtualization dashboard" link. That brings you to the KubeVirt Metrics Dashboard with more data and graphs.
 +
 [IMPORTANT]
 If you don't see any resources here, no VMs have been started in your lab. Revisit this page after this segment to see the overview details.
 +
-image::images/Create_VM_PVC/create_overview_consumers_png.png[]
+image::images/Create_VM_PVC/create_overview_consumers413.png[]
