@@ -54,7 +54,7 @@ The application consists of the following four virtual machines:
 // WKTBD: Replace with actual link for each student
 The application is accessible from the following link: http://webapp.vc.opentlc.com/
 
-You will migrate three of the four virtual machines - you will not need to migrate the HAproxy (load balancer) VM because OpenShift handles network traffic and load balancing natively for VMs connected to the SDN using a `Service`.
+You will migrate three of the four virtual machines using cold migration - you will not need to migrate the HAproxy (load balancer) VM because OpenShift handles network traffic and load balancing natively for VMs connected to the SDN using a `Service`.
 
 === Review the VMware environment
 
