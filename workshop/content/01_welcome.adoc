@@ -64,3 +64,7 @@ The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, an
 == Next steps
 
 If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about_virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].
+
+== Requirements for the lab environment
+
+Participant needs to have own computer with browser and internet access. Chromium based browser is recommended, some copy paste functions don't work in Firefox for time being. Remote access console uses US keyboard layout, so good to know where special characters reside in it for other country layouts. Or use copy paste with recommended browser.
