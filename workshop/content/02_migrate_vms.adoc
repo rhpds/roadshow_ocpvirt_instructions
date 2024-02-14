@@ -173,6 +173,9 @@ image::images/MTV/101_List_VMWARE_Mapping_Storage.png[]
 
 Now that you have the virtualization provider and the two mappings (network & storage) you can create a Migration Plan - this plan selects which VMs to migrate from VMware vSphere to Red Hat OpenShift Virtualization and how to execute the migration (cold/warm, network mapping, storage mapping, pre-/post-hooks, etc.).
 
+[NOTE]
+Depending on order of you doing the modules, you might be missing required `vmexamples` namespace here. If you haven't done yet, do chapter *OpenShift Virtualization Basics* -> *Create a new Project*)
+
 . Navigate in the left menu to *Migration* -> *Plans for virtualization* and press *Create plan*
 +
 image::images/MTV/102_Create_VMWARE_Plan.png[]
