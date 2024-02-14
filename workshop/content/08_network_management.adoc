@@ -94,7 +94,7 @@ image::images/OCP_Terminal.png[]
 +
 [%nowrap]
 ----
-bash-4.4 ~ $ curl 192.168.3.118:22                           
+curl 192.168.3.118:22
 ----
 +
 [NOTE]

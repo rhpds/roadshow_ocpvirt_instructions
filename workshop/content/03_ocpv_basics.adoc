@@ -193,7 +193,7 @@ image::images/Pods_Migration/33_VM_Actions_Paused.png[]
 
 The overview dashboard provides a cluster-level view of virtual machines and resources used, along with status information for the health of OpenShift Virtualization and virtual machines. It is a useful starting point for administrators who want a quick and high-level view of what's happening with OpenShift Virtualization.
 
-. From the left navigation menu, browse to *Virtualization* -> *Overview*
+. From the left navigation menu, browse to *Virtualization* -> *Overview* and select *Project:* -> *All projects*
 +
 image::images/Create_VM_PVC/create_overview_413.png[]
 +
