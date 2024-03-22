@@ -5,7 +5,7 @@
 
 :numbered:
 
-This lab will introduce you to the basics of creating and managing Microsoft Windows VMs in OpenShift Virtualization. This process is very similiar to creating and managing Linux-based virtual machines, be sure to return to the OpenShift Virtualization Basics module and go through the exercises for reviewing resources and configuration.
+This lab will introduce you to the basics of creating and managing Microsoft Windows VMs in OpenShift Virtualization. This process is very similar to creating and managing Linux-based virtual machines, be sure to return to the OpenShift Virtualization Basics module and go through the exercises for reviewing resources and configuration.
 
 .Goals
 * Create a new Windows virtual machine

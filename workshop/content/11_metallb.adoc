@@ -86,7 +86,7 @@ image::images/MetalLB/10_MetalLB_L2Advertisement.png[]
 
 == Expose the database node externally
 
-If you completed the *Exposing apps using a Route* module, the VM is currently accessible from inside the cluster using the Service previously created. In this task, we will expose port 3306 outside of the cluster, making the database avaialble to other virtual machines and consumers not hosted in OpenShift.
+If you completed the *Exposing apps using a Route* module, the VM is currently accessible from inside the cluster using the Service previously created. In this task, we will expose port 3306 outside of the cluster, making the database available to other virtual machines and consumers not hosted in OpenShift.
 
 . Navigate to *Networking* -> *Services* and select the project `vmexamples`
 +

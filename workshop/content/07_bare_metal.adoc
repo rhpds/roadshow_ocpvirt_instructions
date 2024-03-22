@@ -131,7 +131,7 @@ OpenShift Virtuailzation, even when deployed to a cluster with OpenShift Data Fo
 
 . Explore the configuration options for OpenShift Virtualization
 +
-This screen represents global configuration options for OpenShift Virtualization and can be used to enable/disable features of OpenShift Virtualization and VM capabilities. For example, scroll down then expand the menu item for *featureGates*. The *withHostPassthroughCPU* option is not enabled by default, however if you wanted to allow virtual machines to inhert the exact CPU features and capabilities of the physical node it's being hosted on then you would need to check this box.
+This screen represents global configuration options for OpenShift Virtualization and can be used to enable/disable features of OpenShift Virtualization and VM capabilities. For example, scroll down then expand the menu item for *featureGates*. The *withHostPassthroughCPU* option is not enabled by default, however if you wanted to allow virtual machines to inherit the exact CPU features and capabilities of the physical node it's being hosted on then you would need to check this box.
 +
 image::images/Install/environment_operator_create.png[]
 +

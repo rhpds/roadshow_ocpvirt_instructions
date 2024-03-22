@@ -13,7 +13,7 @@ There are multiple options for backup and restore of virtual machines with OpenS
 * https://docs.trilio.io/kubernetes/appendix/backup-and-restore-virtual-machine-running-on-openshift-virtualization[*Trilio for Kubernetes*]
 * https://storware.eu/solutions/containers-backup-and-recovery/red-hat-openshift-backup-restore/[*Storware Backup and Recovery*]
 
-Additionally, many storage partners offer the ability to protect virtual machine disks using their native technology. Be sure to check with your storage and backup vendor(s) to determine compatiblity with OpenShift Virtualization.
+Additionally, many storage partners offer the ability to protect virtual machine disks using their native technology. Be sure to check with your storage and backup vendor(s) to determine compatibility with OpenShift Virtualization.
 
 This lab will use OADP to perform a virtual machine backup and restore.
 

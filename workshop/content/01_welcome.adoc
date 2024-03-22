@@ -9,7 +9,7 @@ This workshop has two segments which we encourage all attendees to complete:
 * _Migrating Virtual Machines_: In this section, you will use the Migration Toolkit for Virtualization (MTV) to migrate a few VMs from an existing VMware vSphere environment to OpenShift Virtualization.
 * _OpenShift Virtualization Basics_: This lab focuses on how to create and use virtual machines with OpenShift Virtualization. It covers the most common tasks you would be expected to perform as a VM user/administrator.
 
-Additionally, there are a number of optional modules which target activites that you may be interested in depending on your specific role, responsibilities, and/or what you're curious about.
+Additionally, there are a number of optional modules which target activities that you may be interested in depending on your specific role, responsibilities, and/or what you're curious about.
 
 *Virtual machine administrators*
 
@@ -25,7 +25,7 @@ Additionally, there are a number of optional modules which target activites that
 
 *Virtual machine users*
 
-* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the applicaton's front end to the world.
+* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the application's front end to the world.
 * _Exposing apps using MetalLB_: Providing connectivity to VM-hosted applications, without putting the VM on an external L2 network, is a powerful way to manage connectivity to the application. This lab walks through the process of exposing just the database to the world, without connecting the VM to the external network.
 
 == What is OpenShift Virtualization?

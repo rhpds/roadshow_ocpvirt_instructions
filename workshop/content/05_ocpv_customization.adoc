@@ -13,7 +13,7 @@ In this lab, we will customize a virtual machine at creation, including using a 
 
 [IMPORTANT]
 ====
-This section will customize a virtual machine at creation time, however if you're interested in modifying virtual machine configuration after creation, the same procedure and diaglogs apply to existing virtual machines.
+This section will customize a virtual machine at creation time, however if you're interested in modifying virtual machine configuration after creation, the same procedure and dialogs apply to existing virtual machines.
 
 However, not all resources can be modified while the VM is powered on, i.e. "hot add/remove". Refer to the documentation for details about each resource type and whether it can be modified while the VM is running. Alternatively, the user interface will notify you if the VM needs to be restarted for a change to take effect.
 ====
@@ -71,7 +71,7 @@ image::images/Create_VM_URL/02_Wizard_Scheduling.png[]
 +
 * A *node selector* is used to specify one or more cluster nodes that the VM is allowed to run on. These can be selected by name, label, or annotation.
 * *Tolerations* are used when a cluster node has a https://docs.openshift.com/container-platform/4.13/nodes/scheduling/nodes-scheduler-taints-tolerations.html[taint] applied. Taints are an indicator that only specific workloads, those with a toleration for the taint, should be allowed to run on the node. They are helpful when you have, for example, some nodes that have GPUs where you only want VMs that use a GPU to run on those nodes.
-* An *affinity rule* is used to indicate that a VM should be scheduled with, or not with in the case of an antiaffinity rule, other workloads.
+* An *affinity rule* is used to indicate that a VM should be scheduled with, or not with in the case of an anti-affinity rule, other workloads.
 * The *dedicated resources* function is used when you want to, for example, assign a PCIe device to the virtual machine or allocate specific CPU cores to the VM.
 * By default, all VMs will use the _Live Migrate_ *eviction strategy*, which means that when a node is cordoned and drained for maintenance purposes, such as applying updates, the VM will be non-disruptively migrated to a different node. Alternatively, VMs can be configured to shutdown and do a cold migration or simply not migrate at all.
 * The *descheduler* is a feature of OpenShift that will periodically evaluate the VM and the host it's running on to determine if it should be migrated to another host. This could be for resource optimization reasons or because an affinity rule is being violated.
