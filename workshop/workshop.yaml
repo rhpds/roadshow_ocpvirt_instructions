@@ -12,5 +12,6 @@ modules:
     - 08_network_management
     - 09_storage_management
     - 10_backup_restore
-    - 11_metallb
-    - 12_service_route
+    - 11_service_route
+    - 12_metallb
+
