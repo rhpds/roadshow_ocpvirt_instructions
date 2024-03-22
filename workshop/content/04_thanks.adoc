@@ -20,11 +20,11 @@ Depending on your role and interests, you might be interested in completing some
 
 === *Virtual machine users*
 
-* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the applicaton's front end to the world.
+* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the application's front end to the world.
 * _Exposing apps using MetalLB_: Providing connectivity to VM-hosted applications, without putting the VM on an external L2 network, is a powerful way to manage connectivity to the application. This lab walks through the process of exposing just the database to the world, without connecting the VM to the external network.
 
 == Thank you for attending the OpenShift Virtualization Roadshow!
 
-We appreciate your time and effort to gain familiarity with OepnShift Virtualization! If you have questions, please don't hesitate to ask the proctor(s) in the room during your workshop, or reach out to your Red Hat account team at any time.
+We appreciate your time and effort to gain familiarity with OpenShift Virtualization! If you have questions, please don't hesitate to ask the proctor(s) in the room during your workshop, or reach out to your Red Hat account team at any time.
 
 If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about_virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].

@@ -55,7 +55,7 @@ image::images/Networking/02_NAD_Create.png[]
 [NOTE]
 The form above has an input for `VLAN Tag Number`, which is used when connecting to a network that needs to have a VLAN tag assigned. This lab uses an untagged network, so no VLAN number is required here.
 +
-A single Linux Bridge on the host can have many different VLANs. In this scenario, you only need to create a Network Attachment Definiton for each one, not a separate host interface and bridge.
+A single Linux Bridge on the host can have many different VLANs. In this scenario, you only need to create a Network Attachment Definition for each one, not a separate host interface and bridge.
 
 . Examine the details of the network attachment definition. Because this was created in the `vmexamples` project, it will not be available in other projects.
 +
@@ -80,7 +80,7 @@ image::images/Networking/06_VM_Network_Console.png[]
 The `eth1` interface obtains an IP address from the flat network (`192.168.3.x/24`). That network has a DHCP server providing IPs to that network. 
 +
 
-. (Optional) Verify external connectivity of the VM using the OpenShift web termianl.
+. (Optional) Verify external connectivity of the VM using the OpenShift web terminal.
 +
 .. Open a terminal by pressing the right-top icon:
 +

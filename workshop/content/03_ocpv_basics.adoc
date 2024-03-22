@@ -120,11 +120,11 @@ image::images/Create_VM_PVC/17_Fedora_CPU_Memory.png[]
 +
 image::images/Create_VM_PVC/21_Fedora01_Cloud_Init.png[]
 
-. The instance is running the guest agent to surface information about the guest OS to the hypervsior, along with coordinating tasks such as disk quiescing for snapshots.
+. The instance is running the guest agent to surface information about the guest OS to the hypervisor, along with coordinating tasks such as disk quiescing for snapshots.
 +
 image::images/Create_VM_PVC/19_Fedora_Agent.png[]
 
-. Click the *Overview* tab to show the information obtained from the guest VM, such as the disk utilization, along with seeing resource utlization information:
+. Click the *Overview* tab to show the information obtained from the guest VM, such as the disk utilization, along with seeing resource utilization information:
 +
 image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 +
