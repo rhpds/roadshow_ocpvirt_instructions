@@ -31,7 +31,7 @@ modules:
         name: 'Optional: Storage Management'
     10_backup_restore:
         name: 'Optional: Backup and Restore'
-    11_metallb:
-        name: 'Optional: Exposing apps using MetalLB'
-    12_service_route:
+    11_service_route:
         name: 'Optional: Exposing apps using a Route'
+    12_metallb:
+        name: 'Optional: Exposing apps using MetalLB'
