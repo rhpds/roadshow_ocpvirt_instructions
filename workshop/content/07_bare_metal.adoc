@@ -103,7 +103,7 @@ The information shown is similar to the *Nodes* one, with the exception is provi
 
 . Explore the other tabs in the interface to see more details about the hosts, including the network interfaces and disks. Additionally, the host can be *Deprovisioned*, which will result in it being removed from the cluster, RHCOS removed, and the machine marked as ready to configure.
 
-== Adding A New Bare Metal Host
+=== Scaling The Cluster With A New Bare Metal Host
 
 In many cases it becomes necessary to add additonal physical nodes to a cluster to meet workload demands. In a virtual deployment of OpenShift, this is as simple as clicking on the appropriate machine set and choosing the scale the number of nodes available, and the hypervisor responds by cloning a VM template and spinning up new workers. In a bare metal environment there are a few more steps involved, but it's still a fairly simple process if you have the hardware available and access to the servers through a BMC that supports the IPMI protocol.
 
@@ -129,16 +129,51 @@ image::images/Install/add_host_red.png[]
 +
 image::images/Install/create_host_red.png[]
 +
-You will then be presented with the summary screen for *worker4*, and you will see the status update as it attempts to contact the machine and make it available as a host. 
+. You will then be presented with the summary screen for *worker4*, and you will see the status update as it attempts to contact the machine and make it available as a host.
++
+image::images/Install/worker4_summary_1.png[]
 +
 [NOTE]
 This step may take serveral minutes to update as it powers up the host, and collects hardware information.
-  
-
-
-
- 
++
+. When host discovery and hardware inspection is complete you will see that it shows it's status as 'Available'.
++
+image::images/Install/worker4_summary_2.png[]
++
+. Once a host has been physically discovered the next step is to add it as a machine to be used by OpenShift. Click on the menu for 'MachineSets' on the left.
++
+image::images/Install/machinesets.png[]
++
+. Click on the 'three-dot' menu on the right side, and select 'Edit Machine Count' from the dropdown menu.
++
+image::images/Install/edit_machine_count.png[]
++
+. A new menu will appear showing the current machine count of '3', click the plus (+) sign to increase the machine count to '4'.
++
+image::images/Install/edit_machine_count_4.png[]
++
+. You will be returned to the MachineSets page, and you can now see that the count of machines is 3/4 machines.
++
+image::images/Install/machine_count_3_4.png[]
++
+. Next, click on the 'Machines' button on the left to see a list of all the machines, and you should see worker4 in the 'Provisioning' state. 
++
+image::images/Install/worker_4_provisioning.png[]
++
+. One provisioning is complete you will see the node listed with the Phase set to 'Provisioned as node'.
++
+image::images//Install/provisioned_as_node.png[]
++
+. Since our new host has now been added to the machineset and provisioned as a node, we can click on the 'Nodes' menu on the left.
++
+image::images//Install/all_nodes.png[]
++
+. We can also click directly on 'worker-4' under the Names column to see it's current status.
++
+image::images/Install/worker_4_details.png[]
++
+. The details screen for worker-4 is now populated with hardware information including CPU and Memory utilization, as well as the number of Pods assigned to our new worker node.
 
 == Summary
 
-In this lab, you became familiar with your Red Hat OpenShift Container Platform cluster and the hardware that makes up this environment. You also used the web console to expand your cluster by discovering an additional bare metal node, and adding it to the cluster machines used to scale the worker nodes available.
+In this lab, you became familiar with your Red Hat OpenShift Container Platform cluster and the hardware that makes up this environment. You also used the web console to expand your cluster by discovering an additional bare metal node, and adding it to the cluster machineset used to scale the worker nodes available.
