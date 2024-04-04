@@ -44,7 +44,7 @@ Before you install OpenShift Virtualization for Red Hat OpenShift Container Plat
 ** Red Hat Enterprise Linux CoreOS (RHCOS) installed on worker nodes
 ** CPU, memory, and network capacity sufficient to host your virtual machine workload
 
-Review https://docs.openshift.com/container-platform/4.12/virt/install/preparing-cluster-for-virt.html[the documentation] for specific requirements and guidance on hardware for OpenShift Virtualization.
+Review https://docs.openshift.com/container-platform/4.15/virt/install/preparing-cluster-for-virt.html[the documentation] for specific requirements and guidance on hardware for use with OpenShift Virtualization.
 
 [NOTE]
 If your cluster uses worker nodes with different CPUs, e.g. Intel and AMD, live migration failures can occur because different CPUs have different capabilities. 
@@ -85,7 +85,7 @@ At least one physical node is required for OpenShift Virtualization, "nesting" a
 +
 image::images/Install/Worker0_Details.png[]
 
-=== Review Bare Metal hosts
+=== Review Bare Metal Hosts
 
 When using `Baseboard Management Console (BMC)` it is possible to manage the nodes using the *Red Hat OpenShift* console. 
 
@@ -103,42 +103,42 @@ The information shown is similar to the *Nodes* one, with the exception is provi
 
 . Explore the other tabs in the interface to see more details about the hosts, including the network interfaces and disks. Additionally, the host can be *Deprovisioned*, which will result in it being removed from the cluster, RHCOS removed, and the machine marked as ready to configure.
 
-////
-== The OpenShift Virtualization Operator
+== Adding A New Bare Metal Host
 
-Due to the time constraints of this session, the OpenShift Virtualization Operator has been preinstalled for you. You can navigate to *Operators* -> *Installed Operators* to get the list of the operators installed to the cluster. Ensure *All Projects* is selected to list Operators across all namespaces and type `virtualization` in the search box to filter the list.
+In many cases it becomes necessary to add additonal physical nodes to a cluster to meet workload demands. In a virtual deployment of OpenShift, this is as simple as clicking on the appropriate machine set and choosing the scale the number of nodes available, and the hypervisor responds by cloning a VM template and spinning up new workers. In a bare metal environment there are a few more steps involved, but it's still a fairly simple process if you have the hardware available and access to the servers through a BMC that supports the IPMI protocol.
 
-For this workshop we'll be focusing on two Operators: OpenShift Virtualization and the Migration Toolkit for Virtualization.
+To begin this process we are going to return to the bare metal hosts screen we reviewed earlier:
 
-image::images/Install/environment_installed_operators.png[]
-
-
-=== Examine the OpenShift Virtualization Operator
-
-. Click on *OpenShift Virtualization* from the operator installed list.
-
-. Click the *Details* tab to view information about the Operator:
+. Select *Compute* -> *Bare Metal Hosts*:
 +
-image::images/Install/environment_operator_details.png[]
+image::images/Install/BMHosts.png[]
 +
-The Operator provides two custom resource definitions (CRDs) to extend the Kubernetes API: the OpenShift Virtualization deployment and the Host Path Provisioner. Installing the Operator is only the first step to deploying OpenShift Virtualization, an instance of the OpenShift Virtualization Deployment must also be created.
-
-. Click the *OpenShift Virtualization Deployment* tab, then click the *Create HyperConverged* button:
+. Click on the 'Add Host' button in the upper right corner.
 +
-image::images/Install/environment_operator_crd.png[]
+image::images/Install/add_host_red.png[]
++
+. The dialog menu to add a bare metal host will ask you for the following information:
++
+* Host Name: 'worker4'
+* Boot MAC Address: 'de:ad:be:ef:00:07' 
+* BMC Address: 'ipmi://192.168.123.1:6237'
+* BMC Username: 'admin'
+* BMC Password: 'redhat' 
++
+. With this information filled out, click the *Create* button at the bottom of the dialog page.
++
+image::images/Install/create_host_red.png[]
++
+You will then be presented with the summary screen for *worker4*, and you will see the status update as it attempts to contact the machine and make it available as a host. 
 +
 [NOTE]
-OpenShift Virtuailzation, even when deployed to a cluster with OpenShift Data Foundation or another Kubernetes-native storage solution, is not a hyperconverged product, which makes the Kubernetes object name misleading. This naming is the result of the history of the upstream KubeVirt project and it's origins as a part of the "Kubernetes-native Infrastructure" meta-project.
+This step may take serveral minutes to update as it powers up the host, and collects hardware information.
+  
 
-. Explore the configuration options for OpenShift Virtualization
-+
-This screen represents global configuration options for OpenShift Virtualization and can be used to enable/disable features of OpenShift Virtualization and VM capabilities. For example, scroll down then expand the menu item for *featureGates*. The *withHostPassthroughCPU* option is not enabled by default, however if you wanted to allow virtual machines to inherit the exact CPU features and capabilities of the physical node it's being hosted on then you would need to check this box.
-+
-image::images/Install/environment_operator_create.png[]
-+
-*IMPORTANT:* Do not click *Create* at the bottom of the form. This is unnecessary, OpenShift Virtualization has already been deployed to the lab cluster.
-////
+
+
+ 
 
 == Summary
 
-In this lab, you became familiar with your Red Hat OpenShift Container Platform cluster and the hardware that makes up this environment.
+In this lab, you became familiar with your Red Hat OpenShift Container Platform cluster and the hardware that makes up this environment. You also used the web console to expand your cluster by discovering an additional bare metal node, and adding it to the cluster machines used to scale the worker nodes available.
