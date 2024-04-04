@@ -134,7 +134,7 @@ image::images/Install/create_host_red.png[]
 image::images/Install/worker4_summary_1.png[]
 +
 [NOTE]
-This step may take serveral minutes to update as it powers up the host, and collects hardware information.
+This step may take several minutes to update as it powers up the host, and collects hardware information.
 +
 . When host discovery and hardware inspection is complete you will see that it shows it's status as *Available*.
 +
