@@ -15,7 +15,7 @@ If you are using the pre-imported virtual machines, please replace all instances
 ====
 
 == Using a Service and Route to expose an application
-
+////
 === Create the Service
 
 The `Service` identifies the source/target for traffic, and directs clients to, the endpoints based on labels. Currently, the VMs do not have a label assigned yet.
@@ -137,16 +137,16 @@ OpenShift can automatically (re)encrypt traffic entering the cluster via a Route
 ====
 +
 image::images/MTV/63_VMWARE_VMs_Create_Route.png[]
-
+////
 . Navigate to the address shown in *Location* field
 +
 image::images/MTV/203_route_access.png[]
 
-. When the page loads, you will see an error. This is because the Windows web servers are not able to resolve the internal name `database` to connect to the database VM.
+. When the page loads, you will see an error. This is because the Windows web servers running on VMware are not able to currently connect to the database VM after it's migration.
 +
 image::images/MTV/64_VMWARE_VMs_URL.png[]
 +
-To fix the connectivity issue, we need to create another Service for the database VM so that it is discoverable by other VMs connected to the SDN. Note that because this database does *not* need to be accessible from outside of the OpenShift environment, you do not need to create a Route for this service.
+To fix the connectivity issue, we need to create a Service for the database VM and then create a Route so that it is reachable from outside of the OpenShift cluster.
 
 . Navigate to *Networking* -> *Services* and press *Create service*. Replace the YAML with the following definition:
 +
@@ -171,11 +171,14 @@ spec:
 Ensure the namespace with your virtual machines, `vmexamples` or `vmimported` is the one used in the Service YAML.
 ====
 +
+////
 [NOTE]
 ====
 In this example the service is simply using a selector of the VM's name. This is a default label that is automatically added to all VMs. Since there is only one VM that matches the selector, the service will not load balance to the database, instead we're using the Service for discovery via the internal DNS name.
 ====
-
+////
+. We now need to create a route from which the database can be accessed outside of the cluster.
+//ADD STEPS TO CREATE ROUTE AND DISCOVER FROM WINDOWS VMS
 . Reload the webapp URL and expect to get the proper result
 +
 image::images/MTV/65_VMWARE_VMs_URL.png[]

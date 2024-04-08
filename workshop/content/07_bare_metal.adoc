@@ -5,30 +5,31 @@
 
 == Introduction
 
-In this lab, you will review the environment used during this workshop, including an overview of OpenShift deployed to bare metal hosts.
+In this lab, you will review the physical environment used during this workshop, including an overview of OpenShift deployed to bare metal hosts. This evironment runs on bare metal hosts in the Equinix cloud. This review will help provide you with an understanding of how the nodes are configured in the cluster, and what their current hardware capabilities are. You will then be tasked with adding an additional machine and scaling the number of cluster nodes using the Red Hat OpenShift web console.
 
 .Goals
 * Explore the nodes and machines in your *Red Hat OpenShift Container Platform* cluster
-
-In this section, you will explore the Red Hat OpenShift environment provided for you. This environment runs on bare metal hosts in the Equinix cloud. You will understand how the nodes in this cluster are configured and which hardware capabilities they have.
+* Scale the baremetal cluster using the web console
 
 === Supported Platforms
 
-* Today OpenShift Virtualization is fully supported with self-managed _bare metal servers_ on-premises or at a similar location, such as a co-lo. The lab you're using today is an OpenShift cluster deployed to Equinix.
+Today, OpenShift virtualization is fully supported in the following environments that provide bare metal resources:
 
-* Amazon Web Services (AWS) bare metal instances, as well as ROSA (Red Hat OpenShift Services on AWS), are fully supported. See link:https://www.redhat.com/en/blog/managing-virtual-machines-and-containers-as-code-with-openshift-virtualization-on-red-hat-openshift-service-on-aws[OpenShift Virtualization on ROSA]. 
+* Self-managed _bare metal servers_ on-premises or at a hosted site that provides bare metal resources. The lab you're using today is an OpenShift cluster deployed to an Equinix colocation facility.
+
+* Amazon Web Services (AWS) bare metal instances, as well as ROSA (Red Hat OpenShift Services on AWS) with bare metal instances, are fully supported. See link:https://www.redhat.com/en/blog/managing-virtual-machines-and-containers-as-code-with-openshift-virtualization-on-red-hat-openshift-service-on-aws[OpenShift Virtualization on ROSA]. 
 
 * IBM Cloud Bare Metal Servers are tech preview. See link:https://access.redhat.com/articles/6738731[Deploy OpenShift Virtualization on IBM Cloud Bare Metal Nodes for details].
 
 [NOTE]
-Installing OpenShift Virtualization on IBM Cloud Bare Metal Servers is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+Installing OpenShift Virtualization on IBM Cloud Bare Metal Servers is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. Technology previews provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 
 === Requirements for OpenShift Virtualization
 
 Before you install OpenShift Virtualization for Red Hat OpenShift Container Platform, make sure that your Red Hat OpenShift Container Platform cluster meets the following requirements.
 
 * CPU requirements
-** Supported by Red Hat Enterprise Linux (RHEL) 8
+** Supported by Red Hat Enterprise Linux (RHEL) 8/9
 ** Support for Intel 64 or AMD64 CPU extensions
 ** Intel VT or AMD-V hardware virtualization extensions enabled
 ** NX (no execute) flag enabled
@@ -43,7 +44,7 @@ Before you install OpenShift Virtualization for Red Hat OpenShift Container Plat
 ** Red Hat Enterprise Linux CoreOS (RHCOS) installed on worker nodes
 ** CPU, memory, and network capacity sufficient to host your virtual machine workload
 
-Review https://docs.openshift.com/container-platform/4.12/virt/install/preparing-cluster-for-virt.html[the documentation] for specific requirements and guidance on hardware for OpenShift Virtualization.
+Review https://docs.openshift.com/container-platform/4.15/virt/install/preparing-cluster-for-virt.html[the documentation] for specific requirements and guidance on hardware for use with OpenShift Virtualization.
 
 [NOTE]
 If your cluster uses worker nodes with different CPUs, e.g. Intel and AMD, live migration failures can occur because different CPUs have different capabilities. 
@@ -84,7 +85,7 @@ At least one physical node is required for OpenShift Virtualization, "nesting" a
 +
 image::images/Install/Worker0_Details.png[]
 
-=== Review Bare Metal hosts
+=== Review Bare Metal Hosts
 
 When using `Baseboard Management Console (BMC)` it is possible to manage the nodes using the *Red Hat OpenShift* console. 
 
@@ -102,42 +103,77 @@ The information shown is similar to the *Nodes* one, with the exception is provi
 
 . Explore the other tabs in the interface to see more details about the hosts, including the network interfaces and disks. Additionally, the host can be *Deprovisioned*, which will result in it being removed from the cluster, RHCOS removed, and the machine marked as ready to configure.
 
-////
-== The OpenShift Virtualization Operator
+=== Scaling The Cluster With A New Bare Metal Host
 
-Due to the time constraints of this session, the OpenShift Virtualization Operator has been preinstalled for you. You can navigate to *Operators* -> *Installed Operators* to get the list of the operators installed to the cluster. Ensure *All Projects* is selected to list Operators across all namespaces and type `virtualization` in the search box to filter the list.
+In many cases it becomes necessary to add additonal physical nodes to a cluster to meet workload demands. In a virtual deployment of OpenShift, this is as simple as clicking on the appropriate machine set and choosing the scale the number of nodes available, and the hypervisor responds by cloning a VM template and spinning up new workers. In a bare metal environment there are a few more steps involved, but it's still a fairly simple process if you have the hardware available and access to the servers through a BMC that supports the IPMI protocol.
 
-For this workshop we'll be focusing on two Operators: OpenShift Virtualization and the Migration Toolkit for Virtualization.
+To begin this process we are going to return to the bare metal hosts screen we reviewed earlier:
 
-image::images/Install/environment_installed_operators.png[]
-
-
-=== Examine the OpenShift Virtualization Operator
-
-. Click on *OpenShift Virtualization* from the operator installed list.
-
-. Click the *Details* tab to view information about the Operator:
+. Select *Compute* -> *Bare Metal Hosts*:
 +
-image::images/Install/environment_operator_details.png[]
+image::images/Install/BMHosts.png[]
 +
-The Operator provides two custom resource definitions (CRDs) to extend the Kubernetes API: the OpenShift Virtualization deployment and the Host Path Provisioner. Installing the Operator is only the first step to deploying OpenShift Virtualization, an instance of the OpenShift Virtualization Deployment must also be created.
-
-. Click the *OpenShift Virtualization Deployment* tab, then click the *Create HyperConverged* button:
+. Click on the *Add Host* button in the upper right corner, and select the *New with Dialog* option.
 +
-image::images/Install/environment_operator_crd.png[]
+image::images/Install/add_host_red.png[]
++
+. The dialog menu to add a bare metal host will ask you for the following information:
++
+* Host Name: *worker4*
+* Boot MAC Address: *de:ad:be:ef:00:07* 
+* BMC Address: *ipmi://192.168.123.1:6237*
+* BMC Username: *admin*
+* BMC Password: *redhat* 
++
+. With this information filled out, click the *Create* button at the bottom of the dialog page.
++
+image::images/Install/create_host_red.png[]
++
+. You will then be presented with the summary screen for *worker4*, and you will see the status update as it attempts to contact the machine and make it available as a host.
++
+image::images/Install/worker4_summary_1.png[]
 +
 [NOTE]
-OpenShift Virtuailzation, even when deployed to a cluster with OpenShift Data Foundation or another Kubernetes-native storage solution, is not a hyperconverged product, which makes the Kubernetes object name misleading. This naming is the result of the history of the upstream KubeVirt project and it's origins as a part of the "Kubernetes-native Infrastructure" meta-project.
-
-. Explore the configuration options for OpenShift Virtualization
+This step may take several minutes to update as it powers up the host, and collects hardware information.
 +
-This screen represents global configuration options for OpenShift Virtualization and can be used to enable/disable features of OpenShift Virtualization and VM capabilities. For example, scroll down then expand the menu item for *featureGates*. The *withHostPassthroughCPU* option is not enabled by default, however if you wanted to allow virtual machines to inherit the exact CPU features and capabilities of the physical node it's being hosted on then you would need to check this box.
+. When host discovery and hardware inspection is complete you will see that it shows it's status as *Available*.
 +
-image::images/Install/environment_operator_create.png[]
+image::images/Install/worker4_summary_2.png[]
 +
-*IMPORTANT:* Do not click *Create* at the bottom of the form. This is unnecessary, OpenShift Virtualization has already been deployed to the lab cluster.
-////
+. Once a host has been physically discovered the next step is to add it as a machine to be used by OpenShift. Click on the menu for *MachineSets* on the left under *Compute*.
++
+image::images/Install/machinesets.png[]
++
+. Click on the *three-dot* menu on the top-right side, and select *Edit Machine count* from the dropdown menu.
++
+image::images/Install/edit_machine_count.png[]
++
+. A new menu will appear showing the current machine count of *3*, click the plus (+) sign to increase the machine count to *4*.
++
+image::images/Install/edit_machine_count_4.png[]
++
+. You will be returned to the MachineSets page, and you can now see that the count of machines is 3/4 machines.
++
+image::images/Install/machine_count_3_4.png[]
++
+. Next, click on the *Machines* button on the left to see a list of all the machines, and you should see worker4 in the *Provisioning* state. 
++
+image::images/Install/worker_4_provisioning.png[]
++
+. One provisioning is complete you will see the node listed with the Phase set to *Provisioned as node*.
++
+image::images//Install/provisioned_as_node.png[]
++
+. Since our new host has now been added to the machineset and provisioned as a node, we can click on the *Nodes* menu on the left.
++
+image::images//Install/all_nodes.png[]
++
+. We can also click directly on *worker-4* under the *Name* column to see it's current status.
++
+image::images/Install/worker_4_details.png[]
++
+. The details screen for worker-4 is now populated with hardware information including CPU and Memory utilization, as well as the number of Pods assigned to our new worker node.
 
 == Summary
 
-In this lab, you became familiar with your Red Hat OpenShift Container Platform cluster and the hardware that makes up this environment.
+In this lab, you became familiar with your Red Hat OpenShift Container Platform cluster and the hardware that makes up this environment. You also used the web console to expand your cluster by discovering an additional bare metal node, and adding it to the cluster machineset used to scale the worker nodes available.

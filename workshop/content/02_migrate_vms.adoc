@@ -192,8 +192,9 @@ image::images/MTV/52_General_VMWARE_Plan.png[]
 +
 image::images/MTV/53_VM_Filter_VMWARE_Plan.png[]
 
-. On the next step select the three VMs: database, winweb01 and winweb02. Press *Next*:
+. On the next step select the database VM, as the one we would like to move. Press *Next*:
 +
+// UPDATE THIS IMAGE TO SHOW 1 VM selected
 image::images/MTV/54_VM_Select_VMWARE_Plan.png[]
 
 . On the *Network mapping* step select `mapping-segment` and press *Next*
@@ -208,6 +209,7 @@ image::images/MTV/56_Storage_VMWARE_Plan.png[]
 
 . Review the configuration specified and press *Finish*
 +
+//UPDATE THIS IMAGE TO SHOW ONLY ONE VM SELECTED
 image::images/MTV/57_Finish_VMWARE_Plan.png[]
 
 . Ensure the status of the plan is *Ready*
@@ -218,6 +220,7 @@ image::images/MTV/58_Ready_VMWARE_Plan.png[]
 
 . After around 10 minutes the migration is completed
 +
+//UPDATE THIS IMAGE TO ONLY SHOW THE ONE VM MIGRATED
 image::images/MTV/59_Completed_VMWARE_Plan.png[]
 +
 [IMPORTANT]
@@ -227,7 +230,7 @@ Having many participants performing the same task in parallel can cause this tas
 
 === Review and configure migrated Virtual Machines
 
-Your VMs have now been migrated and can be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would in VMware vCenter.
+The selected VM has now been migrated and can be started on OpenShift Virtualization. You could connect to the VM consoles and interact with them as you would in VMware vCenter.
 
 If you want to learn more about how to use OpenShift and Kubernetes features with the application hosted in the imported virtual machines, complete the optional module "Exposing apps using a Route".
 
