@@ -34,7 +34,7 @@ A network attachment definition instructs openshift to utilise an existing netwo
 
 How is this done?
 
-To manage an OpenShift node's network configuration you use a tool, available as an operator, called nmstate. With nmstate you can create network interfaces on OpenShift compute nodes using Kubernetes constructs. You can do this following naming that suits your needs and network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the ([nmstate documentation](https://docs.openshift.com/container-platform/latest/networking/k8s_nmstate/k8s-nmstate-observing-node-network-state.html)) or speak with your lab proctors."
+To manage an OpenShift node's network configuration you use a tool, available as an operator, called nmstate. With nmstate you can create network interfaces on OpenShift compute nodes using Kubernetes constructs. You can do this following naming that suits your needs and network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the ([nmstate documentation](https://docs.openshift.com/container-platform/latest/networking/k8s_nmstate/k8s-nmstate-updating-node-network-config.html)) or speak with your lab proctors."
 
 . Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
 +
