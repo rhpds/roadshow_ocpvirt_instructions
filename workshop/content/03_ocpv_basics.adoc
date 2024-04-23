@@ -161,7 +161,7 @@ As a user with permission to access virtual machines, you can stop, start, resta
 
 . In the left menu, go back to *Virtualization* -> *VirtualMachines*:
 
-. Select the _Virtual Machine_ `fedora02` from the list.
+. Select the _Virtual Machine_ `fedora01` from the list.
 
 . Press the top-right dropdown, *Actions*, to list the available 
 options:
