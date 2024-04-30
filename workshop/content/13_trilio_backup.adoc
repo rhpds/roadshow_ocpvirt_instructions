@@ -60,7 +60,7 @@ Click here to open the menu, and apply the license:
 image::images/Trilio/lic1.PNG[]
 
 ```
-xK8NDgwKD3jafZFRa4MwFIXf8ysCew6YTNta8MHZdEidLVX7OtJ4ZYE2StSy/vvZVpho6SFPuYfv5py8pS1gvzIYM0zdJbOWtouZxWwUGBCNKvVKNID/5d2GxOoOQzxXNwceyVsbgNQocUJCNuoCeOJoTAvopCToGg5g6iHFY+hLKN2AFloC/62UuT4e0e92iPWOgvJcCX2dkNN9GIVbssk++D7mKU9IFAY8Tjj55DFZ7zn/7ix+hOL2fASzLbK62z8AEIoSMBcw4WrMjksNKOExfiKvuyc0d8DNLUkKymaEUgDiLhYFKZy5nFFgzJ4Dih6xx3gvPfhZlPYMwV4y7q2ISfnDgnatkT+ihhf/l8iygidR7jk37RGySQf9MBCVkKoZ1+9RqxMOdln9B2irkSQwLAIUKBvlRWZpkEg+yJi46EpfiNjvh4ACFCmtqyXRHoKEmZJcv1PslAKifPIAX02f3
+xxx
 ```
 image::images/Trilio/lic2.PNG[]
 
