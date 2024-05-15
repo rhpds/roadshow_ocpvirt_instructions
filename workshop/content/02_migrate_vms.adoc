@@ -1,7 +1,9 @@
 :scrollbar:
 :toc2:
 
-= Migration Toolkit for Virtualization
+== Day 1 
+
+== Migration Toolkit for Virtualization
 
 == Introduction
 
@@ -240,3 +242,7 @@ In addition to the Migration Toolkit for Virtualization, there are three other m
 * https://docs.openshift.com/container-platform/4.12/migration_toolkit_for_containers/about-mtc.html[Migration Toolkit for Containers] - Migrate stateful application workloads between OpenShift clusters.
 
 For more information about these, please reach out to your Red Hat account team.
+
+
+[sidebar]
+Stop once you have gotten to here and we will take a break.  Thank you

@@ -4,6 +4,10 @@
 
 = OpenShift Virtualization Basics
 
+=========================================================
+*todo*-maybe have the users go start DO316 so they can install the operator OR we can uninstall everything later after the VMs??
+=========================================================
+
 This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
 
 Among other things, this lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
@@ -13,9 +17,20 @@ Creating virtual machines is one of the most frequently accomplished tasks for a
 In this lab, you become familiar with running virtual machines (VMs) on Red Hat^(R)^ OpenShift^(R)^ Container Platform. You create a new virtual machine based on a bootable operating system disk image provided in the default configuration of OpenShift Virtualization.
 
 .Goals
+* Understand the difference between an VM and a VMI
 * Create a new virtual machine
 * Access the VM console
 * Gain experience using the VM console
+
+== Difference betwen a VM and VMI
+
+In general, a *virtual machine (VM)* is a virtual environment that simulates the resources of a physical machine, which include CPU, memory, network interfaces, and storage. Typically, VMs maintain application state and persistent data, similar to the StatefulSet pods.
+
+In Red Hat OpenShift Virtualization, a VM object specifies a template to create a running instance of the VM inside your cluster. *The running instance of a VM is a virtual machine instance (VMI)*. A container inside a pod executes and manages the VMI.
+
+The relationship between a VM and a VMI is similar to the relationship between a deployment and a replica set. A VM object specifies the template for a VMI pod. If a VMI is deleted, then Kubernetes generates another instance that is based on the VM object configuration.
+
+When a VM is created and started, a virt-controller pod signals to a virt-handler pod on a cluster node to create a virt-launcher pod for the VMI. The virt-launcher pod consists of a running libvirtd container instance to execute the VMI as an isolated process.
 
 == Create a new Project
 
@@ -42,6 +57,13 @@ image::images/Create_VM_PVC/50_create_new_project.png[]
 .. In the *Name* field, type `vmexamples` to name the project, then click *Create*.
 +
 image::images/Create_VM_PVC/03_Create_Project.png[]
+
+== Creating a Virtual Machine Template under your project
+
+. Ensure you are on  the vmexamples project
+. Select create template 
+. 
+
 
 == Create a Linux virtual machine
 
@@ -80,6 +102,21 @@ image::images/Create_VM_PVC/09_Fedora_Events.png[]
 The IP address of the virtual machine on the software-defined network (SDN) is also displayed here, along with information about the boot order, workload profile, the cluster node hosting the virtual machine, and more.
 +
 image::images/Create_VM_PVC/10_Fedora_Details.png[]
+
+== Create a VM using instancetypes 
+
+. Select VirtualMachines on the side 
+. Select Create VirtualMachine
+. Select from template
+. In the upper middle you will see InstanceType, Select InstanceType
+. You may be presented with a pop up tha askes if you want to enable creating a VirtualMachine from an InstanceType
+.. Select Enable 
+. Select the volume you want to book from (Pick your favorite), in this example we will select centos-stream9
+. Next sleect General Purpose, U series, and select a medium 1 CPUs, 4 GiB Memory
+. Scroll down and name your virtualMachine centos-test-instancetype-01
+. select Create Virtual Machine
+. You're VirtualMachine will be created
+
 
 == Access the virtual machine console
 
@@ -137,6 +174,128 @@ image::images/Create_VM_PVC/19_Fedora_Agent_Details.png[]
 +
 image::images/Create_VM_PVC/19_Fedora_Metrics.png[]
 
+== Using virtctl to access VMs -- Pause - this may be integrated already for future labs/ Sumit
+
+In this section we will go over the virtctl command and how you can run the command inside the roadshow environment.  The steps here may be different when you run them in a production environment. 
+
+. We will need to go to the url for your linux virtctl download
+. Navigate to the Virtualization -> Overview page in the web console
+. Click the Download virtctl link to download the virtctl binary for the linux operating system
++
+image::images/Virtctl/01_virtctl.png[]
+
+. Right Click on the Download virtctl for Linux for x86_64 link 
++
+image::images/Virtctl/02_virtctl.png[]
+
+. Then select "Save link as..."
++
+image::images/Virtctl/03_virtctl.png[]
+
+* You will need this link for later.  
+* The link will be similar to the following - the only difference will be where the XXXXX is for your specific lab
+** https://virtctl-route-openshift-cnv.apps.XXXXX.dynamic.redhatworkshops.io/amd/linux/virtctl.tar.gz
+. SSH to the host for the lab (inside bookbag) this will take you to the bastion 
+* example (ssh lab-user@147.28.180.143) 
+. Then type sudo ssh root@192.168.123.100
+* Inside the bastion cli-host you will need to type the following
+** wget --no-check-certificate https://hyperconverged-cluster-cli-download-openshift-cnv.apps.ocp.example.com/amd64/linux/virtctl.tar.gz 
+** untar the file by running tar -xvf virtctl.tar.gz
+** you will need to move the virtctl file to the /usr/local/bin so it is in your PATH
+*** mv virtctl /usr/local/bin/
+** then export the KUBECONFIG
+*** export KUBECONFIG=/root/.kube/config
+
+== Using virtctl for VMs 
+
+Now that we have virtctl setup lets do a little CLI
+
+. To get the list of current VMs type the following 
+* oc get vms
++
+[source,console]
+----
+[root@ocp4-bastion ~]# oc get vms
+NAME       AGE   STATUS    READY
+database   24h   Stopped   False
+winweb01   24h   Stopped   False
+winweb02   24h   Stopped   False
+----
+
+
+. Lets get a list of current instancetypes type the following 
+* oc get vmclusterinstancetypes
++
+[source,console]
+----
+[root@ocp4-bastion ~]# oc get vmclusterinstancetypes
+NAME                     AGE
+cx1.2xlarge              30h
+cx1.4xlarge              30h
+cx1.8xlarge              30h
+cx1.large                30h
+cx1.medium               30h
+cx1.xlarge               30h
+... continued
+----
+
+. Lets get a list of the current datasources 
+* oc -n openshift-virtualization-os-images get datasources
++
+[source,console]
+----
+[root@ocp4-bastion ~]# oc -n openshift-virtualization-os-images get datasources
+NAME             AGE
+centos-stream8   30h
+centos-stream9   30h
+centos7          30h
+fedora           30h
+rhel7            30h
+rhel8            30h
+rhel9            30h
+... continued
+----
+
+. Lets create a vm in the vmexamples project space with the information we just collected and use the oc create to have the VM to be.  You can mix and match and do 
++
+[source,console]
+----
+[root@ocp4-bastion ~]# oc project vmexample 
+[root@ocp4-bastion ~]# virtctl create vm \
+    --name rhel9-enablement \
+    --instancetype n1.medium \
+    --infer-preference \
+    --volume-datasource name:root,src:openshift-virtualization-os-images/rhel9,size:50Gi | oc create -f -
+----
+
+. We can also do this slightly differently
++
+[source,console]
+----
+[root@ocp4-bastion ~]# oc project vmexample 
+[root@ocp4-bastion ~]# virtctl create vm \
+    --name rhel9-enablement-02 \
+    --instancetype n1.medium \
+    --infer-preference \
+    --volume-datasource name:root,src:openshift-virtualization-os-images/rhel9,size:30Gi \
+    > rhel9-enablement-02.yaml
+[root@ocp4-bastion ~]# oc create -f rhel9-enablement-02.yaml 
+virtualmachine.kubevirt.io/rhel9-enablement-02 created
+----
+
+== Create a VM with Cloud Init
+
+. Proceed to go back over to your 
+
+== Create a windows Virtual Machine 
+
+== Create your own VM template 
+
+
+
+. 
+
+
 
 
 == Live migrate a virtual machine
@@ -187,7 +346,14 @@ image::images/Pods_Migration/33_VM_Actions_Paused.png[]
 
 . Unpause the _Virtual Machine_ using *Actions* and the option *Unpause*.
 
+== Working with VMs 
 
+. ssh to the host for the lab (inside bookbag) this will take you to the bastion 
+. ssh to the host that you can run oc and virtctl from 
+* sudo ssh root@192.168.123.100
+. log into the openshift console 
+* this is provided in the bop
+ 
 
 == [Optional] Virtualization Overview dashboard
 
