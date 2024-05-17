@@ -1,0 +1,293 @@
+:scrollbar:
+:toc2:
+:numbered:
+
+= OpenShift Virtualization in Disconnected Environments
+
+This lab will introduce you to the basics of deploying and managing OpenShift Virtualization in a disconnected environment.
+
+.Goals
+* <<Mirror Required Packages for OpenShift Virtualization>>
+* <<Configure OpenShift to Use Mirror>>
+* <<Deploy Virtualization>>
+* <<Create VM from Local Registry Image>>
+
+== Mirror Required Packages for OpenShift Virtualization
+
+In this section, we create an image set config file for the oc-mirror plugin and mirror content to a local registry. The standalone mirror-registry is a good option for a local registry and is included with OpenShift SKUs. Mirror-registry is supported for supplying disconnected OpenShift images.
+
+Download the oc-mirror tool from the OpenShift public mirror. Credentials for Red Hat registries and local registries should be added to `~/.docker/config.json` or `${XDG_RUNTIME_DIR}/containers/auth.json`.
+
+. Copy pull secret from Hybrid Cloud Console and append local registry credentials:
++
+[source,bash]
+----
+$ cp ~/Downloads/pull-secret.txt ~/.docker/config.json
+$ podman login --auth-file ~/.docker/config.json --username quayuser mirror-registry.example.com:8443
+Password: 
+Login Succeeded!
+----
+
+. Create an oc-mirror image set config:
++
+.imageset-operators.yaml
+[source,yaml]
+----
+apiVersion: mirror.openshift.io/v1alpha2
+kind: ImageSetConfiguration
+storageConfig:
+  local:
+    path: metadata-redhat-operators-4.15
+mirror:
+  operators:
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.15
+    packages:
+    - name: kubernetes-nmstate-operator
+    - name: kubevirt-hyperconverged
+    - name: mtv-operator
+  additionalImages:
+  - name: quay.io/containerdisks/centos-stream:8
+  - name: quay.io/containerdisks/centos-stream:9
+  - name: quay.io/containerdisks/fedora:latest
+  - name: registry.redhat.io/rhel8/rhel-guest-image:latest
+  - name: registry.redhat.io/rhel9/rhel-guest-image:latest
+----
+
+. Mirror content with oc-mirror:
++
+Mirror to files
++
+[source,bash]
+----
+$ oc-mirror --config imageset-operators.yaml file://archives
+$ scp -r archives admin@disconnected-bastion:
+$ oc-mirror --from ~/archives docker://mirror-registry.example.com:8443/
+----
++
+Or mirror direct to registry
++
+[source,bash]
+----
+$ oc-mirror --config imageset-operators.yaml docker://mirror-registry.example.com:8443/
+----
+
+== Configure OpenShift to Use Mirror
+
+The oc-mirror tool generates a catalog image for each index mirrored along with an imageContentSourcePolicy to direct the cluster to the local registry.
+
+. If needed, add credentials for the mirror registry to the global pull secret:
++
+[source,bash]
+----
+$ oc create -n openshift-config configmap custom-ca --from-file=mirror-registry.example.com..8443=<registry-ca.pem>
+$ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"custom-ca"}}}' --type=merge
+$ oc extract secret/pull-secret -n openshift-config --confirm --to=.
+$ podman login --auth-file .dockerconfigjson --username quayuser
+Password: 
+Login Succeeded!
+$ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=.dockerconfigjson
+----
+
+. Create a catalog source and image content source policy from oc-mirror output:
++
+[source,bash]
+----
+$ oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+$ oc create -f ~/oc-mirror-workspace/results-<timestamp>/
+----
++
+After this is complete, OpenShift Virtualization can be deployed through the Operator Hub like a connected cluster.
+
+== Deploy Virtualization
+
+OpenShift Virtualization can be deployed using the Operator Hub or CLI when using a local registry. In this example, we use the CLI.
+
+. Create a manifest with a namespace, operator group, and subscription to deploy the operator:
++
+.openshift-cnv.yaml
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-cnv
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-cnv
+  namespace: openshift-cnv
+spec:
+  targetNamespaces:
+    - openshift-cnv
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+spec:
+  source: redhat-operator-index
+  sourceNamespace: openshift-marketplace
+  name: kubevirt-hyperconverged
+  startingCSV: kubevirt-hyperconverged-operator.v4.15.1
+  channel: stable
+----
++
+Deploy the Virtualization Operator
++
+[source,bash]
+----
+$ oc create -f openshift-cnv.yaml
+----
+
+. Create a YAML for the hyperconverged object:
++
+.hco.yaml
+[source,yaml]
+----
+apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+spec:
+  storageImport:
+    insecureRegistries:
+      - 'mirror-registry.example.com:8443'
+----
++
+Deploy a hyperconverged object
++
+[source,bash]
+----
+$ oc create -f hco.yaml
+----
+
+== Create VM from Local Registry Image
+
+There are a few ways to create a VM from a local registry image. You can use node pull method, use a pull secret, or redirect the datasource image stream.
+
+=== Node Pull method
+
+Modify the data volume source when creating the VM:
+
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  dataVolumeTemplates:
+  - metadata:
+  [...]
+    spec:
+      source:
+        registry:
+          url: 'docker://mirror-registry.example.com:8443/rhel9/rhel-guest-image'
+          pullMethod: node
+----
+
+=== Pull secret method
+
+Create a pull secret for the registry along with a trust bundle if needed:
+
+.mirror-registry-creds.yaml
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+ name: mirror-registry-creds
+ namespace: example
+ labels:
+   app: containerized-data-importer
+data:
+ accessKeyId: cXVheXVzZXI=
+ secretKey: UmVkSGF0MTIz
+type: Opaque
+----
+
+[NOTE]
+accessKeyId can be a username or token ID, secretKey can be a password or token.
+
+.mirror-registry-cert.yaml
+[source,yaml]
+----
+kind: ConfigMap
+apiVersion: v1
+metadata:
+ name: mirror-registry-cert
+ namespace: example
+data:
+ ca.pem: |
+   <TLS-CA>
+----
+
+[NOTE]
+Unless the registry is included in the HCO insecureRegistries list, a certConfigMap is required.
+
+Next, modify the VM definition to use the registry credentials:
+
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  dataVolumeTemplates:
+  - metadata:
+  [...]
+    spec:
+      source:
+        registry:
+          url: 'docker://mirror-registry.example.com:8443/rhel9/rhel-guest-image'
+          secretRef: mirror-registry-creds
+          certConfigMap: mirror-registry-cert
+----
+
+
+=== Redirect the image stream
+
+Replace the external registry with the local registry in the target image stream, for example:
+
+.rhel9-guest
+[source,yaml]
+----
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: rhel9-guest
+  namespace: openshift-virtualization-os-images
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: mirror-registry.example.com:8443/rhel9/rhel-guest-image
+      generation: 37
+      importPolicy:
+        scheduled: true
+        importMode: Legacy
+      referencePolicy:
+        type: Source
+----
+
+== Resources
+
+Mirror Registry: A standalone Quay deployment for hosting OpenShift content. +
+https://mirror.openshift.com/pub/openshift-v4/clients/mirror-registry/latest/ +
+https://github.com/quay/mirror-registry
+
+oc-mirror: OpenShift client plugin for managing OpenShift releases, operator catalogs, and other image content +
+https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/latest/oc-mirror.tar.gz +
+https://github.com/openshift/oc-mirror
+
+Pull secret download +
+https://console.redhat.com/openshift/downloads +
+https://console.redhat.com/openshift/create/local
+
+
+[NOTE]
+It is not necessary for this workshop to deploy VMs from a local registry. You can continue to the next module.
