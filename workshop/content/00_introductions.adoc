@@ -1,4 +1,4 @@
-= Welcome to the NAPS Openshift Virtualization Field Enablement Introduction
+= Openshift Virtualization Field Enablement Introduction and overview
 
 == Agenda, Tuesday, May 21 9AM through Turhsday May 23 1PM
 
