@@ -21,12 +21,14 @@ modules:
         name: OpenShift Virtualization Basics
     04_thanks:
         name: 'Thank you and next steps'
+    04a_DO316:
+        name: 'Optional: DO316'
     05_ocpv_customization:
         name: 'Optional: Customize Virtual Machines'
     06_windows_vm:
         name: 'Optional: Windows Virtual Machines'
     07_vm_management:
-        name: 'Virtual Machine Management'
+        name: 'Optional: Virtual Machine Management'
     08_bare_metal:
         name: 'Optional: Bare Metal OpenShift Overview'
     09_network_management:
