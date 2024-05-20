@@ -1,0 +1,5 @@
+== ROSA OCP Virt lab
+
+Yes you can run your OCP virt vm's in AWS
+
+link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
