@@ -1,13 +1,15 @@
 :preinstall_operators: %preinstall_operators%
 
-== Welcome to the Red Hat OpenShift Virtualization Roadshow
+== Welcome to the NAPS Openshift Virtualization Field Enablement 
 
 OpenShift Virtualization enables you to bring virtual machines onto a modern, Kubernetes-based infrastructure. It enables the development and delivery of new applications as well as the modernization of existing ones and can create applications that consist of virtual machines, containers, and serverless functions - all managed together using Kubernetes-native tools and paradigms.
 
-This workshop has two segments which we encourage all attendees to complete:
+This field enablement has many segments which we encourage everyone to complete:
 
 * _Migrating Virtual Machines_: In this section, you will use the Migration Toolkit for Virtualization (MTV) to migrate a few VMs from an existing VMware vSphere environment to OpenShift Virtualization.
 * _OpenShift Virtualization Basics_: This lab focuses on how to create and use virtual machines with OpenShift Virtualization. It covers the most common tasks you would be expected to perform as a VM user/administrator.
+* _Concise look into Virtualization_: Not only the basics will be covered but a more indepth knowledge of how to use VMs and some of the more concise settings you will need to understand as a OCP-Virt administrator
+* _Intermediate and Advanced topics_: These are topics that will go above and beyond and help you understand what is possible
 
 Additionally, there are a number of optional modules which target activities that you may be interested in depending on your specific role, responsibilities, and/or what you're curious about.
 
