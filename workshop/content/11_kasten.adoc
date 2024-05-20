@@ -1,8 +1,5 @@
-== Welcome to the Kasten 'Veeam' lab
+== Welcome to the ROSA OCP Virt Lab
 
-**Matt Bator**
-
-matt.bator@veeam.com
 
 link:https://mattbator.github.io/kasten-ocpv-lab/[Kasten OCP V Lab]
 
