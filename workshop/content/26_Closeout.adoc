@@ -2,7 +2,7 @@
 
 == We hope that you found this bootcamp to be informative and educational
 
-link:https://someurl[Survey]
+link:https://docs.google.com/forms/d/e/1FAIpQLSdyjoCwnS9AGPAGU5CXJNaoIMa7RGz6LW4ZcxBNEEoIszgnYg/viewform[Survey]
 
 == Take your EX316!
 
