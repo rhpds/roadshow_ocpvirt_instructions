@@ -11,6 +11,8 @@ config:
     - name: node-network-domain
       value: aio.example.com
 modules:
+    00_introductions:
+        name: Introductions
     01_welcome:
         name: Welcome
     02_migrate_vms:
@@ -18,20 +20,36 @@ modules:
     03_ocpv_basics:
         name: OpenShift Virtualization Basics
     04_thanks:
-        name: Thank you and next steps
+        name: 'Thank you and next steps'
     05_ocpv_customization:
         name: 'Optional: Customize Virtual Machines'
     06_windows_vm:
         name: 'Optional: Windows Virtual Machines'
-    07_bare_metal:
+    07_vm_management:
+        name: 'Virtual Machine Management'
+    08_bare_metal:
         name: 'Optional: Bare Metal OpenShift Overview'
-    08_network_management:
+    09_network_management:
         name: 'Optional: Network Management'
-    09_storage_management:
+    10_storage_management:
         name: 'Optional: Storage Management'
-    10_backup_restore:
+    15_backup_restore:
         name: 'Optional: Backup and Restore'
-    11_service_route:
+    16_kasten:
+        name: 'Optional: Kasten Lab'
+    17_trilio_backup:
+        name: 'Optional: Trilo Backup and Recovery Lab'
+    19_service_route:
         name: 'Optional: Exposing apps using a Route'
-    12_metallb:
+    20_metallb:
         name: 'Optional: Exposing apps using MetalLB'
+    22_disconnected:
+        name: 'Optional: OpenShift Virtualization in Disconnected Environments'
+    23_ROSAVirt:
+        name: 'Optional: ROSA OCP Virt lab'
+    24_presales:
+        name: 'Optional: Pre Sales'
+    25_virtualization_gitops:
+        name: 'Optional: GitOps + CI/CD lab'
+    26_Closeout:
+        name: 'Closeout'
