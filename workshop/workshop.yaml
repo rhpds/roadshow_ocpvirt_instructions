@@ -2,16 +2,26 @@ name: Red Hat OpenShift Virtualization Roadshow
 
 modules:
     activate:
+    - 00_introductions.adoc
     - 01_welcome
     - 02_migrate_vms
     - 03_ocpv_basics
     - 04_thanks
+    - 04a_DO316
     - 05_ocpv_customization
     - 06_windows_vm
-    - 07_bare_metal
-    - 08_network_management
-    - 09_storage_management
-    - 10_backup_restore
-    - 11_service_route
-    - 12_metallb
+    - 07_vm_management
+    - 08_bare_metal
+    - 09_network_management
+    - 10_storage_management
+    - 15_backup_restore
+    - 16_kasten
+    - 17_trillio_backup
+    - 19_service_route
+    - 20_metallb
+    - 22_disconnected
+    - 23_ROSAVirt
+    - 24_presales
+    - 25_virtualization_gitops
+    - 26_Closeout
 
