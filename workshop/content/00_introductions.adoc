@@ -10,7 +10,6 @@
 * 9AM Getting setup
 *** Introduction
 *** Top Golf Signup
-*** Meditation with **Mike Battles**
 *** URL to Lab
 *** BU Product overview and roadmap with Peter Lauterbach
 *** Labs
@@ -32,6 +31,7 @@ image::images/introductions/mg.png[]
 
 * Michael Galayda 
 * Senior Principal Architect+
+
 
 image::images/introductions/tb.png[]
 
