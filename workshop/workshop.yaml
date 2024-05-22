@@ -19,9 +19,10 @@ modules:
     - 17_trillio_backup
     - 19_service_route
     - 20_metallb
-    - 22_disconnected
     - 23_ROSAVirt
+    - 22_disconnected
     - 24_presales
     - 25_virtualization_gitops
     - 26_Closeout
+    - 27_steps_to_disable_os_images
 
