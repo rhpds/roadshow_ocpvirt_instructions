@@ -214,5 +214,10 @@ image::images/Create_VM_PVC/33_Windows_2k9_Console.png[]
 It is not necessary for this workshop to wait for the installation to complete. You can continue to the next module.
 +
 [IMPORTANT]
-The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
+The VM is marked as "Not migratable" because a there is a hyperv spec that needs to be removed. 
 
+[NOTE]
+To make the the VM migratable perform the following
+Inside the Openshift Console select the Terminal Icon
+
+image::images/windows_migrate_fix/ocp-terminal.png
