@@ -78,7 +78,7 @@ Inside the Openshift Console select the Terminal Icon, in the upper right hand c
 image::images/windows_migrate_fix/ocp-terminal.png[]
 
 Type the following 
-* oc patch bc -n bookbag bookbag  --type json -p='[{"op": "repl
+* oc patch bc -n bookbag bookbag  --type json -p='[{"op": "replace", "path": "/spec/source/git/ref","value": main}]'
 
 [source,console]
 ----
