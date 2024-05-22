@@ -104,7 +104,7 @@ Login Succeeded!
 . Create an oc-mirror image set config:
 +
 .imageset-operators.yaml
-[source,yaml]
+[source,yaml,role=copy]
 ----
 apiVersion: mirror.openshift.io/v1alpha2
 kind: ImageSetConfiguration
@@ -181,7 +181,7 @@ OpenShift Virtualization can be deployed using the Operator Hub or CLI when usin
 . Create a manifest with a namespace, operator group, and subscription to deploy the operator:
 +
 .openshift-cnv.yaml
-[source,yaml]
+[source,yaml,role=copy]
 ----
 apiVersion: v1
 kind: Namespace
@@ -220,7 +220,7 @@ $ oc create -f openshift-cnv.yaml
 . Create a YAML for the hyperconverged object:
 +
 .hco.yaml
-[source,yaml]
+[source,yaml,role=copy]
 ----
 apiVersion: hco.kubevirt.io/v1beta1
 kind: HyperConverged
@@ -228,6 +228,31 @@ metadata:
   name: kubevirt-hyperconverged
   namespace: openshift-cnv
 spec:
+  featureGates:
+    enableCommonBootImageImport: false
+  dataImportCronTemplates:
+  - metadata:
+      annotations:
+        cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+      labels:
+        instancetype.kubevirt.io/default-instancetype: u1.medium
+        instancetype.kubevirt.io/default-preference: rhel.9
+        kubevirt.io/dynamic-credentials-support: 'true'
+      name: rhel9-image-cron
+    spec:
+      garbageCollect: Outdated
+      managedDataSource: rhel9
+      schedule: 40 2/12 * * *
+      template:
+        spec:
+          source:
+            registry:
+              url: docker://ocp4-bastion.aio.example.com:8443/rhel9/rhel-guest-image:latest
+              pullMethod: node
+          storage:
+            resources:
+              requests:
+                storage: 30Gi
   storageImport:
     insecureRegistries:
       - 'ocp4-bastion.aio.example.com:8443'
@@ -248,7 +273,7 @@ There are a few ways to create a VM from a local registry image. You can use nod
 
 Modify the data volume source when creating the VM:
 
-[source,yaml]
+[source,yaml,role=copy]
 ----
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -268,7 +293,7 @@ spec:
 Create a pull secret for the registry along with a trust bundle if needed:
 
 .mirror-registry-creds.yaml
-[source,yaml]
+[source,yaml,role=copy]
 ----
 apiVersion: v1
 kind: Secret
@@ -286,8 +311,13 @@ type: Opaque
 [NOTE]
 accessKeyId can be a username or token ID, secretKey can be a password or token.
 
+[source,bash]
+----
+$ oc create cm -n example mirror-registry-cert --from-file=ca.pem=~/certs/registry.crt
+----
+
 .mirror-registry-cert.yaml
-[source,yaml]
+[source,yaml,role=copy]
 ----
 kind: ConfigMap
 apiVersion: v1
@@ -320,10 +350,41 @@ spec:
           certConfigMap: mirror-registry-cert
 ----
 
+=== DataImportCron
+
+A data import cron job can be added to the HyperConverged object to manage a PVC/Snapshot data source:
+
+[source,yaml]
+----
+spec:
+  dataImportCronTemplates:
+  - metadata:
+      annotations:
+        cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+      labels:
+        instancetype.kubevirt.io/default-instancetype: u1.medium
+        instancetype.kubevirt.io/default-preference: rhel.8
+        kubevirt.io/dynamic-credentials-support: 'true'
+      name: rhel8-image-cron
+    spec:
+      garbageCollect: Outdated
+      managedDataSource: rhel8
+      schedule: 40 2/12 * * *
+      template:
+        spec:
+          source:
+            registry:
+              url: docker://ocp4-bastion.aio.example.com:8443/rhel8/rhel-guest-image:latest
+              pullMethod: node
+          storage:
+            resources:
+              requests:
+                storage: 30Gi
+----
 
 === Redirect the image stream
 
-Replace the external registry with the local registry in the target image stream, for example:
+A data import job can also use an imagestream. Replace the external registry with the local registry in the target image stream, for example:
 
 .rhel9-guest
 [source,yaml]
@@ -342,7 +403,6 @@ spec:
       from:
         kind: DockerImage
         name: ocp4-bastion.aio.example.com:8443/rhel9/rhel-guest-image
-      generation: 37
       importPolicy:
         scheduled: true
         importMode: Legacy
@@ -364,6 +424,8 @@ Pull secret download +
 https://console.redhat.com/openshift/downloads +
 https://console.redhat.com/openshift/create/local
 
+OpenShift Virtualization Automatic Bootsource Update
+https://docs.openshift.com/dedicated/virt/storage/virt-automatic-bootsource-updates.html
 
 [NOTE]
 It is not necessary for this workshop to deploy VMs from a local registry. You can continue to the next module.
