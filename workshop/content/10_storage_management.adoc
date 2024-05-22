@@ -30,7 +30,7 @@ Using these OS images is optional, and the creation + download can be disabled v
 
 link:27_steps_to_disable_os_images.adoc[Steps to Disable OS Images in Virtualization Operator]
 
-xref:27_steps_to_disable_os_images.adoc[Steps to Disable OS Images in Virtualization Operator1]
+xref:27_steps_to_disable_os_images.adoc[Steps to Disable OS Images in Virtualization Operator]
 
 However, they are a quick and convenient way to get started provisioning virtual machines with OpenShift Virtualization since they use the "cloud" image for each of the respective distributions. This image includes cloud-init and, often, is a reduced OS footprint optimized for virtualization. Additionally, Red Hat provided boot images are automatically updated when new templates are released.
 

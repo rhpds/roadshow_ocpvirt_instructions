@@ -45,13 +45,15 @@ modules:
         name: 'Module: Exposing apps using a Route'
     20_metallb:
         name: 'Module: Exposing apps using MetalLB'
-    22_disconnected:
-        name: 'Module: OpenShift Virtualization in Disconnected Environments'
     23_ROSAVirt:
         name: 'Module: ROSA OCP Virt lab'
+    22_disconnected:
+        name: 'Module: OpenShift Virtualization in Disconnected Environments'
     24_presales:
         name: 'Module: Pre Sales'
     25_virtualization_gitops:
         name: 'Module: GitOps + CI/CD lab'
     26_Closeout:
         name: 'Closeout'
+    27_steps_to_disable_os_images:
+        name: 'Appendix: Steps to disable OS images'
