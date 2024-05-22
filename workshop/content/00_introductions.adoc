@@ -30,25 +30,25 @@
 image::images/introductions/mg.png[]
 
 * Michael Galayda 
-* Senior Principal Architect+
+* Senior Principal Architect
 
 
 image::images/introductions/tb.png[]
 
 * Thomas Bonds
-* Architect+
+* Architect
 
 image::images/introductions/ko.png[]
 
 * KO
-* Senior Principal Architect+
+* Senior Principal Architect
 
 == BootCamp Vendor Guests
 
 image::images/introductions/mb-kasten.png[]
 
 * Matt Bator
-* Accomplisher of Stuff and Things+
+* Accomplisher of Stuff and Things
 
 == Class Introductions
 
