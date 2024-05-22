@@ -4,10 +4,6 @@
 
 = OpenShift Virtualization Basics
 
-=========================================================
-*todo*-maybe have the users go start DO316 so they can install the operator OR we can uninstall everything later after the VMs??
-=========================================================
-
 This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
 
 Among other things, this lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
@@ -57,13 +53,6 @@ image::images/Create_VM_PVC/50_create_new_project.png[]
 .. In the *Name* field, type `vmexamples` to name the project, then click *Create*.
 +
 image::images/Create_VM_PVC/03_Create_Project.png[]
-
-== Creating a Virtual Machine Template under your project
-
-. Ensure you are on  the vmexamples project
-. Select create template 
-. 
-
 
 == Create a Linux virtual machine
 
@@ -282,20 +271,6 @@ rhel9            30h
 [root@ocp4-bastion ~]# oc create -f rhel9-enablement-02.yaml 
 virtualmachine.kubevirt.io/rhel9-enablement-02 created
 ----
-
-== Create a VM with Cloud Init
-
-. Proceed to go back over to your 
-
-== Create a windows Virtual Machine 
-
-== Create your own VM template 
-
-
-
-. 
-
-
 
 
 == Live migrate a virtual machine

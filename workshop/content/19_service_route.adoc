@@ -133,7 +133,7 @@ image::images/MTV/205_route_navigation.png[]
 +
 [NOTE]
 ====
-OpenShift can automatically (re)encrypt traffic entering the cluster via a Route, however, we don't need to use TLS for this application. The *Secure Route* option should not be checked.
+OpenShift can automatically (re)encrypt traffic entering the cluster via a Route, however, we don't need to use TLS for this application. The *Secure Route* option should be checked.
 ====
 +
 image::images/MTV/63_VMWARE_VMs_Create_Route.png[]

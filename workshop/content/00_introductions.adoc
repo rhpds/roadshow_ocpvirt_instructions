@@ -102,6 +102,8 @@ link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
 
 link:https://red.ht/virtkit[Content Kit]
 
+https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
+
 link:https://source.redhat.com/groups/public/us-public-sector/gmn[Good Morning NAPS ]
 
 link:https://source.redhat.com/groups/public/gtm_power_hour[BU PowerHour]
