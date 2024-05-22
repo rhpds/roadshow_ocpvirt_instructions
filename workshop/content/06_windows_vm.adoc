@@ -216,8 +216,60 @@ It is not necessary for this workshop to wait for the installation to complete. 
 [IMPORTANT]
 The VM is marked as "Not migratable" because a there is a hyperv spec that needs to be removed. 
 
+
+
 [NOTE]
 To make the the VM migratable perform the following
 Inside the Openshift Console select the Terminal Icon
 
-image::images/windows_migrate_fix/ocp-terminal.png
+image::images/windows_migrate_fix/ocp-terminal.png[]
+
+Type the following 
+
+* oc get vms -A -o=custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name
++
+[source,console]
+----
+bash-4.4 ~ $oc get vms -A -o=custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name
+
+NAMESPACE    NAME
+default      fedora01
+default      win2k19-surprised-warbler
+vmimported   database
+vmimported   winweb01
+vmimported   winweb02
+----
+
+Now that you have the name of the Windows Virtual Machine, type the following (please note the command uses the default namespace, please adjust as necessary)
+
+* oc patch vm -n default win2k19-surprised-warbler --type json -p='[{"op": "remove", "path": "/spec/template/spec/domain/features/hyperv/reenlightenment"}]'
+
+[source,console]
+----
+bash-4.4 ~ $oc patch vm -n default win2k19-surprised-warbler --type json -p='[{"op": "remove", "path": "/spec/template/spec/domain/features/hyperv/reenlightenment"}]'
+
+virtualmachine.kubevirt.io/win2k19-surprised-warbler patched
+----
+
+
+Next type the following (please use your VM where win2k19-surprise-warbler is)
+
+* virtctl stop win2k19-surprised-warbler  -n default
+
+[source,console]
+----
+bash-4.4 ~ $ virtctl stop win2k19-surprised-warbler  -n default
+VM win2k19-surprised-warbler was scheduled to stop
+----
+
+Now start the VM by typing the following (please use your VM where win2k19-surprise-warbler is)
+
+* virtctl start win2k19-surprised-warbler  -n default
+
+[source,console]
+----
+virtctl start win2k19-surprised-warbler  -n default
+VM win2k19-surprised-warbler was scheduled to start
+----
+
+You will now be able to migrate the windows VM
