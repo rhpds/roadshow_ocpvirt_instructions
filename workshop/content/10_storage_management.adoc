@@ -27,11 +27,7 @@ Persistent virtual machines require persistent storage. This lab environment has
 * CentOS Stream 9
 
 Using these OS images is optional, and the creation + download can be disabled via the appropriate setting in the Operator.  
-
-link:27_steps_to_disable_os_images.adoc[Steps to Disable OS Images in Virtualization Operator]
-
 xref:27_steps_to_disable_os_images.adoc[Steps to Disable OS Images in Virtualization Operator]
-
 However, they are a quick and convenient way to get started provisioning virtual machines with OpenShift Virtualization since they use the "cloud" image for each of the respective distributions. This image includes cloud-init and, often, is a reduced OS footprint optimized for virtualization. Additionally, Red Hat provided boot images are automatically updated when new templates are released.
 
 In this section, we will examine the PVCs created by the Operator along with PVCs used by a virtual machine.
