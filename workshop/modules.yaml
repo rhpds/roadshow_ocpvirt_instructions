@@ -22,7 +22,7 @@ modules:
     04_thanks:
         name: 'Thank you and next steps'
     04a_DO316:
-        name: 'Optional: DO316'
+        name: 'Module: DO316 Sections 6 and 7'
     05_ocpv_customization:
         name: 'Module: Customize Virtual Machines'
     06_windows_vm:
