@@ -24,34 +24,34 @@ modules:
     04a_DO316:
         name: 'Optional: DO316'
     05_ocpv_customization:
-        name: 'Optional: Customize Virtual Machines'
+        name: 'Module: Customize Virtual Machines'
     06_windows_vm:
-        name: 'Optional: Windows Virtual Machines'
+        name: 'Module: Windows Virtual Machines'
     07_vm_management:
-        name: 'Optional: Virtual Machine Management'
+        name: 'Module: Virtual Machine Management'
     08_bare_metal:
-        name: 'Optional: Bare Metal OpenShift Overview'
+        name: 'Module: Bare Metal OpenShift Overview'
     09_network_management:
-        name: 'Optional: Network Management'
+        name: 'Module: Network Management'
     10_storage_management:
-        name: 'Optional: Storage Management'
+        name: 'Module: Storage Management'
     15_backup_restore:
-        name: 'Optional: Backup and Restore'
+        name: 'Module: Backup and Restore'
     16_kasten:
-        name: 'Optional: Kasten Lab'
+        name: 'Module: Kasten Lab'
     17_trilio_backup:
-        name: 'Optional: Trilo Backup and Recovery Lab'
+        name: 'Module: Trilo Backup and Recovery Lab'
     19_service_route:
-        name: 'Optional: Exposing apps using a Route'
+        name: 'Module: Exposing apps using a Route'
     20_metallb:
-        name: 'Optional: Exposing apps using MetalLB'
+        name: 'Module: Exposing apps using MetalLB'
     22_disconnected:
-        name: 'Optional: OpenShift Virtualization in Disconnected Environments'
+        name: 'Module: OpenShift Virtualization in Disconnected Environments'
     23_ROSAVirt:
-        name: 'Optional: ROSA OCP Virt lab'
+        name: 'Module: ROSA OCP Virt lab'
     24_presales:
-        name: 'Optional: Pre Sales'
+        name: 'Module: Pre Sales'
     25_virtualization_gitops:
-        name: 'Optional: GitOps + CI/CD lab'
+        name: 'Module: GitOps + CI/CD lab'
     26_Closeout:
         name: 'Closeout'
