@@ -220,7 +220,7 @@ The VM is marked as "Not migratable" because a there is a hyperv spec that needs
 
 [NOTE]
 To make the the VM migratable perform the following
-Inside the Openshift Console select the Terminal Icon
+Inside the Openshift Console select the Terminal Icon, in the upper right hand corner
 
 image::images/windows_migrate_fix/ocp-terminal.png[]
 

@@ -70,3 +70,27 @@ If you would like to learn more about OpenShift Virtualization, please visit the
 == Requirements for the lab environment
 
 Participant needs to have own computer with browser and internet access. Chromium based browser is recommended, some copy paste functions don't work in Firefox for time being. Remote access console uses US keyboard layout, so good to know where special characters reside in it for other country layouts. Or use copy paste with recommended browser.
+
+== Updating the bookbag 
+
+Inside the Openshift Console select the Terminal Icon, in the upper right hand corner
+
+image::images/windows_migrate_fix/ocp-terminal.png[]
+
+Type the following 
+* oc patch bc -n bookbag bookbag  --type json -p='[{"op": "repl
+
+[source,console]
+----
+bash-4.4 ~ $ oc patch bc -n bookbag bookbag  --type json -p='[{"op": "replace", "path": "/spec/source/git/ref","value": main}]'
+buildconfig.build.openshift.io/bookbag patched
+----
+
+then run
+* oc start-build -n bookbag bookbag
+
+[source,console]
+----
+bash-4.4 ~ $ oc start-build -n bookbag bookbag
+build.build.openshift.io/bookbag-12 started
+----
