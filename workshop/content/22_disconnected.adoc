@@ -267,7 +267,7 @@ $ oc create -f hco.yaml
 
 == Create VM from Local Registry Image
 
-There are a few ways to create a VM from a local registry image. You can use node pull method, use a pull secret, or redirect the datasource image stream.
+There are a few ways to create a VM from a local registry image. You can use node pull method, use a pull secret, or use a datasource.
 
 === Node Pull method
 
@@ -356,7 +356,6 @@ A data import cron job can be added to the HyperConverged object to manage a PVC
 
 [source,yaml]
 ----
-spec:
   dataImportCronTemplates:
   - metadata:
       annotations:
@@ -382,11 +381,9 @@ spec:
                 storage: 30Gi
 ----
 
-=== Redirect the image stream
-
 A data import job can also use an imagestream. Replace the external registry with the local registry in the target image stream, for example:
 
-.rhel9-guest
+.rhel9-guest.yaml
 [source,yaml]
 ----
 kind: ImageStream
@@ -409,6 +406,37 @@ spec:
       referencePolicy:
         type: Source
 ----
+
+.rhel8-image-cron
+[source,yaml,role=copy]
+----
+  dataImportCronTemplates:
+  - metadata:
+      annotations:
+        cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+      labels:
+        instancetype.kubevirt.io/default-instancetype: u1.medium
+        instancetype.kubevirt.io/default-preference: rhel.8
+        kubevirt.io/dynamic-credentials-support: 'true'
+      name: rhel8-image-cron
+    namespace: openshift-virtualization-os-images
+  spec:
+    garbageCollect: Outdated
+    managedDataSource: rhel8
+    schedule: 40 2/12 * * *
+    template:
+      metadata: {}
+      spec:
+        source:
+          registry:
+            imageStream: rhel8-guest
+            pullMethod: node
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+----
+
 
 == Resources
 
