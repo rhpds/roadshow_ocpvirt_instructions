@@ -249,7 +249,7 @@ rhel9            30h
 +
 [source,console]
 ----
-[root@ocp4-bastion ~]# oc project vmexample 
+[root@ocp4-bastion ~]# oc project vmexamples
 [root@ocp4-bastion ~]# virtctl create vm \
     --name rhel9-enablement \
     --instancetype n1.medium \
@@ -261,7 +261,7 @@ rhel9            30h
 +
 [source,console]
 ----
-[root@ocp4-bastion ~]# oc project vmexample 
+[root@ocp4-bastion ~]# oc project vmexamples
 [root@ocp4-bastion ~]# virtctl create vm \
     --name rhel9-enablement-02 \
     --instancetype n1.medium \

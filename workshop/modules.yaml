@@ -48,7 +48,7 @@ modules:
     23_ROSAVirt:
         name: 'Module: ROSA OCP Virt lab'
     22_disconnected:
-        name: 'Module: OpenShift Virtualization in Disconnected Environments'
+        name: 'Module: Disconnected Environments'
     24_presales:
         name: 'Module: Pre Sales'
     25_virtualization_gitops:
