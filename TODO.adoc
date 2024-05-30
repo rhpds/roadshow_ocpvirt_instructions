@@ -1,5 +1,7 @@
 == Bookbag -> Showroom Migration
 
+=== GitHub Pages
+
 === Progress so far
 
 . in new branch `showroom`
