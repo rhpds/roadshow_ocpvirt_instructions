@@ -1,0 +1,149 @@
+= Building an Application with rpms
+
+== Downloading the UBI
+
+In this lab, you will be installing software into the container 
+image running as an interactive application. To do this you will
+need `yum`, but do not need `systemd` for managing services within the
+container environment.  For that reason, you will be using the *Standard*
+UBI image (as opposed to the Minimal or Multi-service images).
+
+Using the "buildah from" command will download and meld the container image. This particular image we are using is the Red Hat Universal Base Image or UBI. From the ourput of the command, you will notice that we are pulling down the latest one, which is for RHEL 9. 
+
+. Execute the  download the Standard UBI
+image from Red Hat's registry.
+
++
+[source,sh,role=execute]
+----
+buildah from registry.access.redhat.com/ubi9/ubi
+----
+
+[#repositories]
+== Installing Repositories
+In this lab, you are going to containerize a software package that is already
+packaged in RPM format and stored in the Extra Packages for Enterprise Linux
+(EPEL) repository.
+
+Software often has requirements for prerequisite software that must be installed
+on the machine for it to work properly.  `yum` will resolve those
+dependencies for you, as long as it can locate the required packages in
+repositories defined on the machine.  The Red Hat Universal Base Image (UBI)
+downloaded in the previous step has access to some Red Hat Enterprise Linux
+repositories.  However, the target package for the lab is from EPEL.  
+
+. In the command below, `buildah` is going to run a command on the
+`ubi-working-container` image.  The `--` indicates that the command should be
+executed from within the container, which means the results will be applied into
+the container image.  Lastly, you are providing the `yum` command to install a
+package that defines all of the repositories from EPEL, `epel-release-latest-9`.
+
++
+[source,bash]
+----
+buildah run ubi-working-container -- yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+----
+
+
+. You can verify that the above command did not install the RPM on the host system.
+
++
+[source,bash]
+----
+rpm -q epel-release
+----
+
+NOTE: If your repository configurations are not distributed as an RPM, but instead as
+individual `.repo` files, you could use the `buildah copy` command to copy
+files from the host operating system into the container image.  You will see
+an example of using `buildah copy` later in this lab.
+
+[#software]
+== Installing Software
+
+
+. Now that the yum repositories are defined within the container, execute 
+another `yum install`, within the container, to install the target
+software: `moon-buggy`.
+
++
+[source,bash]
+----
+buildah run ubi-working-container -- yum -y install moon-buggy
+----
+
+
+== Committing the Container Image
+
+. At this point, the container is configured.  It is time to transition from a
+working container into a committed image.  In the command below, you will use
+the `buildah` command to commit the working container to an image called:
+`moon-buggy`.
+
++
+[source,bash]
+----
+buildah commit ubi-working-container moon-buggy
+----
+
++
+. The output of `podman image list` should confirm the image was created.
+
++
+[source,bash]
+----
+podman image list
+----
+
+
+== Deploy the Container
+
+Now the software has been installed and a new container image created.  It is
+time to spawn a runtime of the container image and validate the software.  The
+software we are using is a command line command.  
+
+. When you `run` the container,
+it will be in interactive (`-it`) mode, based on the `moon-buggy` container
+image and the command run interactively will be `/usr/bin/moon-buggy`.
+
++
+[source,bash]
+----
+podman run -it moon-buggy /usr/bin/moon-buggy
+----
+
++
+[source,textinfo]
+----
+
+<<< OUTPUT ABRIDGED >>>
+               MM     MM   OOOOO    OOOOO   NN     N
+               M M   M M  O     O  O     O  N N    N
+               M  M M  M  O     O  O     O  N  N   N
+               M   M   M  O     O  O     O  N   N  N
+               M       M  O     O  O     O  N    N N
+               M       M   OOOOO    OOOOO   N     NN
+
+                     BBBBBB   U     U   GGGGG    GGGGG   Y     Y
+                     B     B  U     U  G     G  G     G   Y   Y
+                     BBBBBB   U     U  G        G          Y Y
+                     B     B  U     U  G   GGG  G   GGG     Y
+                     B     B  U     U  G     G  G     G    Y
+                     BBBBBB    UUUUU    GGGGG    GGGGG   YY
+
+<<< OUTPUT ABRIDGED >>>
+----
+
+. You can now play the Moon Buggy game, which is a text-based version of the
+popular Moon Patrol.  When you are finished, use the `q` command to quit the
+game, which will terminate the container.
+
++
+Alternatively, you can use `podman` to kill the running container from
+*Terminal 2*.
+
++
+[source,bash]
+----
+podman kill $(podman ps | grep -v CONTAINER | cut -f1 -d" " )
+----

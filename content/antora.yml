@@ -1,0 +1,17 @@
+name: modules
+title: Virtualization Bootcamp
+version: master
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    lab_name: "I'm the lab_name var"
+    release-version: master
+    page-pagination: true
+    my_var: "foo"
+    guid: my-guid
+    ssh_user: devops
+    ssh_password: devops
+    ssh_command: ssh devops@bastion.{guid}.example.opentlc.com
+    xdg_runtime_dir: xdg_runtime_dir

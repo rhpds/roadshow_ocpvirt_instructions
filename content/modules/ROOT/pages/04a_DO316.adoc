@@ -1,0 +1,32 @@
+Please open up your browser to https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/pr01[DO316-v414-Role-Course]
+
+
+
+= DO316 Section 3 - Configure Kubernetes Networking for Virtual Machines
+
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s02[ Kubernetes Networking Objects]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s04[Configure External Access to Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s06[Configure External Access with Load Balancer Services]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch03s07[Final Review Section 3 - Configure Kubernetes Networking for Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+= DO316 Section 4 -  Connecting Virtual Machines to External Networks
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch04s04[Configure Multihomed Nodes and Virtual Machines]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  
+
+=== https://role.rhu.redhat.com/rol-rhu/app/courses/do316-4.14/pages/ch04s05[Final Review Section 4 - Connecting Virtual Machines to External Networks]
+
+You will have 20 minutes to complete this section/lab.  Once you complete the lab please stop and wait for the Instuctors to review the lab with everyone.  

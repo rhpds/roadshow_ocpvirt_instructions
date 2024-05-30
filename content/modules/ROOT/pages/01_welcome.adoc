@@ -1,0 +1,98 @@
+:preinstall_operators: %preinstall_operators%
+
+== Welcome to the NAPS Openshift Virtualization Field Enablement 
+
+OpenShift Virtualization enables you to bring virtual machines onto a modern, Kubernetes-based infrastructure. It enables the development and delivery of new applications as well as the modernization of existing ones and can create applications that consist of virtual machines, containers, and serverless functions - all managed together using Kubernetes-native tools and paradigms.
+
+This field enablement has many segments which we encourage everyone to complete:
+
+* _Migrating Virtual Machines_: In this section, you will use the Migration Toolkit for Virtualization (MTV) to migrate a few VMs from an existing VMware vSphere environment to OpenShift Virtualization.
+* _OpenShift Virtualization Basics_: This lab focuses on how to create and use virtual machines with OpenShift Virtualization. It covers the most common tasks you would be expected to perform as a VM user/administrator.
+* _Concise look into Virtualization_: Not only the basics will be covered but a more indepth knowledge of how to use VMs and some of the more concise settings you will need to understand as a OCP-Virt administrator
+* _Intermediate and Advanced topics_: These are topics that will go above and beyond and help you understand what is possible
+
+Additionally, there are a number of optional modules which target activities that you may be interested in depending on your specific role, responsibilities, and/or what you're curious about.
+
+*Virtual machine administrators*
+
+* _Customize Virtual Machines_: One of the most important concepts when running virtual machines is to run the VMs from an existing disk image and also have the capability to customize the VMs.
+* _Windows Virtual Machines_: Microsoft Windows Server is a commonly used operating system, no virtualization solution would be complete if it wasn't supported! This lab shows one method of provisioning a Windows Server virtual machine, including customization with SysPrep.
+
+*Virtual infrastructure administrators*
+
+* _Bare metal OpenShift overview_: Managing OpenShift nodes and resources is different than you might be used to. This module explores some aspects and concepts of OpenShift that are important if you're responsible for the server hardware.
+* _Network Management_: Virtual machines, by default, connect to the OpenShift internal software defined network. This section will demonstrate how to connect VMs to an external physical network, such as a VLAN.
+* _Storage Management_: This module will introduce you to the basics of storage on OpenShift and how OpenShift Virtualization automatically provides boot sources for some machine images. This module will also show how to perform operations with snapshots and how to clone a VM.
+* _Backup and Restore_: Protecting virtual machines, and their data, is just as important as the performance and availability. See how the OpenShift API for Data Protection (OADP) provides a storage agnostic way to protect VMs in this lab.
+
+*Virtual machine users*
+
+* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the application's front end to the world.
+* _Exposing apps using MetalLB_: Providing connectivity to VM-hosted applications, without putting the VM on an external L2 network, is a powerful way to manage connectivity to the application. This lab walks through the process of exposing just the database to the world, without connecting the VM to the external network.
+
+== What is OpenShift Virtualization?
+
+* OpenShift Virtualization is a feature of Red Hat OpenShift; it is not an add-on or a separate product and is included with all entitlements.
+* All current and future subscribers receive OpenShift Virtualization as part of their OpenShift subscription. It has been generally available since OpenShift 4.5.
+* OpenShift Virtualization is based on the “container-native virtualization” technology being developed upstream under the KubeVirt project, a sandbox project in the Cloud Native Computing Foundation (CNCF). 
+* It leverages the Red Hat Enterprise Linux KVM hypervisor, which is a mature and highly performant open-source hypervisor used by many organizations and cloud service providers globally and which has been under development for over 15 years. 
+* OpenShift Virtualization leverages the RHEL KVM hypervisor and allows the VM to be managed by Kubernetes and KubeVirt. An OpenShift Virtualization VM uses Kubernetes scheduling, network, and storage infrastructure.
+* OpenShift Virtualization includes entitlements for **unlimited virtual RHEL guests**. Guest licensing for other supported operating systems will need to be purchased separately.
+* OpenShift Virtualization is SVVP certified with Microsoft for Windows guest support per the same rules that apply to Red Hat’s other KVM virtualization offerings.
+* OpenShift Virtualization is mainly supported on bare metal physical servers, typically on-premises or dedicated hosting. Support for other topologies (OpenShift on virtualized infrastructure like RHV or vSphere) is not supported at this time, but we are in the process to add support for Managed OpenShift Cloud services. Support for AWS / ROSA has already been announced: https://www.redhat.com/en/blog/managing-virtual-machines-and-containers-as-code-with-openshift-virtualization-on-red-hat-openshift-service-on-aws
+
+OpenShift Virtualization allows OpenShift to deploy, manage, and connect virtual machines to an OpenShift cluster. This includes the ability to connect to and manage those VMs using Kubernetes-native methods and take advantage of OpenShift features like Pipelines, GitOps, Service Mesh, and more.
+
+== Why switch from a traditional VM platform?
+
+**Adopt cloud-native development and/or cloud-native operations:**
+Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice. Code in production mode, anywhere you choose to build. Get back to doing work that matters.
+
+**Complete app dev stack:**
+Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
+
+**Shift infrastructure spend to innovation:**
+OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
+
+**Risk mitigation:**
+With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in. 
+
+**Independent from infrastructure:**
+Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
+
+**Pure open source innovation:**
+The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+
+== Next steps
+
+If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about_virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].
+
+== Requirements for the lab environment
+
+Participant needs to have own computer with browser and internet access. Chromium based browser is recommended, some copy paste functions don't work in Firefox for time being. Remote access console uses US keyboard layout, so good to know where special characters reside in it for other country layouts. Or use copy paste with recommended browser.
+
+== Updating the bookbag 
+
+Inside the Openshift Console select the Terminal Icon, in the upper right hand corner
+
+image::windows_migrate_fix/ocp-terminal.png[]
+
+Type the following 
+
+* oc patch bc -n bookbag bookbag  --type json -p='[{"op": "replace", "path": "/spec/source/git/ref","value": main}]'
+
+[source,console]
+----
+bash-4.4 ~ $ oc patch bc -n bookbag bookbag  --type json -p='[{"op": "replace", "path": "/spec/source/git/ref","value": main}]'
+buildconfig.build.openshift.io/bookbag patched
+----
+
+then run
+
+* oc start-build -n bookbag bookbag
+
+[source,console]
+----
+bash-4.4 ~ $ oc start-build -n bookbag bookbag
+build.build.openshift.io/bookbag-12 started
+----

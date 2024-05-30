@@ -1,0 +1,9 @@
+== Welcome to the GitOps + CI/CD lab
+
+**Jon Keam**
+
+jkeam@redhat.com
+
+link:https://github.com/jkeam/ocp-virt[OpenShift Virtualization GitOps+CI/CD Lab]
+
+https://people.redhat.com/~jkeam/#/virt[Video walk-through of GitOps+CI/CD Lab by Jon Keeam]

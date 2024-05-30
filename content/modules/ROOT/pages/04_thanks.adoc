@@ -1,0 +1,30 @@
+:scrollbar:
+:toc2:
+:numbered:
+
+== But wait, there's more!
+
+Depending on your role and interests, you might be interested in completing some of the additional modules for this workshop:
+
+=== *Virtual machine administrators*
+
+* _Customize Virtual Machines_: One of the most important concepts when running virtual machines is to run the VMs from an existing disk image and also have the capability to customize the VMs.
+* _Windows Virtual Machines_: Microsoft Windows Server is a commonly used operating system, no virtualization solution would be complete if it wasn't supported! This lab shows one method of provisioning a Windows Server virtual machine, including customization with SysPrep.
+
+=== *Virtual infrastructure administrators*
+
+* _Bare metal OpenShift overview_: Managing OpenShift nodes and resources is different than you might be used to. This module explores some aspects and concepts of OpenShift that are important if you're responsible for the server hardware.
+* _Network Management_: Virtual machines, by default, connect to the OpenShift internal software defined network. This section will demonstrate how to connect VMs to an external physical network, such as a VLAN.
+* _Storage Management_: This module will introduce you to the basics of storage on OpenShift and how OpenShift Virtualization automatically provides boot sources for some machine images. This module will also show how to perform operations with snapshots and how to clone a VM.
+* _Backup and Restore_: Protecting virtual machines, and their data, is just as important as the performance and availability. See how the OpenShift API for Data Protection (OADP) provides a storage agnostic way to protect VMs in this lab.
+
+=== *Virtual machine users*
+
+* _Exposing apps using a Route_: This lab walks through the process of using a Service and Route to provide internal-only connectivity between application components, then expose only the application's front end to the world.
+* _Exposing apps using MetalLB_: Providing connectivity to VM-hosted applications, without putting the VM on an external L2 network, is a powerful way to manage connectivity to the application. This lab walks through the process of exposing just the database to the world, without connecting the VM to the external network.
+
+== Thank you for attending the OpenShift Virtualization Roadshow!
+
+We appreciate your time and effort to gain familiarity with OpenShift Virtualization! If you have questions, please don't hesitate to ask the proctor(s) in the room during your workshop, or reach out to your Red Hat account team at any time.
+
+If you would like to learn more about OpenShift Virtualization, please visit the https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[landing page], review the https://docs.openshift.com/container-platform/latest/virt/about_virt/about-virt.html[documentation], or view some of our demo videos on https://www.youtube.com/playlist?list=PLaR6Rq6Z4IqeQeTosfoFzTyE_QmWZW6n_[YouTube].

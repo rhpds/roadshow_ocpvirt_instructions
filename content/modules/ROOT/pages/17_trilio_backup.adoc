@@ -1,0 +1,176 @@
+:scrollbar:
+:toc2:
+
+=  Trilo Backup and Recovery Lab
+
+== Introduction
+
+In this lab we will be installing the Trilio backup operator and restoring virtual machines on Openshift. 
+
+=== Installing the Operator
+Search the Operator hub for the Trilio for kubernetes. 
+
+image::Trilio/operator.PNG[]
+
+Default options should work ok. The operator will be installed in the namespace trilio-system, and every workload related to Trilio will run there. This is specially useful so our workloads do not interfere with security restrictions, and quota restrictions on normal namespaces. In order to have Trilio Backups tab in the OpenShift console, please select “Enable” under “Console Plugin”. If you don’t want it/need it, you still have the Trilio UI.
+
+image::Trilio/operator2.PNG[]
+
+Click on Refresh Web console when the operator is installed
+
+image::Trilio/operator3.PNG[]
+
+=== Check everything is deployed correctly
+
+If everything is ok, you should see the Trilio Backups tab on the left (1) and you need to click on “Create instance” (2), which will spin up all Trilio necessary workloads:
+
+image::Trilio/operator4.PNG[]
+
+=== Create Trilio Instance (TVM):
+
+After clicking on “create instance” just accept the defaults:
+
+image::Trilio/operator5.PNG[]
+
+=== Check TVM:
+
+After creating the instance this is what you should see:
+
+image::Trilio/operator6.PNG[]
+
+=== Change the Ingresss
+In this Lab the OCP cluster has a Nat forward for external access. This causes apps to default to the internal example.com and we must reroute them. 
+
+We will modify the triliovault under the trilio-system project. 
+
+.Before ingress changes
+image::Trilio/before-ingress.PNG[]
+
+.After ingress changes
+image::Trilio/after-ingress.PNG[]
+
+Save the yam and this should correct the ingress route for external access. Under the networking > routes users should be able to hit the route: https://trilio-system.apps.xxxx.dynamic.redhatworkshops.io/login
+
+image::Trilio/login.PNG[]
+
+=== Apply license
+
+Click here to open the menu, and apply the license:
+
+image::Trilio/lic1.PNG[]
+
+```
+xxx
+```
+image::Trilio/lic2.PNG[]
+
+At this point the operator has been configured and is ready to start accepting backups. 
+
+=== Setup s3 backup 
+
+TBD "either Minio or prefab s3 from cloud or ODF is required" It seems all backup/recover I've seen used s3 for kubernetes persistent data. 
+
+=== Backup Targets
+
+For the example we will use an AWS s3 bucket as the target but any S3 backend will work. 
+
+image::Trilio/backup1.PNG[]
+
+1. Select the cluster
+2. Select Targets
+3. Click on “Create New”
+
+This wizard will appear, fill in with those details for the S3 backup target.
+
+Click “Create New”, where we enter the bucket keys, which will be stored in a secret. 
+
+We enter the credentials we want to use, for example:
+
+image::Trilio/backup2.PNG[]
+
+After creating the secret, and the target will progress to an available status and is ready for use in backup plans. 
+
+image::Trilio/backup3.PNG[]
+
+=== NameSpace Backups 
+
+In the lab, we have these namespace vmexamples. Please apply all instructions to the vmexamples namespace, where you have your migrated VMs.
+
+We are going to protect everything inside, apps and VMs (three in this case). BTW, they can be running https://github.com/kubevirt/kubevirt/blob/main/docs/freeze.md. If it is a  VM backup then Trilio internally runs a custom hook job which uses virt-freezer to freeze/quiesce the VM and once data snapshotting is done Trilio unfreeze/unquiesce the VM. Trilio also checks if qemu-guest-agent is running or not in the VM.
+
+We will be using the vmexamples project. 
+```
+Project: vmexamples
+Virtual Machines: 
+  - database
+  - winweb01
+  - winweb02
+
+```
+Go to the Trilio UI, and create a new Backup Plan with this info…and click Next, Next and “skip & create”. 
+
+image::Trilio/backup4.PNG[]
+
+Finally we will run the create backup giving the backup a name and creating it. 
+
+image::Trilio/backup5.PNG[]
+
+Trilio has both the dedicated GUI console and a new OCP plugin to check on the backup progress. For this lab we will contiune to use the dedicated GUI. 
+
+Finally we can check the list of backups and if we view the details under the metadata summary the Virtual Machines will be listed. 
+
+image::Trilio/backup6.PNG[]
+
+=== Restoring Virtual Machines
+
+The first example is how to restore a full namespace. Namespace backup/recovery is fairly common within kubernetes and does have some differences from the traditional virtual machine backup/restore. 
+
+==== Restoring a namespace
+
+image::Trilio/restore1.PNG[]
+
+1. Click on Restores
+2. Click “Create Restore”
+3. Select the namespace you want to restore and click Next:
+
+Then select what namespace you want to restore to, it can be same or different. If you want to use the same one, remove the VMs first:
+
+image::Trilio/restore2.PNG[]
+
+==== Restore from the Trilio UI
+
+Trilio is stateless, from the point of view that if one cluster is inaccessible, apps and VMs can be restored from the backup target itself, to any cluster with access to the backup target.
+
+In order to accomplish this, you would need to enable that same S3 bucket ( or NFS) on the cluster where you want to migrate / DR your VM
+
+After it is configured in the destination cluster, you need to “enable target browsing”
+
+image::Trilio/restore3.PNG[]
+
+And then you can launch the target browser, a unique feature of Trilio, where you can “browse” any backup target, S3 or NFS, see backups from different clusters, etc...
+
+image::Trilio/restore4.PNG[]
+
+From this point we can chose what resources to restore to either the current or a differnt cluster. You can expand the metadata to view the virtual machine and other details related to the restore.    
+
+image::Trilio/restore5.PNG[]
+
+==== Restore a VM to a different namespace
+
+For this section create a project and namespace with the following details:
+
+```
+Project: fedora-example
+Create a Virtual machine with the Fedora image as the base
+Follow the Instructions above to create a backup of the namespace 
+```
+
+In this example we will restore a VM to a different namesapce. In the Backup Plan that holds the fedora backup, click restore:
+
+Choose a name for the restore, and choose a namespace to restore, and click Next. I created a new namespace named fedora-restore for the demo. Click Next and create the new restore. 
+
+image::Trilio/restore6.PNG[]
+
+After the restore finishes the namespace along with the VM should appear on the cluster. 
+
+image::Trilio/restore7.PNG[]

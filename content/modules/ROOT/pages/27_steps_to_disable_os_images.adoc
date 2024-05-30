@@ -1,0 +1,20 @@
+This needs to be done on the first deployment of the Openshift Virtualization Operator.  Once you deploy the operator a Create HyperConverged button/link will appear.  
+
+. Select the Operators tab on the sidebar
+. Select the Installed Operators sub menu
+. Ensure the all Proejcts drop is selected
+. Select the Openshift Virtualization operator
+. Select the Openshift Virtualization Deployment tab
+. Select the Create HyperConverged blue button
++
+image::no_os_images/create-hyper.png[]
++
+. You will be brought to a sub menu called  Create HyperConverged
+. Scroll down most of the way and you will see featureGates
+. Uncheck the checkbox for enableCommonBootImageImport.  This will Opt-out automatic delivery/updates of the common data import cron templates.
++
+image::no_os_images/featuregates.png[]
++
+. Scroll down and select create
+
+image::no_os_images/create.png[]

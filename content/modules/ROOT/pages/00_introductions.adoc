@@ -1,0 +1,131 @@
+= Openshift Virtualization Field Enablement Introduction and overview
+
+== Agenda, Tuesday, May 21 9AM through Thursday May 23 1PM
+
+* Tuesday 9AM - 5PM  
+* Wednesday 9AM - 5PM
+* Thursday 9AM - 1PM
+
+== Tuesday 
+* 9AM Getting setup
+*** Introduction
+*** Top Golf Signup
+*** URL to Lab
+*** BU Product overview and roadmap with Peter Lauterbach
+*** Labs
+
+== Wednesday 
+* 9AM 
+*** Labs
+
+== Thursay 
+* 9AM 
+*** Labs
+*** Close out
+*** Survey 
+
+
+== Instructors
+
+image::introductions/mg.png[]
+
+* Michael Galayda 
+* Senior Principal Architect
+
+
+image::introductions/tb.png[]
+
+* Thomas Bonds
+* Architect
+
+image::introductions/ko.png[]
+
+* KO
+* Senior Principal Architect
+
+== BootCamp Vendor Guests
+
+image::introductions/mb-kasten.png[]
+
+* Matt Bator
+* Accomplisher of Stuff and Things
+
+== Class Introductions
+
+* All
+
+== TopGolf Signup
+
+* link:https://rltb.topgolf.com/membership/?e=1&v=16[Top Golf Signup]
+
+== BU
+
+* BU Product overview and roadmap with Peter Lauterbach
+
+== Lab URL
+
+* link:https://redhat.enterprise.slack.com/archives/C07048NFL6M[Labs URL in SLACK Channel]
+
+== Objectives
+
+* Everything OpenShift VIRT
+** Admin
+** Virtual machines as containers
+** VM Deployments
+** The great VM Migration
+** Automating with GitOps
+** VM networking
+** Pre Sales
+** Backup and Recovery
+
+== OCP and Virt
+** Why switch from a traditional VM platform?
+Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice. Code in production mode, anywhere you choose to build. Get back to doing work that matters.
+
+** Complete app dev stack: Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
+
+** Shift infrastructure spend to innovation: OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
+
+** Risk mitigation: With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in.
+
+** Independent from infrastructure: Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
+
+** Pure open source innovation: The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+
+== Content Links
+
+link:http://demo.redhat.com[Openshift Virtualization Roadshow]
+
+link:https://role.rhu.redhat.com/rol-rhu/app/catalog?q=do316[ROLE DO316]
+
+link:https://github.com/emcon33/Virtualization-on-ROSA[OpenShift on ROSA]
+
+link:https://red.ht/virtkit[Content Kit]
+
+https://catalog.redhat.com/platform/red-hat-openshift/virtualization[Certified Partners list]
+
+link:https://source.redhat.com/groups/public/us-public-sector/gmn[Good Morning NAPS ]
+
+link:https://source.redhat.com/groups/public/gtm_power_hour[BU PowerHour]
+
+link:https://portfoliohub.redhat.com/v3/servicesmap/openshift_virt[Pre-Sales Virt]
+
+link:https://docs.google.com/document/d/11Vo5sMBgwtFuOUAyMwIuHPzSOVtEfpbPXHQQmWW8V0Y/edit[Services One Pager]
+
+link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGYwb68/edit?usp=sharing[Technical OpenShift Virt Discovery Questions]
+
+link:https://developers.redhat.com/developer-sandbox[OCP Virt in Developer Sandbox]
+
+link:https://docs.google.com/presentation/d/1v_IV31u5QLGxTibqnNbAEBWiUlAiH4rm5vfHi-VC2rA/edit#slide=id.g2234bf4836e_0_220[Migrating Thousands of Virtual Machines to OpenShift Virtualization at Ally Bank]
+
+link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
+
+== Getting there with your friends
+
+image::introductions/virt=partners.png[]
+
+== Coming to OpenShift Virt
+
+image::introductions/toocpvirt.png[]
+
+

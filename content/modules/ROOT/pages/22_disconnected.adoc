@@ -1,0 +1,459 @@
+:scrollbar:
+:toc2:
+:numbered:
+
+= OpenShift Virtualization in Disconnected Environments
+
+This lab will introduce you to the basics of deploying and managing OpenShift Virtualization in a disconnected environment.
+
+.Goals
+* <<Create a Local Registry>>
+* <<Mirror Required Packages for OpenShift Virtualization>>
+* <<Configure OpenShift to Use Mirror>>
+* <<Deploy Virtualization>>
+* <<Create VM from Local Registry Image>>
+
+== Create a Local Registry
+
+Login to the bastion `ssh -o PreferredAuthentications=password lab-user@hypervisor.xxxxx.dynamic.redhatworkshops.io` as listed in the bookbag.
+
+Create a simple local registry using the createRegistry.sh script:
+
+[source,bash]
+----
+$ cat << EOF > createRegistry.sh
+#!/bin/env bash
+# set -xe
+
+# uncomment for certs without SAN
+# export GODEBUG=x509ignoreCN=0
+
+local_registry=$(hostname -f):8443
+work_dir=${PWD}
+
+mkdir -p ${work_dir}/{auth,registry,certs}
+
+## create a key, self-signed cert
+if [ ! -f certs/registry.crt ]; then
+  openssl req -newkey rsa:3072 -nodes -sha256 -keyout ${work_dir}/certs/registry.key -x509 -days $((365*2)) -out ${work_dir}/certs/registry.crt -subj "/C=US/CN=${local_registry%:*}" -addext "subjectAltName=DNS:${local_registry%:*}"
+  sudo cp ${work_dir}/certs/registry.crt /etc/pki/ca-trust/source/anchors
+  sudo update-ca-trust extract
+fi
+
+## create an htpasswd file
+[ -f ${work_dir}/auth/htpasswd ] || htpasswd -bBc ${work_dir}/auth/htpasswd registry RedHat1
+
+## start a registry
+echo starting registry
+REGSTATUS=$(podman ps -f name=registry -q)
+if [[ "${REGSTATUS}" == "" ]]; then
+  podman run -d \
+  --name registry \
+  -v ${work_dir}/auth:/auth:z \
+  -v ${work_dir}/registry:/var/lib/registry:z \
+  -v ${work_dir}/certs:/certs:z \
+  -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
+  -e REGISTRY_AUTH=htpasswd \
+  -e REGISTRY_AUTH_HTPASSWD_REALM="Registry Realm" \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \
+  -p ${local_registry#*:}:443 registry:2
+else
+  echo info: registry already running
+fi
+EOF
+$ chmod +x createRegistry.sh
+$ ./createRegistry.sh
+Generating a RSA private key
+..........++++
+...............................................................................................................................................................................++++
+writing new private key to '/root/certs/registry.key'
+-----
+Adding password for user registry
+starting registry
+Resolved "registry" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull docker.io/library/registry:2...
+Getting image source signatures
+Copying blob 619be1103602 done   | 
+Copying blob ef4f267ce8ed done   | 
+Copying blob 6f0ce73649a0 done   | 
+Copying blob 74e12953df95 done   | 
+Copying blob 862815ae87dc done   | 
+Copying config d6b2c32a0f done   | 
+Writing manifest to image destination
+ad1562a864d448f51df611e47bb0676571275754bf160d293fc7bb5e4a11c2d5
+----
+
+== Mirror Required Packages for OpenShift Virtualization
+
+In this section, we create an image set config file for the oc-mirror plugin and mirror content to a local registry. The standalone mirror-registry is a good option for a local registry and is included with OpenShift SKUs. Mirror-registry is supported for supplying disconnected OpenShift images.
+
+Download the oc-mirror tool from the OpenShift public mirror. Credentials for Red Hat registries and local registries should be added to `~/.docker/config.json` or `${XDG_RUNTIME_DIR}/containers/auth.json`. A pull secret is available in \~root on the bastion.
+
+. Copy pull secret and append local registry credentials:
++
+[source,bash]
+----
+$ jq . ~/pull-secret.json > ~/.docker/config.json
+$ podman login --auth-file ~/.docker/config.json --username registry ocp4-bastion.aio.example.com:8443
+Password: RedHat1
+Login Succeeded!
+----
+
+. Create an oc-mirror image set config:
++
+.imageset-operators.yaml
+[source,yaml,role=copy]
+----
+apiVersion: mirror.openshift.io/v1alpha2
+kind: ImageSetConfiguration
+storageConfig:
+  local:
+    path: metadata-redhat-operators-4.13
+mirror:
+  operators:
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.13
+    packages:
+    - name: kubernetes-nmstate-operator
+    - name: kubevirt-hyperconverged
+    - name: mtv-operator
+  additionalImages:
+  - name: quay.io/containerdisks/centos-stream:8
+  - name: quay.io/containerdisks/centos-stream:9
+  - name: quay.io/containerdisks/fedora:latest
+  - name: registry.redhat.io/rhel8/rhel-guest-image:latest
+  - name: registry.redhat.io/rhel9/rhel-guest-image:latest
+----
+
+. Mirror content with oc-mirror:
++
+Mirror to files
++
+[source,bash]
+----
+$ oc-mirror --config imageset-operators.yaml file://archives
+$ scp -r archives admin@disconnected-bastion:
+$ oc-mirror --from ~/archives docker://ocp4-bastion.aio.example.com:8443/
+----
++
+Or mirror direct to registry
++
+[source,bash]
+----
+$ oc-mirror --config imageset-operators.yaml docker://ocp4-bastion.aio.example.com:8443/
+----
+
+== Configure OpenShift to Use Mirror
+
+The oc-mirror tool generates a catalog image for each index mirrored along with an imageContentSourcePolicy to direct the cluster to the local registry.
+
+. If needed, add credentials for the mirror registry to the global pull secret:
++
+[source,bash]
+----
+$ oc create -n openshift-config configmap custom-ca --from-file=ocp4-bastion.aio.example.com..8443=~/certs/registry.crt
+$ oc patch image.config.openshift.io/cluster --patch '{"spec":{"additionalTrustedCA":{"name":"custom-ca"}}}' --type=merge
+$ oc extract secret/pull-secret -n openshift-config --confirm --to=.
+$ podman login --auth-file .dockerconfigjson --username registry ocp4-bastion.aio.example.com:8443
+Password: RedHat1
+Login Succeeded!
+$ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=.dockerconfigjson
+----
+
+. Create a catalog source and image content source policy from oc-mirror output:
++
+[source,bash]
+----
+$ oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+$ oc create -f ~/oc-mirror-workspace/results-<timestamp>/
+----
++
+After this is complete, OpenShift Virtualization can be deployed through the Operator Hub like a connected cluster.
+
+== Deploy Virtualization
+
+[IMPORTANT]
+This step is for reference and does not need to be attempted as Virtualization is already deployed in the workshop.
+
+OpenShift Virtualization can be deployed using the Operator Hub or CLI when using a local registry. In this example, we use the CLI.
+
+. Create a manifest with a namespace, operator group, and subscription to deploy the operator:
++
+.openshift-cnv.yaml
+[source,yaml,role=copy]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-cnv
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-cnv
+  namespace: openshift-cnv
+spec:
+  targetNamespaces:
+    - openshift-cnv
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+spec:
+  source: redhat-operator-index
+  sourceNamespace: openshift-marketplace
+  name: kubevirt-hyperconverged
+  startingCSV: kubevirt-hyperconverged-operator.v4.15.1
+  channel: stable
+----
++
+Deploy the Virtualization Operator
++
+[source,bash]
+----
+$ oc create -f openshift-cnv.yaml
+----
+
+. Create a YAML for the hyperconverged object:
++
+.hco.yaml
+[source,yaml,role=copy]
+----
+apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+spec:
+  featureGates:
+    enableCommonBootImageImport: false
+  dataImportCronTemplates:
+  - metadata:
+      annotations:
+        cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+      labels:
+        instancetype.kubevirt.io/default-instancetype: u1.medium
+        instancetype.kubevirt.io/default-preference: rhel.9
+        kubevirt.io/dynamic-credentials-support: 'true'
+      name: rhel9-image-cron
+    spec:
+      garbageCollect: Outdated
+      managedDataSource: rhel9
+      schedule: 40 2/12 * * *
+      template:
+        spec:
+          source:
+            registry:
+              url: docker://ocp4-bastion.aio.example.com:8443/rhel9/rhel-guest-image:latest
+              pullMethod: node
+          storage:
+            resources:
+              requests:
+                storage: 30Gi
+  storageImport:
+    insecureRegistries:
+      - 'ocp4-bastion.aio.example.com:8443'
+----
++
+Deploy a hyperconverged object
++
+[source,bash]
+----
+$ oc create -f hco.yaml
+----
+
+== Create VM from Local Registry Image
+
+There are a few ways to create a VM from a local registry image. You can use node pull method, use a pull secret, or use a datasource.
+
+=== Node Pull method
+
+Modify the data volume source when creating the VM:
+
+[source,yaml,role=copy]
+----
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  dataVolumeTemplates:
+  - metadata:
+  [...]
+    spec:
+      source:
+        registry:
+          url: 'docker://ocp4-bastion.aio.example.com:8443/rhel9/rhel-guest-image'
+          pullMethod: node
+----
+
+=== Pull secret method
+
+Create a pull secret for the registry along with a trust bundle if needed:
+
+.mirror-registry-creds.yaml
+[source,yaml,role=copy]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+ name: mirror-registry-creds
+ namespace: example
+ labels:
+   app: containerized-data-importer
+data:
+ accessKeyId: cmVnaXN0cnk=
+ secretKey: UmVkSGF0MQ==
+type: Opaque
+----
+
+[NOTE]
+accessKeyId can be a username or token ID, secretKey can be a password or token.
+
+[source,bash]
+----
+$ oc create cm -n example mirror-registry-cert --from-file=ca.pem=~/certs/registry.crt
+----
+
+.mirror-registry-cert.yaml
+[source,yaml,role=copy]
+----
+kind: ConfigMap
+apiVersion: v1
+metadata:
+ name: mirror-registry-cert
+ namespace: example
+data:
+ ca.pem: |
+   <TLS-CA>
+----
+
+[NOTE]
+Unless the registry is included in the HCO insecureRegistries list, a certConfigMap is required. <TLS-CA> should be replaced with the contents of \~/certs/registry.crt.
+
+Next, modify the VM definition to use the registry credentials:
+
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  dataVolumeTemplates:
+  - metadata:
+  [...]
+    spec:
+      source:
+        registry:
+          url: 'docker://ocp4-bastion.aio.example.com:8443/rhel9/rhel-guest-image'
+          secretRef: mirror-registry-creds
+          certConfigMap: mirror-registry-cert
+----
+
+=== DataImportCron
+
+A data import cron job can be added to the HyperConverged object to manage a PVC/Snapshot data source:
+
+[source,yaml]
+----
+  dataImportCronTemplates:
+  - metadata:
+      annotations:
+        cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+      labels:
+        instancetype.kubevirt.io/default-instancetype: u1.medium
+        instancetype.kubevirt.io/default-preference: rhel.8
+        kubevirt.io/dynamic-credentials-support: 'true'
+      name: rhel8-image-cron
+    spec:
+      garbageCollect: Outdated
+      managedDataSource: rhel8
+      schedule: 40 2/12 * * *
+      template:
+        spec:
+          source:
+            registry:
+              url: docker://ocp4-bastion.aio.example.com:8443/rhel8/rhel-guest-image:latest
+              pullMethod: node
+          storage:
+            resources:
+              requests:
+                storage: 30Gi
+----
+
+A data import job can also use an imagestream. Replace the external registry with the local registry in the target image stream, for example:
+
+.rhel9-guest.yaml
+[source,yaml]
+----
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: rhel9-guest
+  namespace: openshift-virtualization-os-images
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: ocp4-bastion.aio.example.com:8443/rhel9/rhel-guest-image
+      importPolicy:
+        scheduled: true
+        importMode: Legacy
+      referencePolicy:
+        type: Source
+----
+
+.rhel8-image-cron
+[source,yaml,role=copy]
+----
+  dataImportCronTemplates:
+  - metadata:
+      annotations:
+        cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+      labels:
+        instancetype.kubevirt.io/default-instancetype: u1.medium
+        instancetype.kubevirt.io/default-preference: rhel.8
+        kubevirt.io/dynamic-credentials-support: 'true'
+      name: rhel8-image-cron
+    namespace: openshift-virtualization-os-images
+  spec:
+    garbageCollect: Outdated
+    managedDataSource: rhel8
+    schedule: 40 2/12 * * *
+    template:
+      metadata: {}
+      spec:
+        source:
+          registry:
+            imageStream: rhel8-guest
+            pullMethod: node
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+----
+
+
+== Resources
+
+Mirror Registry: A standalone Quay deployment for hosting OpenShift content. +
+https://mirror.openshift.com/pub/openshift-v4/clients/mirror-registry/latest/ +
+https://github.com/quay/mirror-registry
+
+oc-mirror: OpenShift client plugin for managing OpenShift releases, operator catalogs, and other image content +
+https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/latest/oc-mirror.tar.gz +
+https://github.com/openshift/oc-mirror
+
+Pull secret download +
+https://console.redhat.com/openshift/downloads +
+https://console.redhat.com/openshift/create/local
+
+OpenShift Virtualization Automatic Bootsource Update
+https://docs.openshift.com/dedicated/virt/storage/virt-automatic-bootsource-updates.html
+
+[NOTE]
+It is not necessary for this workshop to deploy VMs from a local registry. You can continue to the next module.

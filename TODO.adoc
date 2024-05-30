@@ -1,0 +1,66 @@
+== Bookbag -> Showroom Migration
+
+=== Progress so far
+
+. in new branch `showroom`
+* all asciidoc and images move into their proper places.
+* all (?) asciidoc `image:[]` edited to locate images correctly.
+* new `nav.adoc` created with a *Modules* header for the many modules.
+
+=== Generate your site
+
+. Install Antora on your laptop
+. Clone this repo
+. Switch branches to `showroom`
+. Generate the site
++
+[source,console,subs="verbatim,quotes"]
+----
+*cd ~/Development/roadshow_ocpvirt_instructions-bootcamp-edition; antora generate default-site.yml*
+(node:7931) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+site-wide attributes (as defined in playbook)
+{}
+master@modules attributes (as defined in antora.yml)
+{
+  lab_name: "I'm the lab_name var",
+  'release-version': 'master',
+  'page-pagination': true,
+  my_var: 'foo',
+  guid: 'my-guid',
+  ssh_user: 'devops',
+  ssh_password: 'devops',
+  ssh_command: 'ssh devops@bastion.{guid}.example.opentlc.com',
+  xdg_runtime_dir: 'xdg_runtime_dir'
+}
+[09:32:24.139] ERROR (asciidoctor): level 0 sections can only be used when doctype is book
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:5
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.140] WARN (asciidoctor): section title out of sequence: expected level 1, got level 2
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:8
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.141] WARN (asciidoctor): section title out of sequence: expected level 1, got level 2
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:12
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.141] WARN (asciidoctor): section title out of sequence: expected level 1, got level 2
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:16
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.141] WARN (asciidoctor): section title out of sequence: expected level 1, got level 2
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:20
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.142] ERROR (asciidoctor): level 0 sections can only be used when doctype is book
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:24
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.142] WARN (asciidoctor): section title out of sequence: expected level 1, got level 2
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:26
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+[09:32:24.142] WARN (asciidoctor): section title out of sequence: expected level 1, got level 2
+    file: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition/content/modules/ROOT/pages/04a_DO316.adoc:30
+    source: /Users/jmaltin/Development/roadshow_ocpvirt_instructions-bootcamp-edition (branch: showroom <worktree> | start path: content)
+
+Site generation complete!
+Open file:///$HOME/Development/roadshow_ocpvirt_instructions-bootcamp-edition/www/index.html in a browser to view your site.
+----
++
+. Fix the WARNings and re-run the `antora generate default-site.yml`
+. Click the URL

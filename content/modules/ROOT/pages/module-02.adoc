@@ -1,0 +1,138 @@
+= Managing an Application from GitHub
+
+In the first half of this workshop, we packaged an application into this portable container format manually using rpms.
+In the second half, we will consider that you may want to manage software from GitHub or some kind of software versioning application.
+Rather than installing rpms, we have individual software files and pull them out of that version control into a group of systems.
+
+== Install RHEL 8 UBI
+
+In this lab, we will be using a different Red Hat Enterprise Linux version in my container. 
+
+. Verify the host system release 
+
++
+[source,bash]
+----
+cat /etc/redhat-release
+----
++ 
+NOTE: The `bastion` system is Red Hat Enterprise Linux 9, and when you built the previous container, you used the UBI9 image. This means both the image and the container were built off the same Red Hat Enterprise Linux packages. 
+
+. As we did previously in this lab, Use `buildah from` to pull down the Red Hat Enterprise Linux 8 UBI.
+
++
+[source,bash]
+----
+buildah from registry.access.redhat.com/ubi8/ubi
+----
+
+NOTE: Because you already pulled one image named `ubi-working-container` this one is called `ubi-working-container-1`. 
+
+[#prerequisites]
+== Install Prerequisites
+
+Now that you have a working container, you will use the same process as before installing all the prerequisites, changing config files, and manipulating the contents of this container to be in the desired state.
+
+The software you will install is a JavaScript-based game that runs on a web browser. As before in the lab, use dnf to install software inside the container. 
+
+. Use `buildah run` and install Apache (`httpd`) into the `ubi-working-container-1` container. 
++
+[source,bash]
+----
+buildah run ubi-working-container-1 -- dnf -y install httpd
+----
+
+== Enable Service
+
+The next thing to do is to use a systemctl to enable the service. The ubi-init provides full systemd service to the container.
+This will start up any of the services that are enabled. 
+
+. Enable the `httpd` service using `buildah run`
+
++
+[source,bash]
+----
+buildah run ubi-working-container-1 -- systemctl enable httpd
+----
+
+NOTE: The UBI standard image doesn't have systemd installed on it by default. The `ubi-init` container image does include systemd. Plan accordingly to which image you use to build applications.  
+
+== Explore Source Materials
+
+A GitHub repository has already been synchronized to `/home/devops/clumsy-bird/` This repository contains the configurations for your application.
+
+. Verify the repository is cloned inside the `/home/devops/` directory
++
+[source,bash]
+----
+cd /home/devops/
+----
+
++
+[source,bash]
+----
+git clone https://github.com/ellisonleao/clumsy-bird
+----
++
+NOTE: The output states that the software has already been checked out. 
++
+. Explore the JavaScript contents, index files, and everything else that we need for this web-based JavaScript software.
++
+[source,bash,role=execute]
+----
+ls clumsy-bird
+----
+
+== Add Source Materials to Container
+
+. Now that you have verified the source materials exist, you will put the software inside of my container image using the `buildah copy` command.
++
+[source,bash]
+----
+buildah copy ubi-working-container-1 clumsy-bird /var/www/html
+----
+
+[#container]
+== Enable Container in Background
+
+In the previous section of this lab, you ran the game natively through interactive mode. Because you are now building a web application you will need to run the container in the background and access it through a web address. 
+
+. Execute `buildah config` to specify a port and initialize the container. 
+
++
+[source,bash]
+----
+buildah config --port 80 --cmd "/usr/sbin/init" ubi-working-container-1
+----
+
+NOTE: The command makes a configuration change to this container. I'm configuring this container to accept connections to its port 80. When the container starts up, it should run the init command, which, in this case, is going to be the Apache daemon right from earlier when I enabled it.
+
+== Commit Container and Deploy
+
+. Now that we have a container in a working configured state, it is time to make that permanent by committing it to a container image called `clumsy-bird`
++
+[source,bash]
+----
+buildah commit ubi-working-container-1 clumsy-bird
+----
+
+. Verify that the image was created with `podman`
++
+[source,bash]
+----
+podman images
+----
++
+. Run the container Now it's time to run the container. 
++
+[source,bash]
+----
+podman run -d -p 8500:80 clumsy-bird
+----
+
+== Verify Application
+
+Verify that the application is running by navigating to
+
+http://bastion.{guid}.example.opentlc.com:8500
+

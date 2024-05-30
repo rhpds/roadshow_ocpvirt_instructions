@@ -1,0 +1,26 @@
+---
+site:
+  title: Virtualization Bootcamp
+  #url: https://redhat-scholars.github.io/course-template
+  start_page: modules::index.adoc
+
+content:
+  sources:
+    - url: .
+      start_path: content
+
+ui:
+  bundle:
+    url: https://github.com/rhpds/showroom_theme_rhdp/releases/download/rhdp-v0.0.2/ui-bundle.zip
+    snapshot: true
+
+runtime:
+  cache_dir: ./.cache/antora
+
+antora:
+  extensions:
+    - require: ./content/lib/dev-mode.js
+      enabled: true
+
+output:
+  dir: ./www
