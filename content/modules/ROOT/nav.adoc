@@ -15,25 +15,15 @@
 
 * Modules
 
-** Module: DO316 Sections 3 and 4
 *** xref:04a_DO316.adoc[Module: DO316 Sections 3 and 4]
-** Module: Customize Virtual Machines
 *** xref:05_ocpv_customization.adoc[Module: Customize Virtual Machines]
-** Module: Windows Virtual Machines
 *** xref:06_windows_vm.adoc[Module: Windows Virtual Machines]
-** Module: Virtual Machine Management
 *** xref:07_vm_management.adoc[Module: Virtual Machine Management]
-** Module: Bare Metal OpenShift Overview
 *** xref:08_bare_metal.adoc[Module: Bare Metal OpenShift Overview]
-** Module: Network Management
 *** xref:09_network_management.adoc[Module: Network Management]
-** Module: Storage Management
 *** xref:10_storage_management.adoc[Module: Storage Management]
-** Module: Backup and Restore
 *** xref:15_backup_restore.adoc[Module: Backup and Restore]
-** Module: Kasten Lab
 *** xref:16_kasten.adoc[Module: Kasten Lab]
-** Module: Trilo Backup and Recovery Lab
 *** xref:17_trilio_backup.adoc[Module: Trilo Backup and Recovery Lab]
 ** Module: Exposing apps using a Route
 *** xref:19_service_route.adoc[Module: Exposing apps using a Route]
