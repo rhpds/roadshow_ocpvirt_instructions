@@ -1,54 +1,30 @@
-* Introductions
-** xref:00_introductions.adoc[Introductions]
+* xref:00_introductions.adoc[Introductions]
 
-* Welcome
-** xref:01_welcome.adoc[Welcome]
+* xref:01_welcome.adoc[Welcome]
 
-* Migrating Virtual Machines
-** xref:02_migrate_vms.adoc[Migrating Virtual Machines]
+* xref:02_migrate_vms.adoc[Migrating Virtual Machines]
 
-* OpenShift Virtualization Basics
-** xref:03_ocpv_basics.adoc[OpenShift Virtualization Basics]
+* xref:03_ocpv_basics.adoc[OpenShift Virtualization Basics]
 
-* Thank you and next steps
-** xref:04_thanks.adoc[Thank you and next steps]
+* xref:04_thanks.adoc[Thank you and next steps]
 
 * Modules
+** xref:04a_DO316.adoc[Module: DO316 Sections 3 and 4]
+** xref:05_ocpv_customization.adoc[Module: Customize Virtual Machines]
+** xref:06_windows_vm.adoc[Module: Windows Virtual Machines]
+** xref:07_vm_management.adoc[Module: Virtual Machine Management]
+** xref:08_bare_metal.adoc[Module: Bare Metal OpenShift Overview]
+** xref:09_network_management.adoc[Module: Network Management]
+** xref:10_storage_management.adoc[Module: Storage Management]
+** xref:15_backup_restore.adoc[Module: Backup and Restore]
+** xref:16_kasten.adoc[Module: Kasten Lab]
+** xref:17_trilio_backup.adoc[Module: Trilo Backup and Recovery Lab]
+** xref:19_service_route.adoc[Module: Exposing apps using a Route]
+** xref:20_metallb.adoc[Module: Exposing apps using MetalLB]
+** xref:23_ROSAVirt.adoc[Module: ROSA OCP Virt lab]
+** xref:22_disconnected.adoc[Module: Disconnected Environments]
+** xref:24_presales.adoc[Module: Pre Sales]
+** xref:25_virtualization_gitops.adoc[Module: GitOps + CI/CD lab]
+* xref:26_Closeout.adoc[Closeout]
 
-** Module: DO316 Sections 3 and 4
-*** xref:04a_DO316.adoc[Module: DO316 Sections 3 and 4]
-** Module: Customize Virtual Machines
-*** xref:05_ocpv_customization.adoc[Module: Customize Virtual Machines]
-** Module: Windows Virtual Machines
-*** xref:06_windows_vm.adoc[Module: Windows Virtual Machines]
-** Module: Virtual Machine Management
-*** xref:07_vm_management.adoc[Module: Virtual Machine Management]
-** Module: Bare Metal OpenShift Overview
-*** xref:08_bare_metal.adoc[Module: Bare Metal OpenShift Overview]
-** Module: Network Management
-*** xref:09_network_management.adoc[Module: Network Management]
-** Module: Storage Management
-*** xref:10_storage_management.adoc[Module: Storage Management]
-** Module: Backup and Restore
-*** xref:15_backup_restore.adoc[Module: Backup and Restore]
-** Module: Kasten Lab
-*** xref:16_kasten.adoc[Module: Kasten Lab]
-** Module: Trilo Backup and Recovery Lab
-*** xref:17_trilio_backup.adoc[Module: Trilo Backup and Recovery Lab]
-** Module: Exposing apps using a Route
-*** xref:19_service_route.adoc[Module: Exposing apps using a Route]
-** Module: Exposing apps using MetalLB
-*** xref:20_metallb.adoc[Module: Exposing apps using MetalLB]
-** Module: ROSA OCP Virt lab
-*** xref:23_ROSAVirt.adoc[Module: ROSA OCP Virt lab]
-** Module: Disconnected Environments
-*** xref:22_disconnected.adoc[Module: Disconnected Environments]
-** Module: Pre Sales
-*** xref:24_presales.adoc[Module: Pre Sales]
-** Module: GitOps + CI/CD lab
-*** xref:25_virtualization_gitops.adoc[Module: GitOps + CI/CD lab]
-* Closeout
-** xref:26_Closeout.adoc[Closeout]
-
-* Appendix: Steps to disable OS images
-** xref:27_steps_to_disable_os_images.adoc[Appendix: Steps to disable OS images]
+* xref:27_steps_to_disable_os_images.adoc[Appendix: Steps to disable OS images]
